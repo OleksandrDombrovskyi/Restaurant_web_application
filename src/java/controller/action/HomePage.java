@@ -18,6 +18,7 @@ public class HomePage extends Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("title", "home.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
         request.getRequestDispatcher("/view/home.jsp").include(request, response);

@@ -15,7 +15,7 @@
 <html lang="${language}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><fmt:message key="language.text.title" /></title>
+        <title><fmt:message key="${title}" /></title>
     </head>
     <body>
         <form>

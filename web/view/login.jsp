@@ -6,8 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <fmt:setLocale value="${language}" /> 
 <fmt:setBundle basename="controller.properties.text" />
 
@@ -23,6 +22,11 @@
             <fmt:message key="login.text.password" />: <input type="text" name="password"><br>
             <input type="submit" value=<fmt:message key="login.button.login" />>
             <input type="hidden" name="button" value="login" />
+            <input type="hidden" name="from" value="${param.from}">
+        </form>
+        <form action="servlet" method="get">
+            <input type="submit" value=<fmt:message key="login.button.signup" />>
+            <input type="hidden" name="action" value="signup" />
             <input type="hidden" name="from" value="${param.from}">
         </form>
     </body>

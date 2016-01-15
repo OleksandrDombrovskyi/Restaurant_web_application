@@ -19,8 +19,13 @@
     </head>
     <body>
         <form action="servlet" method="get">
-            <h4><fmt:message key="guest.authorization.text.guest" /> | <input type="submit" value=<fmt:message key="guest.authorization.link.login" /> /></h4>
-            <input type="hidden" name="action" value="loginrequest" />
+            <h4><fmt:message key="guest.authorization.text.guest" /> | 
+                <a href="${pageContext.request.contextPath}/servlet?action=loginrequest" >
+                    <fmt:message key="guest.authorization.link.login" />
+                </a> | <a href="${pageContext.request.contextPath}/servlet?action=signup" >
+                    <fmt:message key="guest.authorization.link.signup" />
+                </a>
+            </h4>
             <input type="hidden" name="from" value="${pageContext.request.requestURI}">
         </form>
     </body>

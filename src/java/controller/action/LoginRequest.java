@@ -18,6 +18,7 @@ public class LoginRequest extends Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("title", "login.text.title");
         String from = request.getParameter("from");
         request.getSession().setAttribute("from", from);
         new LanguageBlock().execute(request, response);

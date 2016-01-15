@@ -9,8 +9,10 @@ import controller.action.Action;
 import controller.action.Login;
 import controller.action.HomePage;
 import controller.action.ChangeLanguage;
+import controller.action.CreateAccount;
 import controller.action.LogOut;
 import controller.action.LoginRequest;
+import controller.action.SignUp;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +22,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -41,7 +42,9 @@ public class Servlet extends HttpServlet {
         actions.put("logout", new LogOut());
         actions.put("changelanguage", new ChangeLanguage());
         actions.put("loginrequest", new LoginRequest());
+        actions.put("signup", new SignUp());
         buttons.put("login", new Login());
+        buttons.put("createaccount", new CreateAccount());
     }
     
     @Override
