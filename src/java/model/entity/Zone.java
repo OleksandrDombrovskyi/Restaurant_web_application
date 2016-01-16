@@ -21,13 +21,12 @@ public class Zone extends Service {
 
     /**
      * Constructor
-     * @param id user zone id
      * @param zoneType zone type
      * @param adminId admin id
      * @param price zone price
      */
-    public Zone(int id, BigDecimal price, ZoneType zoneType, int adminId) {
-        super(id, price);
+    public Zone(BigDecimal price, ZoneType zoneType, int adminId) {
+        super(price);
         this.zoneType = zoneType;
         this.adminId = adminId;
     }

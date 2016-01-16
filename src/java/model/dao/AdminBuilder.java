@@ -28,7 +28,7 @@ public class AdminBuilder extends EntityBuilder {
     private static final String SQL_FOR_ADMIN_BY_ID = "SELECT * FROM admin WHERE admin_id = ?";
 
     /** sql query for inserting admin into the admin table in the data base */
-    private static final String SQL_FOR_ADMIN_INSERTING = "INSERT INTO admin (first_name, last_name, admin_type, email, login, password) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_FOR_ADMIN_INSERTING = "INSERT INTO admin (first_name, last_name, email, password, admin_type) VALUES (?, ?, ?, ?, ?)";
     
     /** sql query for deleting admin from the data base table */
     private static final String SQL_FOR_DELETING_BY_ID = "DELETE FROM admin WHERE admin_id = ?";
@@ -62,10 +62,11 @@ public class AdminBuilder extends EntityBuilder {
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
         String email = rs.getString("email");
-        String login = rs.getString("login");
         String password = rs.getString("password");
         AdminType adminType = AdminType.valueOf(rs.getString("admin_type"));
-        return new Admin(id, firstName, lastName, email, adminType, login, password);
+        Admin newAdmin = new Admin(firstName, lastName, email, password, adminType);
+        newAdmin.setId(id);
+        return newAdmin;
     }
 
     /**
@@ -102,10 +103,9 @@ public class AdminBuilder extends EntityBuilder {
         PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_ADMIN_INSERTING);
         ps.setString(1, admin.getFirstName());
         ps.setString(2, admin.getLastName());
-        ps.setString(3, admin.getAdminType().toString());
-        ps.setString(4, admin.getEmail());
-        ps.setString(5, admin.getLogin());
-        ps.setString(6, admin.getPassword());
+        ps.setString(3, admin.getEmail());
+        ps.setString(4, admin.getPassword());
+        ps.setString(5, admin.getAdminType().toString());
         ps.executeUpdate();
     }
 

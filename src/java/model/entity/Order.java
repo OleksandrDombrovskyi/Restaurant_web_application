@@ -30,12 +30,10 @@ public class Order extends DBEntity {
     /**
      * Constructor
      * @param status order status
-     * @param id user id
      * @param userId user id
      * @param totalPrice total price
      */
-    public Order(int id, int userId, OrderStatus status, BigDecimal totalPrice) {
-        super(id);
+    public Order(int userId, OrderStatus status, BigDecimal totalPrice) {
         this.userId = userId;
         this.status = status;
         this.totalPrice = totalPrice;

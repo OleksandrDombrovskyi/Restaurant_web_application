@@ -23,7 +23,7 @@
                 <option value="en" ${language == 'en' ? 'selected' : ''}>English</option> 
                 <option value="ru" ${language == 'ru' ? 'selected' : ''}>Русский</option>
                 <option value="ua" ${language == 'ua' ? 'selected' : ''}>Українська</option>
-                <input type="hidden" name="action" value="changelanguage" />
+                <input type="hidden" name="action" value="changeLanguage" />
             </select>
         </form>
     </body>

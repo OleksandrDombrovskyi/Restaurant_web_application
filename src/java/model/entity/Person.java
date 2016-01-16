@@ -19,19 +19,22 @@ public abstract class Person extends DBEntity{
     
     /** person email */
     protected String email;
+    
+    /** person password */
+    protected String password;
 
     /**
      * Constructor
-     * @param id person id
      * @param firstName first name of person
      * @param lastName persone last name
      * @param email person email
+     * @param password person password
      */
-    public Person(int id, String firstName, String lastName, String email) {
-        super(id);
+    public Person(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
     
     /**
@@ -81,4 +84,21 @@ public abstract class Person extends DBEntity{
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    /**
+     * Set person password
+     * @param password person password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    /**
+     * Get person password
+     * @return person password
+     */
+    public String getPassword() {
+        return password;
+    }
+    
 }

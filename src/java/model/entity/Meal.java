@@ -27,16 +27,15 @@ public class Meal extends Service {
     
     /**
      * Constructor
-     * @param id meal id
      * @param type meal type
      * @param name meal name
      * @param description meal description 
      * @param price meal price
      * @param presenceNumber number of goods which are in the storehouse
      */
-    public Meal(int id, BigDecimal price, String type, String name, 
+    public Meal(BigDecimal price, String type, String name, 
             String description, int presenceNumber) {
-        super(id, price);
+        super(price);
         setType(type);
         this.name = name;
         this.description = description;

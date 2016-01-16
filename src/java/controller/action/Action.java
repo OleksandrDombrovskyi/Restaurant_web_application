@@ -16,6 +16,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class Action {
     
+    /**
+     * Execute some special action fo each case
+     * @param request http servlet reuest
+     * @param response http servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     public abstract void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
     
 }

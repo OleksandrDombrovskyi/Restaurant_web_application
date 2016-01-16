@@ -6,10 +6,8 @@
 package model.entity;
 
 import java.math.BigDecimal;
-import static java.time.temporal.TemporalQueries.zone;
 import java.util.ArrayList;
 import java.util.List;
-import model.entity.Zone.ZoneType;
 
 /**
  *
@@ -28,18 +26,13 @@ public class User extends Person {
 
     /**
      * Constructor
-     * @param id user id
      * @param firstName user first name
      * @param lastName user last name
      * @param email user email
-     * @param account user account
-     * @param zoneId user zone 
+     * @param password users' password
      */
-    public User(int id, String firstName, String lastName, String email, 
-            BigDecimal account, int zoneId) {
-        super(id, firstName, lastName, email);
-        this.account = account;
-        this.zoneId = zoneId;
+    public User(String firstName, String lastName, String email, String password) {
+        super(firstName, lastName, email, password);
     }
 
     /**

@@ -63,7 +63,9 @@ public class MealBuilder extends EntityBuilder {
         String name = rs.getString("meal_name");
         String description = rs.getString("meal_description");
         BigDecimal price = rs.getBigDecimal("meal_price");
-        return new Meal(id, price, type, name, description, 10); // hard code
+        Meal newMeal = new Meal(price, type, name, description, 10); // hard code
+        newMeal.setId(id);
+        return newMeal;
     }
 
     /**

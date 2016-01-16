@@ -63,7 +63,9 @@ public class OrderBuilder extends EntityBuilder {
         int userId = rs.getInt("user_id");
         OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
         BigDecimal price = rs.getBigDecimal("total_price");
-        return new Order(id, userId, status, price);
+        Order newOrder = new Order(userId, status, price);
+        newOrder.setId(id);
+        return newOrder;
     }
 
     /**

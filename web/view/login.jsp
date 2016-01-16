@@ -17,8 +17,11 @@
         <title><fmt:message key="login.text.title" /></title>
     </head>
     <body>
+        <c:if test="${not empty errorMessage}" >
+            <fmt:message key="${errorMessage}" />
+        </c:if>
         <form action="servlet" method="post">
-            <fmt:message key="login.text.name" />: <input type="text" name="name"><br>
+            <fmt:message key="login.text.email" />: <input type="text" name="email"><br>
             <fmt:message key="login.text.password" />: <input type="text" name="password"><br>
             <input type="submit" value=<fmt:message key="login.button.login" />>
             <input type="hidden" name="button" value="login" />
@@ -26,7 +29,7 @@
         </form>
         <form action="servlet" method="get">
             <input type="submit" value=<fmt:message key="login.button.signup" />>
-            <input type="hidden" name="action" value="signup" />
+            <input type="hidden" name="action" value="signUp" />
             <input type="hidden" name="from" value="${param.from}">
         </form>
     </body>

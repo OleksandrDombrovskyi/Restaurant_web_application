@@ -40,11 +40,11 @@ public class Servlet extends HttpServlet {
         actions.put("login", new Login());
         actions.put("language", new ChangeLanguage());
         actions.put("logout", new LogOut());
-        actions.put("changelanguage", new ChangeLanguage());
-        actions.put("loginrequest", new LoginRequest());
-        actions.put("signup", new SignUp());
+        actions.put("changeLanguage", new ChangeLanguage());
+        actions.put("loginRequest", new LoginRequest());
+        actions.put("signUp", new SignUp());
         buttons.put("login", new Login());
-        buttons.put("createaccount", new CreateAccount());
+        buttons.put("createAccount", new CreateAccount());
     }
     
     @Override

@@ -17,18 +17,39 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <c:if test="${not empty errorMessage}" >
+            <fmt:message key="${errorMessage}" />
+        </c:if>
         <form action="servlet" method="post" >
-            <h3><fmt:message key="signup.text.name" />: <input type="text" name="name" /></h3>
-            <h3><fmt:message key="signup.text.lastname" />: <input type="text" name="lastname" /></h3>
-            <h3><fmt:message key="signup.text.email" />: <input type="text" name="email" /></h3>
+            <h3>
+                <fmt:message key="signup.text.name" />: 
+                <input type="text" name="name" 
+                    <c:if test="${not empty previousName}" >
+                        value="${previousName}"
+                    </c:if>
+                       />
+            </h3>
+            <h3>
+                <fmt:message key="signup.text.lastname" />: 
+                <input type="text" name="lastname" 
+                    <c:if test="${not empty previousLastName}" >
+                        value="${previousLastName}"
+                    </c:if>
+                       />
+            </h3>
+            <h3>
+                <fmt:message key="signup.text.email" />: 
+                <input type="text" name="email" 
+                    <c:if test="${not empty previousEmail}" >
+                        value="${previousEmail}"
+                    </c:if>
+                       />
+            </h3>
             <h3><fmt:message key="signup.text.password" />: <input type="text" name="password" /></h3>
-            <h3><fmt:message key="signup.text.confirmpassword" />: <input type="text" name="confirmpassword" /></h3>
+            <h3><fmt:message key="signup.text.confirmpassword" />: <input type="text" name="confirmPassword" /></h3>
             <input type="submit" value=<fmt:message key="signup.button.createaccount" /> />
-            <input type="hidden" name="button" value="createaccount" />
+            <input type="hidden" name="button" value="createAccount" />
             <input type="hidden" name="from" value="${param.from}">
-            <c:if test="${not empty errormessage}" >
-                <fmt:message key="${errormessage}" />
-            </c:if>
         </form>
     </body>
 </html>

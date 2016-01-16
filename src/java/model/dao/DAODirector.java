@@ -5,6 +5,7 @@
  */
 package model.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 import model.entity.DBEntity;
 
@@ -64,9 +65,11 @@ public class DAODirector {
      * Insert entity into the data base table
      * @param entity object oriented entity
      * @return boolean true if inserting is successful of false otherwise
+     * @throws java.sql.SQLException
+     * @throws model.dao.ServerOverloadedException
      */
-    public boolean createEntity(DBEntity entity) {
-        return builder.createEntity(entity);
+    public boolean insertEntity(DBEntity entity) throws SQLException, ServerOverloadedException {
+        return builder.insertEntity(entity);
     }
     
     /**

@@ -18,11 +18,9 @@ public abstract class Service extends DBEntity {
 
     /**
      * Constructor
-     * @param id service id
      * @param price service price
      */
-    public Service(int id, BigDecimal price) {
-        super(id);
+    public Service(BigDecimal price) {
         this.price = price;
     }
     

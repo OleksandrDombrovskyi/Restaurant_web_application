@@ -5,9 +5,7 @@
  */
 package model.dao;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import model.entity.DBEntity;
 
@@ -18,7 +16,7 @@ import model.entity.DBEntity;
 public abstract class EntityBuilder {
     
     /** connection pool object */
-    private static final ConnectionPool CONNECTION_POOL = new ConnectionPool();
+    protected static final ConnectionPool CONNECTION_POOL = new ConnectionPool();
     
     /**
      * Get all entities from the db
@@ -93,20 +91,16 @@ public abstract class EntityBuilder {
      * Create new entity
      * @param entity entity migth be updated into the data base
      * @return true if updating is successfull and false otherwise
+     * @throws java.sql.SQLException
+     * @throws model.dao.ServerOverloadedException
      */
-    public boolean createEntity(DBEntity entity) {
+    public boolean insertEntity(DBEntity entity) throws SQLException, ServerOverloadedException {
         boolean flag = false;
         WrapperConnectionProxy wrapperConnection = null;
         try {
             wrapperConnection = CONNECTION_POOL.getConnection();
             insertEntity(wrapperConnection, entity);
             flag = true;
-        } catch (SQLException e) {
-            //TODO: show error message
-            System.out.println("EntityBuilder.getEntityById.SQLException: " + e.getMessage());
-        } catch (ServerOverloadedException e) {
-            //TODO: show error message
-            System.out.println("EntityBuilder.getEntityById.ServerOverloadedException: " + e.getMessage());
         } finally {
             if (wrapperConnection != null) {
                 wrapperConnection.close();

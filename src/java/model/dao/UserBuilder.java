@@ -28,10 +28,13 @@ public class UserBuilder extends EntityBuilder {
     private static final String SQL_FOR_USER_BY_ID = "SELECT * FROM user WHERE user_id = ?";
 
     /** sql query for inserting user into the user table in the data base */
-    private static final String SQL_FOR_USER_INSERTING = "INSERT INTO user (first_name, last_name, email, account, zone_id) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_FOR_USER_INSERTING = "INSERT INTO user (first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
     
     /** sql query for deleting user from the data base table */
     private static final String SQL_FOR_DELETING_BY_ID = "DELETE FROM user WHERE user_id = ?";
+    
+    /** sql query for getting the user from data base by his email */
+    private static final String SQL_FOR_USER_BY_EMAIL = "SELECT * FROM user WHERE email = ?";
     
     /**
      * Get sql query for all user 
@@ -62,9 +65,15 @@ public class UserBuilder extends EntityBuilder {
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
         String email = rs.getString("email");
+        String password = rs.getString("password");
         BigDecimal account = rs.getBigDecimal("account");
         int zoneId = rs.getInt("zone_id");
-        return new User(id, firstName, lastName, email, account, zoneId);
+        User newUser = new User(firstName, lastName, email, password);
+        newUser.setId(id);
+        newUser.setAccount(account);
+        newUser.setZoneId(zoneId);
+        //TODO: get all user's oders and add to the object's order list
+        return newUser;
     }
 
     /**
@@ -101,8 +110,7 @@ public class UserBuilder extends EntityBuilder {
         ps.setString(1, user.getFirstName());
         ps.setString(2, user.getLastName());
         ps.setString(3, user.getEmail());
-        ps.setBigDecimal(4, user.getAccount());
-        ps.setInt(5, user.getZoneId());
+        ps.setString(4, user.getPassword());
         ps.executeUpdate();
     }
 
@@ -118,6 +126,31 @@ public class UserBuilder extends EntityBuilder {
         PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_DELETING_BY_ID);
         ps.setInt(1, id);
         ps.executeUpdate();
+    }
+    
+    /**
+     * get user from DB by email
+     * @param email user's email
+     * @return user if such user exists or null otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public DBEntity getUserByEmail(String email) throws SQLException, ServerOverloadedException {
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_USER_BY_EMAIL);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return getUser(rs);
+            }
+            return null;
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
     }
     
 }

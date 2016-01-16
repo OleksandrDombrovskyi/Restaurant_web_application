@@ -15,14 +15,6 @@ public abstract class DBEntity {
     protected int id;
 
     /**
-     * Constructor
-     * @param id entity id
-     */
-    public DBEntity(int id) {
-        this.id = id;
-    }
-
-    /**
      * Set entity id
      * @param id entity id
      */

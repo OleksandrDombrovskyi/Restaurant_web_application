@@ -6,10 +6,18 @@
 package controller.action;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.dao.DAODirector;
+import model.dao.ENUMEntity;
+import model.dao.ServerOverloadedException;
+import model.dao.UserBuilder;
+import model.entity.User;
 
 /**
  *
@@ -17,22 +25,49 @@ import javax.servlet.http.HttpSession;
  */
 public class CreateAccount extends Action {
 
+    /**
+     * Create new account if all required fildes are filled correctly
+     * @param request http servlet request
+     * @param response http serrvlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
         String lastName = request.getParameter("lastname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmpassword");
+        String confirmPassword = request.getParameter("confirmPassword");
         
-        String errorMessage = chechAllFields(name, lastName, email, password, confirmPassword);
+        String errorMessage = checkAllFields(name, lastName, email, password, confirmPassword);
         if (errorMessage != null) {
+            saveFieldValues(name, lastName, email, request);
             startOver(request, response, errorMessage);
             return;
         }
-        
+        UserBuilder builder = new UserBuilder();
+        try {
+            if (builder.getUserByEmail(email) != null) {
+                saveFieldValues(name, lastName, email, request);
+                startOver(request, response, "signup.errormessage.existinguser");
+                return;
+            }
+            User newUser = new User(name, lastName, email, password);
+            DAODirector director = new DAODirector(ENUMEntity.USER);
+            director.insertEntity(newUser);
+        } catch (SQLException ex) {
+            saveFieldValues(name, lastName, email, request);
+            startOver(request, response, "exception.errormessage.sqlexception");
+            return;
+        } catch (ServerOverloadedException ex) {
+            saveFieldValues(name, lastName, email, request);
+            startOver(request, response, "exception.errormessage.serveroverloaded");
+            return;
+        }
         HttpSession session = request.getSession();
         session.setAttribute("userName", name);
+        session.setAttribute("userEmail", email);
         response.sendRedirect(request.getParameter("from"));
     }
     
@@ -48,7 +83,7 @@ public class CreateAccount extends Action {
      * @return if some field is uncorrect, return corresponding error message, 
      *         in case when all fields are correct, return null
      */
-    private String chechAllFields(String name, String lastName, String email, 
+    private String checkAllFields(String name, String lastName, String email, 
             String password, String confirmPassword) {
         if (isStringEmpty(name)) {
             return "signup.errormessage.emptyname";
@@ -60,19 +95,20 @@ public class CreateAccount extends Action {
             return "signup.errormessage.emptyemail";
         }
         if (!checkEmail(email)) {
-            return "signup.errormessage.password";
+            return "signup.errormessage.uncorrectemail";
         }
         if (!confirmPasswords(password, confirmPassword)) {
             return "signup.errormessage.password";
         }
         if (!checkPassword(password)) {
-            return "signup.errormessage.password";
+            return "signup.errormessage.uncorrectpassword";
         }
         return null;
     }
     
     /**
      * Check is string empty or no
+     * 
      * @param string string variable
      * @return boolean true if string is empty and false otherwise
      */
@@ -82,16 +118,20 @@ public class CreateAccount extends Action {
     
     /**
      * Check whether is email correct by regular expression
+     * 
      * @param email string email
      * @return boolean true if email is correct and false otherwise
      */
     private boolean checkEmail(String email) {
-        //TODO: regular expression for email
-        return true;
+        Pattern regexEmail = 
+                Pattern.compile("^[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]*@([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ua))");
+        Matcher emailMatcher = regexEmail.matcher(email);
+        return emailMatcher.find();
     }
     
     /**
      * Check whether password and confirm password are the same and not null
+     * 
      * @param password password string
      * @param confirmPassword password confirmation string
      * @return boolean true if both password and confirmation password are 
@@ -106,13 +146,37 @@ public class CreateAccount extends Action {
         return true;
     }
     
+    /**
+     * Check if password if quite difficult
+     * 
+     * @param password string password
+     * @return true if password has uppercase and lowercase letters and digits 
+     *         with length not less then 6 symbols or false otherwise
+     */
     private boolean checkPassword(String password) {
-        //TODO: regular expression for password
-        return true;
+        Pattern regexPassword = 
+                Pattern.compile("[[A-Z]+[a-z]+[0-9]+]{6,}");
+        Matcher emailMatcher = regexPassword.matcher(password);
+        return emailMatcher.find();
     }
     
     /**
-     * Back to filling the form couse of uncorrect and sending correspond error message
+     * Save previous fields values 
+     * @param name user name
+     * @param lastName user last name
+     * @param email user email
+     * @param request http servlet request
+     */
+    private void saveFieldValues(String name, String lastName, String email, HttpServletRequest request) {
+        request.setAttribute("previousName", name);
+        request.setAttribute("previousLastName", lastName);
+        request.setAttribute("previousEmail", email);
+    }
+    
+    /**
+     * Back to filling the form couse of uncorrect field filling and sending 
+     * correspond error message
+     * 
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      * @param errorMessage text value of text property file which corresponds to the error message
@@ -121,7 +185,7 @@ public class CreateAccount extends Action {
      */
     private void startOver(HttpServletRequest request, HttpServletResponse response, 
             String errorMessage) throws ServletException, IOException {
-        request.setAttribute("errormessage", errorMessage);
+        request.setAttribute("errorMessage", errorMessage);
         new SignUp().execute(request, response);
     }
     

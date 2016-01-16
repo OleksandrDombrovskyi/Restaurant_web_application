@@ -62,7 +62,9 @@ public class ZoneBuilder extends EntityBuilder {
         ZoneType zoneType = ZoneType.valueOf(rs.getString("zone_type"));
         int adminId = rs.getInt("admin_id");
         BigDecimal price = rs.getBigDecimal("price");
-        return new Zone(id, price, zoneType, adminId);
+        Zone newZone = new Zone(price, zoneType, adminId);
+        newZone.setId(id);
+        return newZone;
     }
 
     /**

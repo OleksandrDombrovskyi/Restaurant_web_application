@@ -20,9 +20,9 @@
     <body>
         <form action="servlet" method="get">
             <h4><fmt:message key="guest.authorization.text.guest" /> | 
-                <a href="${pageContext.request.contextPath}/servlet?action=loginrequest" >
+                <a href="${pageContext.request.contextPath}/servlet?action=loginRequest" >
                     <fmt:message key="guest.authorization.link.login" />
-                </a> | <a href="${pageContext.request.contextPath}/servlet?action=signup" >
+                </a> | <a href="${pageContext.request.contextPath}/servlet?action=signUp" >
                     <fmt:message key="guest.authorization.link.signup" />
                 </a>
             </h4>
