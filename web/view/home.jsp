@@ -19,6 +19,6 @@
     </head>
     <body>
         <h1><fmt:message key="home.text.welcome" /></h1>
-        <h2><a href="${pageContext.request.contextPath}/servlet?menu=1"><fmt:message key="home.link.mainmenu" /></a></h2>
+        <h2><a href="${pageContext.request.contextPath}/servlet?action=mainMenu"><fmt:message key="home.link.mainmenu" /></a></h2>
     </body>
 </html>

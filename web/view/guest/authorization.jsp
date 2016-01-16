@@ -20,13 +20,16 @@
     <body>
         <form action="servlet" method="get">
             <h4><fmt:message key="guest.authorization.text.guest" /> | 
-                <a href="${pageContext.request.contextPath}/servlet?action=loginRequest" >
+                <a href="${pageContext.request.contextPath}/servlet?action=loginRequest&from=${pageContext.request.requestURI}" >
                     <fmt:message key="guest.authorization.link.login" />
-                </a> | <a href="${pageContext.request.contextPath}/servlet?action=signUp" >
+                    <input type="hidden" name="from" value="${pageContext.request.requestURI}">
+                </a> | <a href="${pageContext.request.contextPath}/servlet?action=signUp&from=${pageContext.request.requestURI}" >
                     <fmt:message key="guest.authorization.link.signup" />
+                    <%--
+                    <input type="hidden" name="from" value="${pageContext.request.requestURI}">
+                    --%>
                 </a>
             </h4>
-            <input type="hidden" name="from" value="${pageContext.request.requestURI}">
         </form>
     </body>
 </html>

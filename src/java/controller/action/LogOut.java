@@ -7,8 +7,6 @@ package controller.action;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -17,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LogOut extends Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().removeAttribute("userName");
+    public void doExecute() throws ServletException, IOException {
+        request.getSession().removeAttribute("user");
         response.sendRedirect(request.getHeader("Referer")); //????
     }
     

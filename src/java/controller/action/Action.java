@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -16,13 +17,37 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class Action {
     
+    /** http servlet request */
+    protected HttpServletRequest request;
+    
+    /** http servlet response */
+    protected HttpServletResponse response;
+    
+    /** http session */
+    protected HttpSession session;
+    
     /**
-     * Execute some special action fo each case
+     * Initialization required variables and run doExecute method
+     * 
      * @param request http servlet reuest
      * @param response http servlet response
      * @throws ServletException
      * @throws IOException 
      */
-    public abstract void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    public void execute(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        this.request = request;
+        this.response = response;
+        session = request.getSession();
+        doExecute();
+    }
+    
+    /**
+     * Execute required action
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected abstract void doExecute() throws ServletException, IOException;
     
 }

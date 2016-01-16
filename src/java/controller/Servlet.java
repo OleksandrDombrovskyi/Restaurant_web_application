@@ -12,6 +12,8 @@ import controller.action.ChangeLanguage;
 import controller.action.CreateAccount;
 import controller.action.LogOut;
 import controller.action.LoginRequest;
+import controller.action.MainMenu;
+import controller.action.Profile;
 import controller.action.SignUp;
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,19 +45,22 @@ public class Servlet extends HttpServlet {
         actions.put("changeLanguage", new ChangeLanguage());
         actions.put("loginRequest", new LoginRequest());
         actions.put("signUp", new SignUp());
+        actions.put("mainMenu", new MainMenu());
+        actions.put("profile", new Profile());
         buttons.put("login", new Login());
         buttons.put("createAccount", new CreateAccount());
     }
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         String actionKey = request.getParameter("action");
         if (actionKey == null) {
             actionKey = "home";
         }
+        saveActionForRedirect(actionKey, request);
         Action action = actions.get(actionKey);
         action.execute(request, response);
     }
@@ -68,6 +73,12 @@ public class Servlet extends HttpServlet {
         String buttonKey = request.getParameter("button");
         Action button = buttons.get(buttonKey);
         button.execute(request, response);
+    }
+    
+    private void saveActionForRedirect(String actionKey, HttpServletRequest request) {
+        if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp")) {
+            request.getSession().setAttribute("lastAction", actionKey);
+        }
     }
     
 }

@@ -7,8 +7,6 @@ package controller.action;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -17,12 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 public class SignUp extends Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    public void doExecute() throws ServletException, IOException {
         request.setAttribute("title", "signup.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
-        request.getRequestDispatcher("/view/signup.jsp").include(request, response);
+//        String from = request.getParameter("from");
+//        request.getSession().setAttribute("from", from);
+        request.getRequestDispatcher("/view/signup.jsp").
+                include(request, response);
     }
     
 }

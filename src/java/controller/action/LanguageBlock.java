@@ -7,8 +7,6 @@ package controller.action;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -17,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LanguageBlock extends Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doExecute() throws ServletException, IOException {
         request.getRequestDispatcher("/view/language.jsp").include(request, response);
     }
     

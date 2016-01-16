@@ -10,13 +10,8 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.dao.DAODirector;
-import model.dao.ENUMEntity;
 import model.dao.ServerOverloadedException;
-import model.dao.UserBuilder;
+import model.dao.UserCreator;
 import model.entity.User;
 
 /**
@@ -27,53 +22,59 @@ public class CreateAccount extends Action {
 
     /**
      * Create new account if all required fildes are filled correctly
-     * @param request http servlet request
-     * @param response http serrvlet response
+     * 
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doExecute() throws ServletException, IOException {
         String name = request.getParameter("name");
         String lastName = request.getParameter("lastname");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
+        UserCreator userCreator = new UserCreator();
+        User newUser = null;
+        User dbUser = null;
         
-        String errorMessage = checkAllFields(name, lastName, email, password, confirmPassword);
+        String errorMessage = checkAllFields(name, lastName, email, password, 
+                confirmPassword);
         if (errorMessage != null) {
-            saveFieldValues(name, lastName, email, request);
-            startOver(request, response, errorMessage);
+            saveFieldValues(name, lastName, email);
+            startOver(errorMessage);
             return;
         }
-        UserBuilder builder = new UserBuilder();
         try {
-            if (builder.getUserByEmail(email) != null) {
-                saveFieldValues(name, lastName, email, request);
-                startOver(request, response, "signup.errormessage.existinguser");
+            if (userCreator.getUserByEmail(email) != null) {
+                saveFieldValues(name, lastName, email);
+                startOver("signup.errormessage.existinguser");
                 return;
             }
-            User newUser = new User(name, lastName, email, password);
-            DAODirector director = new DAODirector(ENUMEntity.USER);
-            director.insertEntity(newUser);
+            newUser = new User(name, lastName, email, password);
+            if (!userCreator.insertUser(newUser)) {
+                throw new SQLException();
+            }
+            dbUser = (User) userCreator.getUserByEmail(email);
+            if (dbUser == null) {
+                throw new SQLException();
+            }
         } catch (SQLException ex) {
-            saveFieldValues(name, lastName, email, request);
-            startOver(request, response, "exception.errormessage.sqlexception");
+            saveFieldValues(name, lastName, email);
+            startOver("exception.errormessage.sqlexception");
             return;
         } catch (ServerOverloadedException ex) {
-            saveFieldValues(name, lastName, email, request);
-            startOver(request, response, "exception.errormessage.serveroverloaded");
+            saveFieldValues(name, lastName, email);
+            startOver("exception.errormessage.serveroverloaded");
             return;
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("userName", name);
-        session.setAttribute("userEmail", email);
-        response.sendRedirect(request.getParameter("from"));
+        session.setAttribute("user", dbUser);
+        response.sendRedirect(request.getParameter("from")); 
+        //TODO: redirect to the profile link response.sendRedirect(profileLink);
     }
     
     /**
-     * Check all fields. If some field is uncorrect, return corresponding error message, 
-     * in case when all fields are correct, return null
+     * Check all fields. If some field is uncorrect, return corresponding error 
+     * message, in case when all fields are correct, return null
      * 
      * @param name user name
      * @param lastName user last name
@@ -124,7 +125,8 @@ public class CreateAccount extends Action {
      */
     private boolean checkEmail(String email) {
         Pattern regexEmail = 
-                Pattern.compile("^[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]*@([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ua))");
+                Pattern.compile("^[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]*@"
+                        + "([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ua))");
         Matcher emailMatcher = regexEmail.matcher(email);
         return emailMatcher.find();
     }
@@ -167,7 +169,7 @@ public class CreateAccount extends Action {
      * @param email user email
      * @param request http servlet request
      */
-    private void saveFieldValues(String name, String lastName, String email, HttpServletRequest request) {
+    private void saveFieldValues(String name, String lastName, String email) {
         request.setAttribute("previousName", name);
         request.setAttribute("previousLastName", lastName);
         request.setAttribute("previousEmail", email);
@@ -179,12 +181,13 @@ public class CreateAccount extends Action {
      * 
      * @param request HttpServletRequest
      * @param response HttpServletResponse
-     * @param errorMessage text value of text property file which corresponds to the error message
+     * @param errorMessage text value of text property file which corresponds 
+     * to the error message
      * @throws ServletException
      * @throws IOException 
      */
-    private void startOver(HttpServletRequest request, HttpServletResponse response, 
-            String errorMessage) throws ServletException, IOException {
+    private void startOver(String errorMessage) throws ServletException, 
+            IOException {
         request.setAttribute("errorMessage", errorMessage);
         new SignUp().execute(request, response);
     }

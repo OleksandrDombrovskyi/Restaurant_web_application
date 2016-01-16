@@ -8,11 +8,8 @@ package controller.action;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.dao.ServerOverloadedException;
-import model.dao.UserBuilder;
+import model.dao.UserCreator;
 import model.entity.User;
 
 /**
@@ -22,32 +19,33 @@ import model.entity.User;
 public class Login extends Action {
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doExecute() 
+            throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password"); 
-        UserBuilder builder = new UserBuilder();
+        UserCreator builder = new UserCreator();
         User user = null;
         try {
             user = (User) builder.getUserByEmail(email);
             if (user == null) {
-                startOver(request, response, "login.errormessage.nosuchuser");
+                startOver("login.errormessage.nosuchuser");
                 return;
             }
             if (!user.getPassword().equals(password)) {
-                startOver(request, response, "login.errormessage.invalidpassword");
+                startOver("login.errormessage.invalidpassword");
                 return;
             }
         } catch (ServerOverloadedException e) {
-            startOver(request, response, "exception.errormessage.serveroverloaded");
+            startOver("exception.errormessage.serveroverloaded");
             return;
         } catch (SQLException e) {
-            startOver(request, response, "exception.errormessage.sqlexception");
+            startOver("exception.errormessage.sqlexception");
             return;
         }
-        HttpSession session = request.getSession();
-        session.setAttribute("userName", user.getFirstName());
-        session.setAttribute("email", email);
-        response.sendRedirect(request.getParameter("from"));
+//        session.setAttribute("userName", user.getFirstName());
+//        session.setAttribute("email", email);
+        session.setAttribute("user", user);
+        makeRedirect();
     }
     
     /**
@@ -60,10 +58,24 @@ public class Login extends Action {
      * @throws ServletException
      * @throws IOException 
      */
-    private void startOver(HttpServletRequest request, HttpServletResponse response, 
-            String errorMessage) throws ServletException, IOException {
+    private void startOver(String errorMessage) throws ServletException, 
+            IOException {
         request.setAttribute("errorMessage", errorMessage);
         new LoginRequest().execute(request, response);
+    }
+    
+    
+    private void makeRedirect() throws ServletException, IOException {
+        String from = (String) session.getAttribute("from");
+        String lastAction = (String) session.getAttribute("lastAction");
+        String uri;
+        if (from != null && lastAction != null) {
+            uri = from + "?action=" + lastAction;
+        } else {
+            uri = from;
+        }
+        response.sendRedirect(uri);
+        //response.sendRedirect(request.getParameter("from"));
     }
     
 }
