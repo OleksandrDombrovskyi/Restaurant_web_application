@@ -38,10 +38,10 @@ public abstract class EntityCreator {
      * @param entityId sql value of concrete entity id name 
      */
     public EntityCreator(String entityTable, String entityId) {
-        sqlForAllEntities =  "SELECT * FROM " + entityTable;
-        sqlForSearchingBiId = "SELECT * FROM " + entityTable + " WHERE " 
+        sqlForAllEntities =  "SELECT * FROM restaurantdatabase." + entityTable;
+        sqlForSearchingBiId = "SELECT * FROM restaurantdatabase." + entityTable + " WHERE " 
                 + entityId + " = ?";
-        sqlForDeletingById = "DELETE FROM " + entityTable + " WHERE " 
+        sqlForDeletingById = "DELETE FROM restaurantdatabase." + entityTable + " WHERE " 
                 + entityId + " = ?";
     }
     
@@ -132,7 +132,9 @@ public abstract class EntityCreator {
      * @param rs result set of sql query
      * @return DBEntity object
      * @throws SQLException
+     * @throws model.dao.ServerOverloadedException
      */
-    protected abstract DBEntity getEntity(ResultSet rs) throws SQLException;
+    protected abstract DBEntity getEntity(ResultSet rs) throws SQLException, 
+            ServerOverloadedException;
     
 }

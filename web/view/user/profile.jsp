@@ -18,6 +18,9 @@
         <title><fmt:message key="profile.text.title" /></title>
     </head>
     <body>
+        <c:if test="${not empty errorMessage}" >
+            <fmt:message key="${errorMessage}" />
+        </c:if>
         <h3>
             <a href="${pageContext.request.contextPath}/servlet?action=profile" >
                 <fmt:message key="profile.link.mypage" />

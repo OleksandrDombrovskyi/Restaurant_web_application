@@ -8,13 +8,14 @@ package controller.action;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import model.dao.MealCreator;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Meal;
-import model.entity.Order;
 import model.entity.Order.OrderStatus;
 import model.entity.OrderItem;
 import model.entity.User;
@@ -27,17 +28,21 @@ public class MakeOrder extends Action {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
+//        try (PrintWriter out = response.getWriter()) {
+//            out.println("I am here"); // input this expression to the jsp file
+//        }
+        Timestamp date = new Timestamp(new Date().getTime());
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToLogin();
+            new Redirection().goToLogin(request, response);
             return;
         }
+        model.entity.Order newOrder = new model.entity.Order(user.getId(), OrderStatus.NOT_CONFIRMED, 
+                BigDecimal.valueOf(0), date);
         List<Meal> allMeals = getAllMeals();
         if (allMeals == null) {
             return;
         }
-        Order newOrder = new Order(user.getId(), OrderStatus.NOT_CONFIRMED, 
-                BigDecimal.valueOf(0));
         for (Meal meal : allMeals) {
             String mealIdName = String.valueOf(meal.getId());
             int mealAmount = Integer.parseInt(request.getParameter(mealIdName));
@@ -49,8 +54,9 @@ public class MakeOrder extends Action {
             }
         }
         OrderCreator orderCreator = new OrderCreator();
+        int orderId = 0;
         try {
-            orderCreator.insertOrder(newOrder);
+            orderId = orderCreator.insertOrder(newOrder);
         } catch (SQLException ex) {
             startOver("exception.errormessage.sqlexception");
             return;
@@ -60,7 +66,12 @@ public class MakeOrder extends Action {
         } 
         
         // order outout to the screen
-        createPage(newOrder);
+//        createPage(newOrder);
+        if (orderId == 0) {
+            startOver("order.errormessage.nosuchorder");
+            return;
+        }
+        makeRedirect(orderId);
         
     }
     
@@ -76,15 +87,21 @@ public class MakeOrder extends Action {
         return null;
     }
     
-    private void createPage(Order order) throws ServletException, IOException {
-        request.setAttribute("title", "order.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        request.setAttribute("order", order);
-        request.setAttribute("items", order.getOrderItems());
-        request.getRequestDispatcher("/view/user/order.jsp").
-                include(request, response);
-    }
+    private void makeRedirect(int orderId) throws ServletException, IOException {
+        //request.setAttribute("orderId", orderId);
+        //new controller.action.Order().execute(request, response);
+        response.sendRedirect(request.getContextPath() + "/servlet?action=getOrder&orderId=" + orderId);
+    } 
+    
+//    private void createPage(Order order) throws ServletException, IOException {
+//        request.setAttribute("title", "order.text.title");
+//        new LanguageBlock().execute(request, response);
+//        new SetAuthorizationBlock().execute(request, response);
+//        request.setAttribute("order", order);
+//        request.setAttribute("items", order.getOrderItems());
+//        request.getRequestDispatcher("/view/user/order.jsp").
+//                include(request, response);
+//    }
     
     /**
      * Back to filling the form couse of uncorrect field filling and sending 
@@ -103,11 +120,6 @@ public class MakeOrder extends Action {
         new MainMenu().execute(request, response);
 //        response.sendRedirect(request.getContextPath() 
 //                + "/servlet?action=mainMenu");
-    }
-    
-    private void goToLogin() throws IOException {
-        request.setAttribute("errorMessage", "login.errormessage.loginplease");
-        response.sendRedirect(request.getContextPath() + "?action=loginRequest");
     }
     
 }

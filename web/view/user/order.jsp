@@ -18,13 +18,17 @@
     </head>
     <body>
         <h3><fmt:message key="order.text.ordernumber" /> ${order.id}</h3>
+        <h6>
+            <fmt:formatDate type="time" value="${order.date}" />
+            <fmt:formatDate type="date" value="${order.date}" />
+        </h6>
         <table>
             <tr>
-                <td><fmt:message key="order.table.mealname" /></td>
-                <td><fmt:message key="order.table.mealdescription" /></td>
-                <td><fmt:message key="order.table.mealprice" /></td>
-                <td><fmt:message key="order.table.mealnumber" /></td>
-                <td><fmt:message key="order.table.itemprice" /></td>
+                <td><h3><fmt:message key="order.table.mealname" /></h3></td>
+                <td><h3><fmt:message key="order.table.mealdescription" /></h3></td>
+                <td><h3><fmt:message key="order.table.mealprice" /></h3></td>
+                <td><h3><fmt:message key="order.table.mealnumber" /></h3></td>
+                <td><h3><fmt:message key="order.table.itemprice" /></h3></td>
             </tr>
             <c:forEach items="${items}" var="item" >
                 <tr>

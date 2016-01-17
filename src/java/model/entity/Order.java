@@ -6,6 +6,7 @@
 package model.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,17 +27,22 @@ public class Order extends DBEntity {
     
     /** order items */
     private List<OrderItem> orderItems;
+    
+    /** time when order was created */
+    private final Timestamp date;
 
     /**
      * Constructor
      * @param status order status
      * @param userId user id
      * @param totalPrice total price
+     * @param date time when order was created
      */
-    public Order(int userId, OrderStatus status, BigDecimal totalPrice) {
+    public Order(int userId, OrderStatus status, BigDecimal totalPrice, Timestamp date) {
         this.userId = userId;
         this.status = status;
         this.totalPrice = totalPrice;
+        this.date = date;
     }
     
     /**
@@ -112,6 +118,14 @@ public class Order extends DBEntity {
             orderItems = new ArrayList<>();
         }
         orderItems.add(orderItem);
+    }
+    
+    /**
+     * Get creation date
+     * @return date
+     */
+    public Timestamp getDate() {
+        return date;
     }
     
     /**
