@@ -63,4 +63,15 @@ public class WrapperConnectionProxy {
         return connection.prepareStatement(sql);
     }
     
+    /**
+     * Prepare statement
+     * @param sql sql query
+     * @param statement
+     * @return prepared statement
+     * @throws SQLException 
+     */
+    public PreparedStatement prepareStatement(String sql, int statement) throws SQLException {
+        return connection.prepareStatement(sql, statement);
+    }
+    
 }

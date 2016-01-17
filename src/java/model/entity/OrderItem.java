@@ -30,11 +30,10 @@ public class OrderItem {
      * @param totalPrice item price
      * @param mealAmount meal number
      */
-    public OrderItem(Meal meal, BigDecimal totalPrice, int mealAmount, Zone zone) {
+    public OrderItem(Meal meal, int mealAmount, BigDecimal totalPrice) {
         this.meal = meal;
         this.totalPrice = totalPrice;
         this.mealAmount = mealAmount;
-        this.zone = zone;
     }
     
     /**

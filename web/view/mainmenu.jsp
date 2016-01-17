@@ -27,27 +27,38 @@
             </c:if>
         </h3>
         <c:if test="${not empty meals}" >
-            <table>
-                <c:forEach items="${meals}" var="meal">
+            <form action="servlet" method="post" >
+                <table>
                     <tr>
-                        <td><c:out value="${meal.name}" /></td>
-                        <td><c:out value="${meal.description}"/></td>
-                        <td><fmt:formatNumber value="${meal.price}" 
-                                          type="currency" currencyCode="USD"/>
-                        </td>
-                        <c:if test="${not empty user}" >
-                            <td>
-                                <form action="servlet" method="POST">
-                                    <input type="submit" value=<fmt:message 
-                                               key="mainmenu.button.add" /> />
-                                    <input type="hidden" name="id" 
-                                           value="${meal.id}" />
-                                </form>
-                            </td>
-                        </c:if>
+                        <td><h3><fmt:message key="order.table.mealname" /></h3></td>
+                        <td><h3><fmt:message key="order.table.mealdescription" /></h3></td>
+                        <td><h3><fmt:message key="order.table.mealprice" /></h3></td>
                     </tr>
-                </c:forEach> 
-            </table>
+                    <c:forEach items="${meals}" var="meal">
+                        <tr>
+                            <td><c:out value="${meal.name}" /></td>
+                            <td><c:out value="${meal.description}"/></td>
+                            <td><fmt:formatNumber value="${meal.price}" 
+                                              type="currency" currencyCode="USD"/>
+                            </td>
+                            <c:if test="${not empty user}" >
+                                <td>
+                                    <select name="${meal.id}" >
+                                        <c:forEach begin="0" end="10" var="number" >
+                                            <option value="${number}" >${number}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </c:if>
+                        </tr>
+                    </c:forEach> 
+                </table>
+                <c:if test="${not empty user}" >
+                    <input type="submit" value=<fmt:message 
+                               key="mainmenu.button.createorder" /> />
+                    <input type="hidden" name="button" value="makeOrder" />
+                </c:if>
+            </form>
         </c:if>
     </body>
 </html>

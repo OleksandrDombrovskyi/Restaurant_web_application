@@ -68,7 +68,8 @@ public class CreateAccount extends Action {
             return;
         }
         session.setAttribute("user", dbUser);
-        response.sendRedirect(request.getParameter("from")); 
+        response.sendRedirect(request.getContextPath() + "/servlet?action=profile");
+        //response.sendRedirect(request.getParameter("from")); 
         //TODO: redirect to the profile link response.sendRedirect(profileLink);
     }
     

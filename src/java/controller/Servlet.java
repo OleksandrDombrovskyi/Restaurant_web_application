@@ -13,6 +13,7 @@ import controller.action.CreateAccount;
 import controller.action.LogOut;
 import controller.action.LoginRequest;
 import controller.action.MainMenu;
+import controller.action.MakeOrder;
 import controller.action.Profile;
 import controller.action.SignUp;
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class Servlet extends HttpServlet {
         actions.put("profile", new Profile());
         buttons.put("login", new Login());
         buttons.put("createAccount", new CreateAccount());
+        buttons.put("makeOrder", new MakeOrder());
     }
     
     @Override
