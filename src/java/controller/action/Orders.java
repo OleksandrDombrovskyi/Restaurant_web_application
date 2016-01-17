@@ -27,10 +27,11 @@ public class Orders extends Action {
             new Redirection().goToLogin(request, response);
             return;
         }
+        int userId = user.getId();
         OrderCreator orderCreator = new OrderCreator();
         List<Order> orders = null;
         try {
-            orders = (List<Order>) orderCreator.getAllEntities();
+            orders = (List<Order>) orderCreator.getOrdersByUserId(userId);
         } catch (SQLException e) {
             startOver("exception.errormessage.sqlexception");
             return;
@@ -38,8 +39,8 @@ public class Orders extends Action {
             startOver("exception.errormessage.serveroverloaded");
             return;
         }
-        if (orders == null) {
-            request.setAttribute("errorMessage", "orders.text.noorders");
+        if (orders == null || orders.size() < 1) {
+            request.setAttribute("message", "orders.text.noorders");
         }
         createPage(orders);
     }

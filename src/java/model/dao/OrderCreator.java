@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.Meal;
 import model.entity.Order;
@@ -54,6 +56,9 @@ public class OrderCreator extends EntityCreator {
     /** sql query to remove items from data base by order id */
     private static final String SQL_FOR_ITEMS_DELETING = 
             "DELETE FROM restaurantdatabase.order_items WHERE order_id = ?";
+    
+    private static final String SQL_FOR_ORDERS_BY_USER_ID = 
+            "SELECT * FROM restaurantdatabase.order WHERE user_id = ?";
     
     /**
      * Constructor 
@@ -114,7 +119,7 @@ public class OrderCreator extends EntityCreator {
      */
     private void insertItems(Order order,
             WrapperConnectionProxy wrapperConnection) throws SQLException, 
-            ServerOverloadedException{
+            ServerOverloadedException {
         try (PreparedStatement ps = wrapperConnection.
                 prepareStatement(SQL_FOR_ITEMS_INSERTING)) {
             for (OrderItem item : order.getOrderItems()) {
@@ -128,6 +133,54 @@ public class OrderCreator extends EntityCreator {
     }
     
     /**
+     * Get users' orders (by user id) WITHOUT items
+     * @param userId
+     * @return order array list
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public List<Order> getOrdersByUserId(int userId) throws SQLException, 
+            ServerOverloadedException {
+        List<Order> orders = new ArrayList<>();
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = wrapperConnection.
+                    prepareStatement(SQL_FOR_ORDERS_BY_USER_ID)) {
+                ps.setInt(1, userId);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    orders.add(getOrderWithoutItems(rs));
+                }
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return orders;
+    }
+    
+    /**
+     * Get order by result set WITHOUT items
+     * @param rs result set
+     * @return order without items
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    private Order getOrderWithoutItems(ResultSet rs) throws SQLException, 
+            ServerOverloadedException {
+        int orderId = rs.getInt("order_id");
+        int userId = rs.getInt("user_id");
+        OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
+        BigDecimal price = rs.getBigDecimal("total_price");
+        Timestamp date = rs.getTimestamp("date");
+        Order newOrder = new Order(userId, status, price, date);
+        newOrder.setId(orderId);
+        return newOrder;
+    }
+    
+    /**
      * Get one order by result set
      * @param rs result set of sql query
      * @return DBEntity object
@@ -137,13 +190,7 @@ public class OrderCreator extends EntityCreator {
     @Override
     protected Order getEntity(ResultSet rs) throws SQLException, 
             ServerOverloadedException {
-        int orderId = rs.getInt("order_id");
-        int userId = rs.getInt("user_id");
-        OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
-        BigDecimal price = rs.getBigDecimal("total_price");
-        Timestamp date = rs.getTimestamp("date");
-        Order newOrder = new Order(userId, status, price, date);
-        newOrder.setId(orderId);
+        Order newOrder = getOrderWithoutItems(rs);
         getItemsByOrderId(newOrder);
         return newOrder;
     }

@@ -24,9 +24,11 @@ public class Redirection {
      * @throws IOException 
      */
     public void goToLogin(HttpServletRequest request, 
-            HttpServletResponse response) throws IOException {
+            HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("errorMessage", "login.errormessage.loginplease");
-        response.sendRedirect(request.getContextPath() + "?action=loginRequest");
+        request.getSession().removeAttribute("user");
+        new LoginRequest().execute(request, response);
+        //response.sendRedirect(request.getContextPath() + "?action=loginRequest");
     }
     
     /**

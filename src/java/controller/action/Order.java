@@ -6,7 +6,6 @@
 package controller.action;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.OrderCreator;
@@ -19,6 +18,12 @@ import model.entity.User;
  */
 public class Order extends Action {
 
+    /**
+     * Show selected order
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
@@ -29,9 +34,6 @@ public class Order extends Action {
         int orderId = Integer.parseInt(request.getParameter("orderId"));
         model.entity.Order order = null;
         OrderCreator orderCreator = new OrderCreator();
-//        try (PrintWriter out = response.getWriter()) {
-//            out.println("orderId: "); // input this expression to the jsp file
-//        }
         try {
             order = (model.entity.Order) orderCreator.getEntityById(orderId);
         } catch (SQLException e) {
@@ -45,7 +47,13 @@ public class Order extends Action {
             startOver("order.errormessage.nosuchorder");
             return;
         }
-        createPage(order);
+        int userId = user.getId();
+        int orderUserId = order.getUserId();
+        if (userId == orderUserId) {
+            createPage(order);
+        } else {
+            new Redirection().goToLogin(request, response);
+        }
     }
     
     /**
