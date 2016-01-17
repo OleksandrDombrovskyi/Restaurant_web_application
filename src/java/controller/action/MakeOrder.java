@@ -28,9 +28,6 @@ public class MakeOrder extends Action {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
-//        try (PrintWriter out = response.getWriter()) {
-//            out.println("I am here"); // input this expression to the jsp file
-//        }
         Timestamp date = new Timestamp(new Date().getTime());
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -64,9 +61,6 @@ public class MakeOrder extends Action {
             startOver("exception.errormessage.serveroverloaded");
             return;
         } 
-        
-        // order outout to the screen
-//        createPage(newOrder);
         if (orderId == 0) {
             startOver("order.errormessage.nosuchorder");
             return;
@@ -93,22 +87,10 @@ public class MakeOrder extends Action {
         response.sendRedirect(request.getContextPath() + "/servlet?action=getOrder&orderId=" + orderId);
     } 
     
-//    private void createPage(Order order) throws ServletException, IOException {
-//        request.setAttribute("title", "order.text.title");
-//        new LanguageBlock().execute(request, response);
-//        new SetAuthorizationBlock().execute(request, response);
-//        request.setAttribute("order", order);
-//        request.setAttribute("items", order.getOrderItems());
-//        request.getRequestDispatcher("/view/user/order.jsp").
-//                include(request, response);
-//    }
-    
     /**
      * Back to filling the form couse of uncorrect field filling and sending 
      * correspond error message
      * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
      * @param errorMessage text value of text property file which corresponds 
      * to the error message
      * @throws ServletException

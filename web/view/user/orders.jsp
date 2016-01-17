@@ -17,9 +17,14 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <h3>
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
         </c:if>
+        <c:if test="${not empty message}" >
+            <fmt:message key="${message}" />
+        </c:if>
+        </h3>
         <form action="servlet" method="get" >
             <c:if test="${empty errorMessage}" >
                 <table>
@@ -45,7 +50,30 @@
                             </td>
                             <td>
                                 <a href="${pageContext.request.contextPath}/servlet?action=getOrder&orderId=${order.id}" >
-                                    ${order.status}</a>
+                                    <h3>
+                                        <c:choose>
+                                            <c:when test="${order.status == 'NOT_CONFIRMED'}">
+                                                <fmt:message key="order.status.notconfirmed" />
+                                            </c:when>
+                                            <c:when test="${order.status == 'CREATED'}">
+                                                <fmt:message key="order.status.created" />
+                                            </c:when>
+                                            <c:when test="${order.status == 'VAITING'}">
+                                                <fmt:message key="order.status.vaiting" />
+                                            </c:when>
+                                            <c:when test="${order.status == 'PREPARING'}">
+                                                <fmt:message key="order.status.preparing" />
+                                            </c:when>
+                                            <c:when test="${order.status == 'READY'}">
+                                                <fmt:message key="order.status.ready" />
+                                            </c:when>
+                                            <c:when test="${order.status == 'PAYED'}">
+                                                <fmt:message key="order.status.payed" />
+                                            </c:when>
+                                            <c:otherwise>undefined</c:otherwise>
+                                        </c:choose>
+                                    </h3>
+                                </a>
                             </td>
                         </tr>
                     </c:forEach>

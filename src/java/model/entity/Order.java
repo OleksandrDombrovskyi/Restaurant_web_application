@@ -132,7 +132,7 @@ public class Order extends DBEntity {
      * Order status
      */
     public enum OrderStatus {
-        NOT_CONFIRMED, CRETATED, VAITING, PREPARING, READY, PAYED
+        NOT_CONFIRMED, CREATED, VAITING, PREPARING, READY, PAYED
     }
     
 }

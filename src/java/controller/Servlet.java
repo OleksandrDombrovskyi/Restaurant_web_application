@@ -15,8 +15,10 @@ import controller.action.LoginRequest;
 import controller.action.MainMenu;
 import controller.action.MakeOrder;
 import controller.action.Order;
+import controller.action.OrderConfirmation;
 import controller.action.Orders;
 import controller.action.Profile;
+import controller.action.RemoveOrder;
 import controller.action.SignUp;
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,6 +57,8 @@ public class Servlet extends HttpServlet {
         buttons.put("login", new Login());
         buttons.put("createAccount", new CreateAccount());
         buttons.put("makeOrder", new MakeOrder());
+        buttons.put("confirm", new OrderConfirmation());
+        buttons.put("remove", new RemoveOrder());
     }
     
     @Override

@@ -17,11 +17,14 @@
         <title><fmt:message key="${title}" /></title>
     </head>
     <body>
+        <c:if test="${not empty message}" >
+            <fmt:message key="${message}" />
+        </c:if>
         <h3><fmt:message key="order.text.ordernumber" /> ${order.id}</h3>
-        <h6>
+        <h5>
             <fmt:formatDate type="time" value="${order.date}" />
             <fmt:formatDate type="date" value="${order.date}" />
-        </h6>
+        </h5>
         <table>
             <tr>
                 <td><h3><fmt:message key="order.table.mealname" /></h3></td>
@@ -50,13 +53,42 @@
                            type="currency" currencyCode="USD" /></h3></td>
             </tr>
         </table>
-        <form action="servlet" method="post" >
-            <input type="submit" value=<fmt:message key="order.button.confirm" /> />
-            <input type="hidden" name="button" value="confirm" />
-        </form>
-            <form action="servlet" method="post" >
-            <input type="submit" value=<fmt:message key="order.button.remove" /> />
-            <input type="hidden" name="button" value="remove" />
-        </form>
+            <h3>  
+        <c:choose>
+            <c:when test="${order.status == 'NOT_CONFIRMED'}">
+                <form action="servlet" method="post" >
+                    <input type="submit" value="<fmt:message key="order.button.confirm" />" 
+                           onclick="return confirm('<fmt:message key="order.dialogbox.doconfirm" />')"
+                    />
+                    <input type="hidden" name="button" value="confirm" />
+                    <input type="hidden" name="orderId" value="${order.id}" />
+                </form>
+                <form action="servlet" method="post" >
+                    <input type="submit" value="<fmt:message key="order.button.remove" />"
+                           onclick="return confirm('<fmt:message key="order.dialogbox.doremove" />')"
+                    />
+                    <input type="hidden" name="button" value="remove" />
+                    <input type="hidden" name="orderId" value="${order.id}" />
+                </form>
+            </c:when>
+            <c:when test="${order.status == 'CREATED'}">
+                <fmt:message key="order.status.created" />
+            </c:when>
+            <c:when test="${order.status == 'VAITING'}">
+                <fmt:message key="order.status.vaiting" />
+            </c:when>
+            <c:when test="${order.status == 'PREPARING'}">
+                <fmt:message key="order.status.preparing" />
+            </c:when>
+            <c:when test="${order.status == 'READY'}">
+                <fmt:message key="order.status.ready" />
+            </c:when>
+            <c:when test="${order.status == 'PAYED'}">
+                <fmt:message key="order.status.payed" />
+            </c:when>
+            <c:otherwise>undefined</c:otherwise>
+        </c:choose>    
+            </h3> 
+            
     </body>
 </html>

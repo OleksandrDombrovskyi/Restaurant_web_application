@@ -30,12 +30,30 @@ public class OrderCreator extends EntityCreator {
     private final static String ORDER_ID = "order_id";
     
     /** sql query for inserting meal into the main menu table in the data base */
-    private static final String SQL_FOR_INSERTING_ORDER = "INSERT INTO restaurantdatabase.order (user_id, total_price, status, date) VALUES (?, ?, ?, ?)";
-    //private static final String SQL_FOR_INSERTING_ORDER = "INSERT INTO `restaurantdatabase`.`order` (`status`, `user_id`, `total_price`) VALUES (?, ?, ?)";
+    private static final String SQL_FOR_INSERTING_ORDER = 
+            "INSERT INTO restaurantdatabase.order "
+            + "(user_id, total_price, status, date) VALUES (?, ?, ?, ?)";
     
-    private static final String SQL_FOR_ITEMS_INSERTING = "INSERT INTO order_items (order_id, meal_id, number, price) VALUES (?, ?, ?, ?)";
+    /** sql query for order items inserting */
+    private static final String SQL_FOR_ITEMS_INSERTING = 
+            "INSERT INTO order_items (order_id, meal_id, number, price) "
+            + "VALUES (?, ?, ?, ?)";
     
-    private static final String SQL_GET_ITEM_BY_ID = "SELECT * FROM restaurantdatabase.order_items WHERE order_id = ?";
+    /** sql query to get order item by id */
+    private static final String SQL_GET_ITEM_BY_ID = 
+            "SELECT * FROM restaurantdatabase.order_items WHERE order_id = ?";
+    
+    /** sql query to set order status */
+    private static final String SQL_SET_ORDER_STATUS = 
+            "UPDATE restaurantdatabase.order SET status = ? WHERE order_id = ?";
+    
+    /** sql query to remove order from data base */ 
+    private static final String SQL_FOR_ORDER_DELETING = 
+            "DELETE FROM restaurantdatabase.order WHERE order_id = ?";
+    
+    /** sql query to remove items from data base by order id */
+    private static final String SQL_FOR_ITEMS_DELETING = 
+            "DELETE FROM restaurantdatabase.order_items WHERE order_id = ?";
     
     /**
      * Constructor 
@@ -53,7 +71,8 @@ public class OrderCreator extends EntityCreator {
      * @throws java.sql.SQLException
      * @throws model.dao.ServerOverloadedException
      */
-    public int insertOrder(Order order) throws SQLException, ServerOverloadedException {
+    public int insertOrder(Order order) throws SQLException, 
+            ServerOverloadedException {
         int orderId = 0;
         WrapperConnectionProxy wrapperConnection = null;
         try {
@@ -86,10 +105,18 @@ public class OrderCreator extends EntityCreator {
         return orderId;
     }
     
-    private void insertItems(Order order, 
+    /**
+     * Insert order item into the data base
+     * @param order order with items
+     * @param wrapperConnection wrapper connection
+     * @throws SQLException 
+     * @throws ServerOverloadedException 
+     */
+    private void insertItems(Order order,
             WrapperConnectionProxy wrapperConnection) throws SQLException, 
             ServerOverloadedException{
-        try (PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_ITEMS_INSERTING)) {
+        try (PreparedStatement ps = wrapperConnection.
+                prepareStatement(SQL_FOR_ITEMS_INSERTING)) {
             for (OrderItem item : order.getOrderItems()) {
                 ps.setInt(1, order.getId());
                 ps.setInt(2, item.getMeal().getId());
@@ -121,6 +148,12 @@ public class OrderCreator extends EntityCreator {
         return newOrder;
     }
 
+    /**
+     * Get all items by order id
+     * @param newOrder order is creating
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     private void getItemsByOrderId(Order newOrder) throws SQLException, 
             ServerOverloadedException {
         WrapperConnectionProxy wrapperConnection = null;
@@ -141,19 +174,89 @@ public class OrderCreator extends EntityCreator {
         }
     }
     
+    /**
+     * Get item from result set
+     * @param rs result set
+     * @return order item object
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     private OrderItem getItem(ResultSet rs) throws SQLException, 
             ServerOverloadedException {
         int mealId = rs.getInt("meal_id");
-        Meal meal = getMealById(mealId);
+        MealCreator mealCreator = new MealCreator();
+        Meal meal = (Meal) mealCreator.getEntityById(mealId);
         int mealAmount = rs.getInt("number");
         BigDecimal totalPrice = rs.getBigDecimal("price");
         return new OrderItem(meal, mealAmount, totalPrice);
     }
-    
-    private Meal getMealById(int mealId) throws SQLException, 
+
+    /**
+     * Set order status
+     * @param orderId id of order which status might be changed
+     * @param orderStatus statuc which might be set
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public void setStatus(int orderId, OrderStatus orderStatus) 
+            throws SQLException, ServerOverloadedException{
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = wrapperConnection.prepareStatement(
+                    SQL_SET_ORDER_STATUS)){
+                ps.setString(1, orderStatus.name());
+                ps.setInt(2, orderId);
+                ps.executeUpdate();
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+    }
+
+    public boolean removeOrder(int orderId) throws SQLException, 
             ServerOverloadedException {
-        MealCreator mealCreator = new MealCreator();
-        return (Meal) mealCreator.getEntityById(mealId);
+        boolean flag = false;
+        if (!deleteItems(orderId)) {
+            return flag;
+        }
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = 
+                    wrapperConnection.prepareStatement(SQL_FOR_ORDER_DELETING)) {
+                ps.setInt(1, orderId);
+                ps.executeUpdate();
+                flag = true;
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return flag;
+    }
+
+    private boolean deleteItems(int orderId) throws SQLException, 
+            ServerOverloadedException {
+        boolean flag = false;
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = 
+                    wrapperConnection.prepareStatement(SQL_FOR_ITEMS_DELETING)) {
+                ps.setInt(1, orderId);
+                ps.executeUpdate();
+                flag = true;
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return flag;
     }
     
 }

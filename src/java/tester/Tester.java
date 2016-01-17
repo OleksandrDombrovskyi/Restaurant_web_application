@@ -6,12 +6,11 @@
 package tester;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.dao.MealCreator;
+import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
-import model.entity.Meal;
+import model.entity.Order;
 
 /**
  *
@@ -56,11 +55,18 @@ public class Tester {
 //            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        System.out.println("order items: " + order.getOrderItems());
-        MealCreator mealCreator = new MealCreator();
-        try {
-            System.out.println("Meals: " + (List<Meal>)mealCreator.getAllEntities());
-        } catch (ServerOverloadedException ex) {
-            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        MealCreator mealCreator = new MealCreator();
+//        try {
+//            System.out.println("Meals: " + (List<Meal>)mealCreator.getAllEntities());
+//        } catch (ServerOverloadedException ex) {
+//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        OrderCreator orderCreator = new OrderCreator();
+//        try {
+//            orderCreator.setStatus(20, Order.OrderStatus.CRETATED);
+//        } catch (ServerOverloadedException ex) {
+//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        System.out.println(Order.OrderStatus.CRETATED.name());
     }
 }

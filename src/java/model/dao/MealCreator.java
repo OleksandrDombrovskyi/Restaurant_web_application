@@ -18,12 +18,6 @@ import model.entity.Meal;
  * @author Sasha
  */
 public class MealCreator extends EntityCreator {
-    
-//    /** sql query for all meals */
-//    private static final String SQL_FOR_ALL_MEALS = "SELECT * FROM main_menu";
-//    
-//    /** sql query to get entity by id */
-//    private static final String SQL_FOR_ENTITY_BY_ID = "SELECT * FROM main_menu WHERE meal_id = ?";
 
     /** sql value of meal table name */
     private final static String MEAL_TABLE = "main_menu";
@@ -32,7 +26,10 @@ public class MealCreator extends EntityCreator {
     private final static String MEAL_ID = "meal_id";
     
     /** sql query for inserting meal into the main menu table in the data base */
-    private static final String SQL_FOR_INSERTING_ENTITY = "INSERT INTO main_menu (meal_type, meal_name, meal_description, meal_price) VALUES (?, ?, ?, ?)";
+    private static final String SQL_FOR_INSERTING_ENTITY = 
+            "INSERT INTO main_menu "
+            + "(meal_type, meal_name, meal_description, meal_price) "
+            + "VALUES (?, ?, ?, ?)";
 
     /**
      * Constructor
@@ -48,12 +45,14 @@ public class MealCreator extends EntityCreator {
      * @throws java.sql.SQLException
      * @throws model.dao.ServerOverloadedException
      */
-    public boolean insertMeal(Meal meal) throws SQLException, ServerOverloadedException {
+    public boolean insertMeal(Meal meal) throws SQLException, 
+            ServerOverloadedException {
         boolean flag = false;
         WrapperConnectionProxy wrapperConnection = null;
         try {
             wrapperConnection = CONNECTION_POOL.getConnection();
-            PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_INSERTING_ENTITY);
+            PreparedStatement ps = wrapperConnection.
+                    prepareStatement(SQL_FOR_INSERTING_ENTITY);
             ps.setString(1, meal.getTypeString());
             ps.setString(2, meal.getName());
             ps.setString(3, meal.getDescription());
