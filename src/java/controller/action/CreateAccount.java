@@ -96,13 +96,14 @@ public class CreateAccount extends Action {
         if (isStringEmpty(email)) {
             return "signup.errormessage.emptyemail";
         }
-        if (!checkEmail(email)) {
+        Validator validator = new Validator();
+        if (!validator.checkEmail(email)) {
             return "signup.errormessage.uncorrectemail";
         }
         if (!confirmPasswords(password, confirmPassword)) {
             return "signup.errormessage.password";
         }
-        if (!checkPassword(password)) {
+        if (!validator.checkPassword(password)) {
             return "signup.errormessage.uncorrectpassword";
         }
         return null;
@@ -118,19 +119,19 @@ public class CreateAccount extends Action {
         return string == null || string.equals("");
     }
     
-    /**
-     * Check whether is email correct by regular expression
-     * 
-     * @param email string email
-     * @return boolean true if email is correct and false otherwise
-     */
-    private boolean checkEmail(String email) {
-        Pattern regexEmail = 
-                Pattern.compile("^[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]*@"
-                        + "([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ua))");
-        Matcher emailMatcher = regexEmail.matcher(email);
-        return emailMatcher.find();
-    }
+//    /**
+//     * Check whether is email correct by regular expression
+//     * 
+//     * @param email string email
+//     * @return boolean true if email is correct and false otherwise
+//     */
+//    private boolean checkEmail(String email) {
+//        Pattern regexEmail = 
+//                Pattern.compile("^[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]*@"
+//                        + "([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ua))");
+//        Matcher emailMatcher = regexEmail.matcher(email);
+//        return emailMatcher.find();
+//    }
     
     /**
      * Check whether password and confirm password are the same and not null
@@ -149,19 +150,19 @@ public class CreateAccount extends Action {
         return true;
     }
     
-    /**
-     * Check if password if quite difficult
-     * 
-     * @param password string password
-     * @return true if password has uppercase and lowercase letters and digits 
-     *         with length not less then 6 symbols or false otherwise
-     */
-    private boolean checkPassword(String password) {
-        Pattern regexPassword = 
-                Pattern.compile("[[A-Z]+[a-z]+[0-9]+]{6,}");
-        Matcher emailMatcher = regexPassword.matcher(password);
-        return emailMatcher.find();
-    }
+//    /**
+//     * Check if password if quite difficult
+//     * 
+//     * @param password string password
+//     * @return true if password has uppercase and lowercase letters and digits 
+//     *         with length not less then 6 symbols or false otherwise
+//     */
+//    private boolean checkPassword(String password) {
+//        Pattern regexPassword = 
+//                Pattern.compile("[[A-Z]+[a-z]+[0-9]+]{6,}");
+//        Matcher emailMatcher = regexPassword.matcher(password);
+//        return emailMatcher.find();
+//    }
     
     /**
      * Save previous fields values 

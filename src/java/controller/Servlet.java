@@ -9,6 +9,7 @@ import controller.action.Action;
 import controller.action.Login;
 import controller.action.HomePage;
 import controller.action.ChangeLanguage;
+import controller.action.ChangePassword;
 import controller.action.CreateAccount;
 import controller.action.LogOut;
 import controller.action.LoginRequest;
@@ -19,7 +20,10 @@ import controller.action.OrderConfirmation;
 import controller.action.Orders;
 import controller.action.Profile;
 import controller.action.RemoveOrder;
+import controller.action.SaveChanges;
+import controller.action.Settings;
 import controller.action.SignUp;
+import controller.action.UserAccount;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,11 +58,15 @@ public class Servlet extends HttpServlet {
         actions.put("profile", new Profile());
         actions.put("orders", new Orders());
         actions.put("getOrder", new Order());
+        actions.put("account", new UserAccount());
+        actions.put("settings", new Settings());
         buttons.put("login", new Login());
         buttons.put("createAccount", new CreateAccount());
         buttons.put("makeOrder", new MakeOrder());
         buttons.put("confirm", new OrderConfirmation());
         buttons.put("remove", new RemoveOrder());
+        buttons.put("saveChanges", new SaveChanges());
+        buttons.put("changePassword", new ChangePassword());
     }
     
     @Override
