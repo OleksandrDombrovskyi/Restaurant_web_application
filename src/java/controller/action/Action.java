@@ -78,7 +78,8 @@ public abstract class Action {
     }
     
     /**
-     * Back to login and print error message if does not equals null
+     * Back to home page and print error message if error message parameter 
+     * does not equals null
      * 
      * @param errorMessage error message
      * @throws javax.servlet.ServletException
@@ -88,8 +89,6 @@ public abstract class Action {
         if (errorMessage != null) {
             request.setAttribute("errorMessage", errorMessage);
         }
-        //request.setAttribute("errorMessage", "login.errormessage.loginplease");
-        //request.getSession().removeAttribute("user");
         new HomePage().execute(request, response);
     }
     
