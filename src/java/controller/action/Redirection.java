@@ -28,7 +28,6 @@ public class Redirection {
         request.setAttribute("errorMessage", "login.errormessage.loginplease");
         request.getSession().removeAttribute("user");
         new LoginRequest().execute(request, response);
-        //response.sendRedirect(request.getContextPath() + "?action=loginRequest");
     }
     
     /**

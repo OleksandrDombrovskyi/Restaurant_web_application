@@ -67,8 +67,6 @@ public class CreateAccount extends Action {
         }
         session.setAttribute("user", dbUser);
         response.sendRedirect(request.getContextPath() + "/servlet?action=profile");
-        //response.sendRedirect(request.getParameter("from")); 
-        //TODO: redirect to the profile link response.sendRedirect(profileLink);
     }
     
     /**
@@ -117,20 +115,6 @@ public class CreateAccount extends Action {
         return string == null || string.equals("");
     }
     
-//    /**
-//     * Check whether is email correct by regular expression
-//     * 
-//     * @param email string email
-//     * @return boolean true if email is correct and false otherwise
-//     */
-//    private boolean checkEmail(String email) {
-//        Pattern regexEmail = 
-//                Pattern.compile("^[a-zA-Z]{1}[a-zA-Z\\d\\u002E\\u005F]*@"
-//                        + "([a-zA-Z]+\\u002E){1,2}((net)|(com)|(org)|(ua))");
-//        Matcher emailMatcher = regexEmail.matcher(email);
-//        return emailMatcher.find();
-//    }
-    
     /**
      * Check whether password and confirm password are the same and not null
      * 
@@ -147,20 +131,6 @@ public class CreateAccount extends Action {
         }
         return true;
     }
-    
-//    /**
-//     * Check if password if quite difficult
-//     * 
-//     * @param password string password
-//     * @return true if password has uppercase and lowercase letters and digits 
-//     *         with length not less then 6 symbols or false otherwise
-//     */
-//    private boolean checkPassword(String password) {
-//        Pattern regexPassword = 
-//                Pattern.compile("[[A-Z]+[a-z]+[0-9]+]{6,}");
-//        Matcher emailMatcher = regexPassword.matcher(password);
-//        return emailMatcher.find();
-//    }
     
     /**
      * Save previous fields values 
