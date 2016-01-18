@@ -28,7 +28,7 @@ public class ChangePassword extends Action {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            new Redirection().goToLogin(request, response);
+            goToHome("login.errormessage.loginplease");
             return;
         }
         String oldPassword = request.getParameter("oldPassword");

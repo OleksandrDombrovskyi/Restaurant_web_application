@@ -77,4 +77,20 @@ public abstract class Action {
         return null;
     }
     
+    /**
+     * Back to login and print error message if does not equals null
+     * 
+     * @param errorMessage error message
+     * @throws javax.servlet.ServletException
+     * @throws IOException 
+     */
+    protected void goToHome(String errorMessage) throws ServletException, IOException {
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
+        }
+        //request.setAttribute("errorMessage", "login.errormessage.loginplease");
+        //request.getSession().removeAttribute("user");
+        new HomePage().execute(request, response);
+    }
+    
 }

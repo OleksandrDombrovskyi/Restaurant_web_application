@@ -23,10 +23,15 @@ public class OrderConfirmation extends Action {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            new Redirection().goToLogin(request, response);
+            goToHome("login.errormessage.loginplease");
             return;
         }
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        String orderIdString = request.getParameter("orderId");
+        if (orderIdString == null) {
+            goToHome(null);
+            return;
+        }
+        int orderId = Integer.parseInt(orderIdString);
         OrderCreator orderCreator = new OrderCreator();
         try {
             orderCreator.setStatus(orderId, OrderStatus.CREATED);

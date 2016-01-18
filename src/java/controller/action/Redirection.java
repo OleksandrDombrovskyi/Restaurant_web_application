@@ -21,13 +21,14 @@ public class Redirection {
      * 
      * @param request http servlet request
      * @param response http servlet response
+     * @throws javax.servlet.ServletException
      * @throws IOException 
      */
-    public void goToLogin(HttpServletRequest request, 
+    public void goToHome(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("errorMessage", "login.errormessage.loginplease");
         request.getSession().removeAttribute("user");
-        new LoginRequest().execute(request, response);
+        new HomePage().execute(request, response);
     }
     
     /**

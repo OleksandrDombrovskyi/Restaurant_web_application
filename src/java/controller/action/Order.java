@@ -28,10 +28,15 @@ public class Order extends Action {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            new Redirection().goToLogin(request, response);
+            goToHome("login.errormessage.loginplease");
             return;
         }
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        String orderIdString = request.getParameter("orderId");
+        if (orderIdString == null) {
+            goToHome(null);
+            return;
+        }
+        int orderId = Integer.parseInt(orderIdString);
         model.entity.Order order = null;
         OrderCreator orderCreator = new OrderCreator();
         try {
@@ -52,7 +57,7 @@ public class Order extends Action {
         if (userId == orderUserId) {
             createPage(order);
         } else {
-            new Redirection().goToLogin(request, response);
+            goToHome("login.errormessage.loginplease");
         }
     }
     

@@ -31,7 +31,7 @@ public class MakeOrder extends Action {
         Timestamp date = new Timestamp(new Date().getTime());
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            new Redirection().goToLogin(request, response);
+            goToHome("login.errormessage.loginplease");
             return;
         }
         model.entity.Order newOrder = new model.entity.Order(user.getId(), OrderStatus.NOT_CONFIRMED, 

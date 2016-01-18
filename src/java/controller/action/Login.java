@@ -73,15 +73,18 @@ public class Login extends Action {
      * @throws IOException 
      */
     private void makeRedirect() throws ServletException, IOException {
-        String from = (String) session.getAttribute("from");
+        //String from = (String) session.getAttribute("from");
         String lastAction = (String) session.getAttribute("lastAction");
-        String uri;
-        if (from != null && lastAction != null) {
-            uri = from + "?action=" + lastAction;
-        } else {
-            uri = from;
+//        String uri;
+//        if (from != null && lastAction != null) {
+//            uri = from + "?action=" + lastAction;
+//        } else {
+//            uri = from;
+//        }
+        if (lastAction == null) {
+            response.sendRedirect(request.getContextPath());
         }
-        response.sendRedirect(uri);
+        response.sendRedirect(request.getContextPath() + "/servlet?action=" + lastAction);
     }
     
 }
