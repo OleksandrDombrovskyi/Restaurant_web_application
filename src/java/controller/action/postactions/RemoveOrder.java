@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.postactions;
 
+import controller.action.Action;
+import controller.action.getactions.Orders;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -31,19 +33,16 @@ public class RemoveOrder extends Action {
         try {
             isRemoved = orderCreator.removeOrder(orderId);
         } catch (SQLException ex) {
-            new Redirection().showMessage(request, response, 
-                    "exception.errormessage.sqlexception");
+            showMessage("exception.errormessage.sqlexception");
             return;
         } catch (ServerOverloadedException ex) {
-            new Redirection().showMessage(request, response, 
-                    "exception.errormessage.serveroverloaded");
+            showMessage("exception.errormessage.serveroverloaded");
             return;
         }
         if (isRemoved) {
             makeRedirect();
         } else {
-            new Redirection().showMessage(request, response, 
-                    "exception.errormessage.serveroverloaded");
+            showMessage("exception.errormessage.serveroverloaded");
         }
     }
     

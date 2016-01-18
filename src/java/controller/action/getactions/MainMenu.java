@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.getactions;
 
+import controller.action.Action;
+import controller.action.LanguageBlock;
+import controller.action.SetAuthorizationBlock;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import model.dao.MealCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Meal;

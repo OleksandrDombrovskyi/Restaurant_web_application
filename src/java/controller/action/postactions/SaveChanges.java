@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.postactions;
 
+import controller.action.Action;
+import controller.action.Validator;
+import controller.action.getactions.Settings;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;

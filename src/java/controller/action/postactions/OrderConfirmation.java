@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.postactions;
 
+import controller.action.Action;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -36,17 +37,17 @@ public class OrderConfirmation extends Action {
         try {
             orderCreator.setStatus(orderId, OrderStatus.CREATED);
         } catch (SQLException ex) {
-            new Redirection().showMessage(request, response, "exception.errormessage.sqlexception");
+            showMessage("exception.errormessage.sqlexception");
             return;
         } catch (ServerOverloadedException ex) {
-            new Redirection().showMessage(request, response, "exception.errormessage.serveroverloaded");
+            showMessage("exception.errormessage.serveroverloaded");
             return;
         } 
         makeRedirect(orderId);
     }
     
     private void makeRedirect(int orderId) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/servlet?action=getOrder&orderId=" + orderId);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=getOrder&orderId=" + orderId);
     }
     
 //    /**

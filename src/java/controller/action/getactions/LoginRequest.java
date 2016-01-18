@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.getactions;
 
+import controller.action.Action;
+import controller.action.LanguageBlock;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -20,10 +22,6 @@ public class LoginRequest extends Action {
         request.setAttribute("title", "login.text.title");
         new LanguageBlock().execute(request, response);
         request.getRequestDispatcher("/view/login.jsp").include(request, response);
-//        try (PrintWriter out = response.getWriter()) {
-//            out.println("from: " + from);
-//            out.println("request.getSession().getAttribute(\"from\"): " + request.getSession().getAttribute("from")); // input this expression to the jsp file
-//        }
     }
     
     private void saveURIForRedirect() {

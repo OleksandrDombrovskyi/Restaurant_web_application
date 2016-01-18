@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.postactions;
 
+import controller.action.Action;
+import controller.action.getactions.MainMenu;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -82,9 +84,7 @@ public class MakeOrder extends Action {
     }
     
     private void makeRedirect(int orderId) throws ServletException, IOException {
-        //request.setAttribute("orderId", orderId);
-        //new controller.action.Order().execute(request, response);
-        response.sendRedirect(request.getContextPath() + "/servlet?action=getOrder&orderId=" + orderId);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=getOrder&orderId=" + orderId);
     } 
     
     /**
@@ -100,8 +100,6 @@ public class MakeOrder extends Action {
             IOException {
         request.setAttribute("errorMessage", errorMessage);
         new MainMenu().execute(request, response);
-//        response.sendRedirect(request.getContextPath() 
-//                + "/servlet?action=mainMenu");
     }
     
 }

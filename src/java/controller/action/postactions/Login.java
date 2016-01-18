@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.postactions;
 
+import controller.action.Action;
+import controller.action.getactions.LoginRequest;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -77,14 +79,14 @@ public class Login extends Action {
         String lastAction = (String) session.getAttribute("lastAction");
 //        String uri;
 //        if (from != null && lastAction != null) {
-//            uri = from + "?action=" + lastAction;
+//            uri = from + "?getAction=" + lastAction;
 //        } else {
 //            uri = from;
 //        }
         if (lastAction == null) {
             response.sendRedirect(request.getContextPath());
         }
-        response.sendRedirect(request.getContextPath() + "/servlet?action=" + lastAction);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
     }
     
 }

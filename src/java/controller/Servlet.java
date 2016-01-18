@@ -6,24 +6,24 @@
 package controller;
 
 import controller.action.Action;
-import controller.action.Login;
-import controller.action.HomePage;
-import controller.action.ChangeLanguage;
-import controller.action.ChangePassword;
-import controller.action.CreateAccount;
-import controller.action.LogOut;
-import controller.action.LoginRequest;
-import controller.action.MainMenu;
-import controller.action.MakeOrder;
-import controller.action.Order;
-import controller.action.OrderConfirmation;
-import controller.action.Orders;
-import controller.action.Profile;
-import controller.action.RemoveOrder;
-import controller.action.SaveChanges;
-import controller.action.Settings;
-import controller.action.SignUp;
-import controller.action.UserAccount;
+import controller.action.postactions.Login;
+import controller.action.getactions.HomePage;
+import controller.action.getactions.ChangeLanguage;
+import controller.action.postactions.ChangePassword;
+import controller.action.postactions.CreateAccount;
+import controller.action.getactions.LogOut;
+import controller.action.getactions.LoginRequest;
+import controller.action.getactions.MainMenu;
+import controller.action.postactions.MakeOrder;
+import controller.action.getactions.Order;
+import controller.action.postactions.OrderConfirmation;
+import controller.action.getactions.Orders;
+import controller.action.getactions.Profile;
+import controller.action.postactions.RemoveOrder;
+import controller.action.postactions.SaveChanges;
+import controller.action.getactions.Settings;
+import controller.action.getactions.SignUp;
+import controller.action.getactions.UserAccount;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,8 +48,6 @@ public class Servlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         getActions.put("home", new HomePage());
-        getActions.put("login", new Login());
-        getActions.put("language", new ChangeLanguage());
         getActions.put("logout", new LogOut());
         getActions.put("changeLanguage", new ChangeLanguage());
         getActions.put("loginRequest", new LoginRequest());

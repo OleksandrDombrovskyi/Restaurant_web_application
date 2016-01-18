@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.getactions;
 
+import controller.action.Action;
+import controller.action.LanguageBlock;
+import controller.action.SetAuthorizationBlock;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -19,8 +22,6 @@ public class SignUp extends Action {
         request.setAttribute("title", "signup.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
-//        String from = request.getParameter("from");
-//        request.getSession().setAttribute("from", from);
         request.getRequestDispatcher("/view/signup.jsp").
                 include(request, response);
     }

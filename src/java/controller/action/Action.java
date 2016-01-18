@@ -5,6 +5,7 @@
  */
 package controller.action;
 
+import controller.action.getactions.HomePage;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -90,6 +91,23 @@ public abstract class Action {
             request.setAttribute("errorMessage", errorMessage);
         }
         new HomePage().execute(request, response);
+    }
+    
+    /**
+     * Show error message only
+     * 
+     * @param message error message
+     * @throws IOException
+     * @throws ServletException 
+     */
+    public void showMessage(String message) throws IOException, 
+            ServletException {
+        request.setAttribute("title", message);
+        new LanguageBlock().execute(request, response);
+        new SetAuthorizationBlock().execute(request, response);
+        request.setAttribute("errorMessage", message);
+        request.getRequestDispatcher("/view/error.jsp").
+                include(request, response);
     }
     
 }

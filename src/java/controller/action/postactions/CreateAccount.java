@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.postactions;
 
+import controller.action.Action;
+import controller.action.Validator;
+import controller.action.getactions.SignUp;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -66,7 +69,7 @@ public class CreateAccount extends Action {
             return;
         }
         session.setAttribute("user", dbUser);
-        response.sendRedirect(request.getContextPath() + "/servlet?action=profile");
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=profile");
     }
     
     /**

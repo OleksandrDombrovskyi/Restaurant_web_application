@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.getactions;
 
+import controller.action.Action;
+import controller.action.LanguageBlock;
+import controller.action.SetAuthorizationBlock;
 import java.io.IOException;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
-import model.dao.ServerOverloadedException;
-import model.dao.UserCreator;
 import model.entity.User;
 
 /**
@@ -18,21 +18,28 @@ import model.entity.User;
  */
 public class Profile extends Action {
 
+    /**
+     * Output user profile page
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToLogin();
+            goToHome("login.errormessage.loginplease");
             return;
         }
         createPage(user);
     }
     
-    private void goToLogin() throws IOException {
-        request.setAttribute("errorMessage", "login.errormessage.loginplease");
-        response.sendRedirect(request.getContextPath() + "?action=loginRequest");
-    }
-    
+    /**
+     * Create next page
+     * 
+     * @param user user object
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void createPage(User user) throws ServletException, IOException {
         request.setAttribute("title", "profile.text.title");
         new LanguageBlock().execute(request, response);
