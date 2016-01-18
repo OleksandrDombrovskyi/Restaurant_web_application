@@ -13,11 +13,16 @@ import model.dao.UserCreator;
 import model.entity.User;
 
 /**
- *
+ * Set log in
  * @author Sasha
  */
 public class Login extends Action {
 
+    /**
+     * Log in
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() 
             throws ServletException, IOException {
@@ -42,8 +47,6 @@ public class Login extends Action {
             startOver("exception.errormessage.sqlexception");
             return;
         }
-//        session.setAttribute("userName", user.getFirstName());
-//        session.setAttribute("email", email);
         session.setAttribute("user", user);
         makeRedirect();
     }
@@ -64,7 +67,11 @@ public class Login extends Action {
         new LoginRequest().execute(request, response);
     }
     
-    
+    /**
+     * Make redirect to the previous page
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void makeRedirect() throws ServletException, IOException {
         String from = (String) session.getAttribute("from");
         String lastAction = (String) session.getAttribute("lastAction");
@@ -75,7 +82,6 @@ public class Login extends Action {
             uri = from;
         }
         response.sendRedirect(uri);
-        //response.sendRedirect(request.getParameter("from"));
     }
     
 }

@@ -28,11 +28,11 @@
         <form action="servlet" method="post" >
             <h3>
                 <fmt:message key="settings.text.name" />: 
-                <input type="text" name="name" value="${firstName}" />
+                <input type="text" name="firstName" value="${firstName}" />
             </h3>
             <h3>
                 <fmt:message key="settings.text.lastname" />: 
-                <input type="text" name="lastname" value="${lastName}" />
+                <input type="text" name="lastName" value="${lastName}" />
             </h3>
             <h3>
                 <fmt:message key="settings.text.email" />: 

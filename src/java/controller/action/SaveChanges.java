@@ -13,11 +13,16 @@ import model.dao.UserCreator;
 import model.entity.User;
 
 /**
- *
+ * Saving all changes of users' private information (name, last name, email)
  * @author Sasha
  */
 public class SaveChanges extends Action {
 
+    /**
+     * Save all changes of users' private information (name, last name, email)
+     * @throws ServletException
+     * @throws IOException 
+     */    
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
@@ -25,22 +30,30 @@ public class SaveChanges extends Action {
             new Redirection().goToLogin(request, response);
             return;
         }
-        String name = request.getParameter("name");
-        String lastName = request.getParameter("lastname");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
+        int userId = user.getId();
         
-        String errorMessage = checkFields(name, lastName, email);
+        String errorMessage = checkAndUpdate(firstName, lastName, email, userId);
         if (errorMessage != null) {
-            saveFieldValues(name, lastName, email);
+            saveFieldValues(firstName, lastName, email);
             startOver(errorMessage);
             return;
         }
-        UserCreator userCreator = new UserCreator();
-        //TODO: user data updating
+        createPage();
     }
     
-    private String checkFields(String name, String lastName, String email) {
-        if (name == null || name.equals("")) {
+    /**
+     * Check all input fields. If it is successful, update it
+     * @param firstName users' first name
+     * @param lastName users' last name
+     * @param email users' email
+     * @return error message or null if updating was successful
+     */
+    private String checkAndUpdate(String firstName, String lastName, 
+            String email, int userId) throws ServletException, IOException {
+        if (firstName == null || firstName.equals("")) {
             return "settings.errormessage.emptyname";
         }
         if (lastName == null || lastName.equals("")) {
@@ -53,7 +66,43 @@ public class SaveChanges extends Action {
         if (!validator.checkEmail(email)) {
             return "settings.errormessage.uncorrectemail";
         }
-        return null;
+        User newUser = new User(firstName, lastName, email, "unusedPassword");
+        newUser.setId(userId);
+        return updateUser(newUser);
+    }
+
+    /**
+     * Update users' private information (first name, last name and email). If
+     * updating is successful, get the same user from data base by its' email 
+     * with updated information and set it to the current session
+     * 
+     * @param newUser user object with updated private information
+     * @return error message or null if updating was successful
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private String updateUser(User newUser) throws ServletException, IOException {
+        UserCreator userCreator = new UserCreator();
+        try {
+            if (!userCreator.updateUser(newUser)) {
+                return "settings.errormessage.changesnotsaved";
+            }
+            return setUserToSession(newUser.getEmail());
+        } catch (SQLException ex) {
+            return "exception.errormessage.sqlexception";
+        } catch (ServerOverloadedException ex) {
+            return "exception.errormessage.serveroverloaded";
+        }
+    }
+    
+    /**
+     * Create next page with all required information
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void createPage() throws ServletException, IOException {
+        request.setAttribute("message", "settings.message.changeswassaved");
+        new Settings().execute(request, response);
     }
     
     /**
@@ -63,8 +112,8 @@ public class SaveChanges extends Action {
      * @param email user email
      * @param request http servlet request
      */
-    private void saveFieldValues(String name, String lastName, String email) {
-        request.setAttribute("name", name);
+    private void saveFieldValues(String firstName, String lastName, String email) {
+        request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
         request.setAttribute("email", email);
     }
@@ -73,8 +122,6 @@ public class SaveChanges extends Action {
      * Back to filling the form couse of uncorrect field filling and sending 
      * correspond error message
      * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
      * @param errorMessage text value of text property file which corresponds 
      * to the error message
      * @throws ServletException

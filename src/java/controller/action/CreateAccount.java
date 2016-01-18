@@ -7,15 +7,13 @@ package controller.action;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.User;
 
 /**
- *
+ * Account creator
  * @author Sasha
  */
 public class CreateAccount extends Action {
@@ -181,8 +179,6 @@ public class CreateAccount extends Action {
      * Back to filling the form couse of uncorrect field filling and sending 
      * correspond error message
      * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
      * @param errorMessage text value of text property file which corresponds 
      * to the error message
      * @throws ServletException

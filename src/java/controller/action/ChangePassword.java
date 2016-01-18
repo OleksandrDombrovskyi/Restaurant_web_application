@@ -6,16 +6,24 @@
 package controller.action;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.User;
 
 /**
- *
+ * Changes users' password
  * @author Sasha
  */
 public class ChangePassword extends Action {
 
+    /**
+     * Perform password changing
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
@@ -26,19 +34,29 @@ public class ChangePassword extends Action {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
-        String errorMessage = checkPassword(user, oldPassword, newPassword, 
-                confirmPassword);
+        String errorMessage = checkAndChangePassword(user, oldPassword, 
+                newPassword, confirmPassword);
         if (errorMessage != null) {
             startOver(errorMessage);
             return;
         }
-        UserCreator userCreator = new UserCreator();
-        //TODO: user password updating
+        createPage();
     }
     
-    private String checkPassword(User user, String oldPassword, 
-            String newPassword, String confirmPassword) 
-            throws ServletException, IOException {
+    /**
+     * Check input password for correctness and for matching with existing one.
+     * If it is successful, change password and set user with new password in 
+     * current session
+     * 
+     * @param user user needs to change password
+     * @param oldPassword existing password
+     * @param newPassword new password
+     * @param confirmPassword password confirmation
+     * @return error message or null if password passed all checks
+     */
+    private String checkAndChangePassword(User user, String oldPassword, 
+            String newPassword, String confirmPassword) throws 
+            ServletException, IOException {
         if ((oldPassword == null || oldPassword.equals("")) 
                 && (newPassword == null || newPassword.equals("")) 
                 && (confirmPassword == null || confirmPassword.equals(""))) {
@@ -54,7 +72,41 @@ public class ChangePassword extends Action {
         if (!validator.checkPassword(newPassword)) {
             return "settings.errormessage.easypasword";
         }
-        return null;
+        return changePassword(user, newPassword);
+    }
+
+    /**
+     * Change password. If it is successful, set user with new password to 
+     * current session
+     * 
+     * @param user user needs to change password
+     * @param newPassword new password
+     * @return error message or null if changing is successful.
+     */
+    private String changePassword(User user, String newPassword) throws 
+            ServletException, IOException {
+        UserCreator userCreator = new UserCreator();
+        try {
+            if (!userCreator.changePassword(user, newPassword)) {
+                return "settings.errormessage.passwordnotchanged";
+            }
+            return setUserToSession(user.getEmail());
+        } catch (SQLException ex) {
+            return "exception.errormessage.sqlexception";
+        } catch (ServerOverloadedException ex) {
+            return "exception.errormessage.serveroverloaded";
+        }
+    }
+    
+    /**
+     * Create next page with all required information
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void createPage() throws ServletException, IOException {
+        request.setAttribute("message", "settings.message.passwordcganged");
+        new Settings().execute(request, response);
     }
     
     /**
