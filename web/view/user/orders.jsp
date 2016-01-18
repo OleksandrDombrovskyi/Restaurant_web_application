@@ -27,57 +27,59 @@
         </h3>
         <form action="servlet" method="get" >
             <c:if test="${empty errorMessage}" >
-                <table>
-                    <tr>
-                        <td><h3><fmt:message key="orders.table.ordernumber" /></h3></td>
-                        <td><h3><fmt:message key="orders.table.orderdate" /></h3></td>
-                        <td><h3><fmt:message key="orders.table.orderprice" /></h3></td>
-                        <td><h3><fmt:message key="orders.table.orderstatus" /></h3></td>
-                    </tr>
-                    <c:forEach items="${orders}" var="order" >
+                <c:if test="${not empty orders}">
+                    <table>
                         <tr>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
-                                    ${order.id}</a>
-                            </td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
-                                    ${order.date}</a>
-                            </td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
-                                    <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
-                            </td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
-                                    <h3>
-                                        <c:choose>
-                                            <c:when test="${order.status == 'NOT_CONFIRMED'}">
-                                                <fmt:message key="order.status.notconfirmed" />
-                                            </c:when>
-                                            <c:when test="${order.status == 'CREATED'}">
-                                                <fmt:message key="order.status.created" />
-                                            </c:when>
-                                            <c:when test="${order.status == 'VAITING'}">
-                                                <fmt:message key="order.status.vaiting" />
-                                            </c:when>
-                                            <c:when test="${order.status == 'PREPARING'}">
-                                                <fmt:message key="order.status.preparing" />
-                                            </c:when>
-                                            <c:when test="${order.status == 'READY'}">
-                                                <fmt:message key="order.status.ready" />
-                                            </c:when>
-                                            <c:when test="${order.status == 'PAYED'}">
-                                                <fmt:message key="order.status.payed" />
-                                            </c:when>
-                                            <c:otherwise>undefined</c:otherwise>
-                                        </c:choose>
-                                    </h3>
-                                </a>
-                            </td>
+                            <td><h3><fmt:message key="orders.table.ordernumber" /></h3></td>
+                            <td><h3><fmt:message key="orders.table.orderdate" /></h3></td>
+                            <td><h3><fmt:message key="orders.table.orderprice" /></h3></td>
+                            <td><h3><fmt:message key="orders.table.orderstatus" /></h3></td>
                         </tr>
-                    </c:forEach>
-                </table>
+                        <c:forEach items="${orders}" var="order" >
+                            <tr>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                        ${order.id}</a>
+                                </td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                        ${order.date}</a>
+                                </td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                        <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
+                                </td>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                        <h3>
+                                            <c:choose>
+                                                <c:when test="${order.status == 'NOT_CONFIRMED'}">
+                                                    <fmt:message key="order.status.notconfirmed" />
+                                                </c:when>
+                                                <c:when test="${order.status == 'CREATED'}">
+                                                    <fmt:message key="order.status.created" />
+                                                </c:when>
+                                                <c:when test="${order.status == 'VAITING'}">
+                                                    <fmt:message key="order.status.vaiting" />
+                                                </c:when>
+                                                <c:when test="${order.status == 'PREPARING'}">
+                                                    <fmt:message key="order.status.preparing" />
+                                                </c:when>
+                                                <c:when test="${order.status == 'READY'}">
+                                                    <fmt:message key="order.status.ready" />
+                                                </c:when>
+                                                <c:when test="${order.status == 'PAYED'}">
+                                                    <fmt:message key="order.status.payed" />
+                                                </c:when>
+                                                <c:otherwise>undefined</c:otherwise>
+                                            </c:choose>
+                                        </h3>
+                                    </a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:if>
             </c:if>
         </form>
     </body>

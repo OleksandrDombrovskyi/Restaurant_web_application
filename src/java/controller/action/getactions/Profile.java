@@ -5,10 +5,12 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
 import controller.action.LanguageBlock;
 import controller.action.SetAuthorizationBlock;
+import controller.action.ConcreteLink;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import model.entity.User;
 
@@ -16,7 +18,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Profile extends Action {
+public class Profile extends GetAction {
 
     /**
      * Output user profile page
@@ -44,8 +46,24 @@ public class Profile extends Action {
         request.setAttribute("title", "profile.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
+        setNavigationBlock();
         request.getRequestDispatcher("/view/user/profile.jsp").
                 include(request, response);
+    }
+
+    /**
+     * Get all links before profile and profile link inclusive
+     * @return list of link objects
+     */
+    @Override
+    protected List<ConcreteLink> getLink() {
+        List<ConcreteLink> links = new ArrayList<>();
+        links.addAll(new HomePage().getLink());
+        String linkValue = "/servlet?getAction=profile";
+        String linkName = "profile.text.title";
+        ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
+        links.add(concreteLink);
+        return links;
     }
     
 }

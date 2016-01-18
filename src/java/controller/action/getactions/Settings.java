@@ -5,10 +5,12 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
 import controller.action.LanguageBlock;
 import controller.action.SetAuthorizationBlock;
+import controller.action.ConcreteLink;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import model.entity.User;
 
@@ -16,7 +18,7 @@ import model.entity.User;
  * Show profile settings
  * @author Sasha
  */
-public class Settings extends Action {
+public class Settings extends GetAction {
 
     /**
      * Show settings page
@@ -43,6 +45,7 @@ public class Settings extends Action {
         request.setAttribute("title", "settings.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
+        setNavigationBlock();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         String email = user.getEmail();
@@ -51,6 +54,21 @@ public class Settings extends Action {
         request.setAttribute("email", email);
         request.getRequestDispatcher("/view/user/settings.jsp").
                 include(request, response);
+    }
+    
+    /**
+     * Get all links before settings and aettings link inclusive
+     * @return list of links objects
+     */
+    @Override
+    public List<ConcreteLink> getLink() {
+        List<ConcreteLink> links = new ArrayList<>();
+        links.addAll(new Profile().getLink());
+        String linkValue = "/servlet?getAction=settings";
+        String linkName = "settings.text.title";
+        ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
+        links.add(concreteLink);
+        return links;
     }
     
 }

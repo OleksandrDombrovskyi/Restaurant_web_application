@@ -5,11 +5,13 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
 import controller.action.LanguageBlock;
 import controller.action.SetAuthorizationBlock;
+import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
@@ -19,7 +21,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Order extends Action {
+public class Order extends GetAction {
 
     /**
      * Show selected order
@@ -75,6 +77,7 @@ public class Order extends Action {
         request.setAttribute("title", "order.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
+        setNavigationBlock();
         request.setAttribute("order", order);
         request.setAttribute("items", order.getOrderItems());
         request.getRequestDispatcher("/view/user/order.jsp").
@@ -93,6 +96,15 @@ public class Order extends Action {
             IOException {
         request.setAttribute("errorMessage", errorMessage);
         new Orders().execute(request, response);
+    }
+    
+    /**
+     * Get all links before settings and aettings link inclusive
+     * @return list of links objects
+     */
+    @Override
+    public List<ConcreteLink> getLink() {
+        return new Orders().getLink();
     }
     
 }
