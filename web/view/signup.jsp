@@ -48,7 +48,7 @@
             <h3><fmt:message key="signup.text.password" />: <input type="text" name="password" /></h3>
             <h3><fmt:message key="signup.text.confirmpassword" />: <input type="text" name="confirmPassword" /></h3>
             <input type="submit" value=<fmt:message key="signup.button.createaccount" /> />
-            <input type="hidden" name="button" value="createAccount" />
+            <input type="hidden" name="postAction" value="createAccount" />
             <input type="hidden" name="from" value="${param.from}">
         </form>
     </body>

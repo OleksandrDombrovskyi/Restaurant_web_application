@@ -19,8 +19,8 @@
     </head>
     <body>
         <h4>${user.firstName} | 
-            <a href="${pageContext.request.contextPath}/servlet?action=logout"><fmt:message key="user.authorization.link.logout"/></a> 
-            <a href="${pageContext.request.contextPath}/servlet?action=profile"><fmt:message key="user.authorization.link.profile" /></a>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=logout"><fmt:message key="user.authorization.link.logout"/></a> 
+            <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="user.authorization.link.profile" /></a>
         </h4> 
     </body>
 </html>

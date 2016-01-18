@@ -60,14 +60,14 @@
                     <input type="submit" value="<fmt:message key="order.button.confirm" />" 
                            onclick="return confirm('<fmt:message key="order.dialogbox.doconfirm" />')"
                     />
-                    <input type="hidden" name="button" value="confirm" />
+                    <input type="hidden" name="postAction" value="confirm" />
                     <input type="hidden" name="orderId" value="${order.id}" />
                 </form>
                 <form action="servlet" method="post" >
                     <input type="submit" value="<fmt:message key="order.button.remove" />"
                            onclick="return confirm('<fmt:message key="order.dialogbox.doremove" />')"
                     />
-                    <input type="hidden" name="button" value="remove" />
+                    <input type="hidden" name="postAction" value="remove" />
                     <input type="hidden" name="orderId" value="${order.id}" />
                 </form>
             </c:when>

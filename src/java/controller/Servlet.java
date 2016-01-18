@@ -41,32 +41,32 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/servlet")
 public class Servlet extends HttpServlet {
     
-    private final Map<String, Action> actions = new HashMap<>();
+    private final Map<String, Action> getActions = new HashMap<>();
     
-    private final Map<String, Action> buttons = new HashMap<>();
+    private final Map<String, Action> postActions = new HashMap<>();
     
     @Override
     public void init(ServletConfig config) throws ServletException {
-        actions.put("home", new HomePage());
-        actions.put("login", new Login());
-        actions.put("language", new ChangeLanguage());
-        actions.put("logout", new LogOut());
-        actions.put("changeLanguage", new ChangeLanguage());
-        actions.put("loginRequest", new LoginRequest());
-        actions.put("signUp", new SignUp());
-        actions.put("mainMenu", new MainMenu());
-        actions.put("profile", new Profile());
-        actions.put("orders", new Orders());
-        actions.put("getOrder", new Order());
-        actions.put("account", new UserAccount());
-        actions.put("settings", new Settings());
-        buttons.put("login", new Login());
-        buttons.put("createAccount", new CreateAccount());
-        buttons.put("makeOrder", new MakeOrder());
-        buttons.put("confirm", new OrderConfirmation());
-        buttons.put("remove", new RemoveOrder());
-        buttons.put("saveChanges", new SaveChanges());
-        buttons.put("changePassword", new ChangePassword());
+        getActions.put("home", new HomePage());
+        getActions.put("login", new Login());
+        getActions.put("language", new ChangeLanguage());
+        getActions.put("logout", new LogOut());
+        getActions.put("changeLanguage", new ChangeLanguage());
+        getActions.put("loginRequest", new LoginRequest());
+        getActions.put("signUp", new SignUp());
+        getActions.put("mainMenu", new MainMenu());
+        getActions.put("profile", new Profile());
+        getActions.put("orders", new Orders());
+        getActions.put("getOrder", new Order());
+        getActions.put("account", new UserAccount());
+        getActions.put("settings", new Settings());
+        postActions.put("login", new Login());
+        postActions.put("createAccount", new CreateAccount());
+        postActions.put("makeOrder", new MakeOrder());
+        postActions.put("confirm", new OrderConfirmation());
+        postActions.put("remove", new RemoveOrder());
+        postActions.put("saveChanges", new SaveChanges());
+        postActions.put("changePassword", new ChangePassword());
     }
     
     @Override
@@ -74,12 +74,12 @@ public class Servlet extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-        String actionKey = request.getParameter("action");
+        String actionKey = request.getParameter("getAction");
         if (actionKey == null) {
             actionKey = "home";
         }
         saveActionForRedirect(actionKey, request);
-        Action action = actions.get(actionKey);
+        Action action = getActions.get(actionKey);
         action.execute(request, response);
     }
     
@@ -88,9 +88,9 @@ public class Servlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
-        String buttonKey = request.getParameter("button");
-        Action button = buttons.get(buttonKey);
-        button.execute(request, response);
+        String actionKey = request.getParameter("postAction");
+        Action action = postActions.get(actionKey);
+        action.execute(request, response);
     }
     
     private void saveActionForRedirect(String actionKey, HttpServletRequest request) {

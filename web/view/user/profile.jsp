@@ -22,22 +22,22 @@
             <fmt:message key="${errorMessage}" />
         </c:if>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?action=profile" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=profile" >
                 <fmt:message key="profile.link.mypage" />
             </a>
         </h3>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?action=orders" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=orders" >
                 <fmt:message key="profile.link.orders" />
             </a>
         </h3>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?action=account" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=account" >
                 <fmt:message key="profile.link.account" />
             </a>
         </h3>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?action=settings" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=settings" >
                 <fmt:message key="profile.link.settings" />
             </a>
         </h3>

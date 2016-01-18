@@ -24,7 +24,7 @@
             <fmt:message key="login.text.email" />: <input type="text" name="email"><br>
             <fmt:message key="login.text.password" />: <input type="text" name="password"><br>
             <input type="submit" value=<fmt:message key="login.button.login" />>
-            <input type="hidden" name="button" value="login" />
+            <input type="hidden" name="postAction" value="login" />
             <input type="hidden" name="from" value="${param.from}">
         </form>
         <form action="servlet" method="get">

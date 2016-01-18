@@ -39,7 +39,7 @@
                 <input type="text" name="email" value="${email}" />
             </h3>
             <input type="submit" value=<fmt:message key="settings.button.savechanges" /> />
-            <input type="hidden" name="button" value="saveChanges" />
+            <input type="hidden" name="postAction" value="saveChanges" />
         </form>
             <form action="servlet" method="post" >
                 <h3>
@@ -55,7 +55,7 @@
                     <input type="text" name="confirmPassword" />
                 </h3>
                 <input type="submit" value=<fmt:message key="settings.button.changepassword" /> />
-                <input type="hidden" name="button" value="changePassword" />
+                <input type="hidden" name="postAction" value="changePassword" />
             </form>
     </body>
 </html>

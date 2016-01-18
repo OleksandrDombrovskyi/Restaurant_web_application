@@ -20,7 +20,7 @@
     </head>
     <body>
         <jsp:forward page="/servlet" >
-            <jsp:param name="action" value="home" />
+            <jsp:param name="getAction" value="home" />
         </jsp:forward>
     </body>
 </html>
