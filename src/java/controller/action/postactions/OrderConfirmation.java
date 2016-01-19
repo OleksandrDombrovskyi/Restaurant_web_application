@@ -5,7 +5,6 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -18,7 +17,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class OrderConfirmation extends Action {
+public class OrderConfirmation extends PostAction {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
@@ -43,13 +42,14 @@ public class OrderConfirmation extends Action {
             showMessage("exception.errormessage.serveroverloaded");
             return;
         } 
-        makeRedirect(orderId);
+        sendRedirect(null, null, "getOrder&orderId=" + orderId);
+//        makeRedirect(orderId);
     }
     
-    private void makeRedirect(int orderId) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() 
-                + "/servlet?getAction=getOrder&orderId=" + orderId);
-    }
+//    private void makeRedirect(int orderId) throws ServletException, IOException {
+//        response.sendRedirect(request.getContextPath() 
+//                + "/servlet?getAction=getOrder&orderId=" + orderId);
+//    }
     
 //    /**
 //     * Back to filling the form couse of uncorrect field filling and sending 

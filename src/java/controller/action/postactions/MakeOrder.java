@@ -5,8 +5,6 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
-import controller.action.getactions.MainMenu;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -26,7 +24,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class MakeOrder extends Action {
+public class MakeOrder extends PostAction {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
@@ -57,17 +55,18 @@ public class MakeOrder extends Action {
         try {
             orderId = orderCreator.insertOrder(newOrder);
         } catch (SQLException ex) {
-            startOver("exception.errormessage.sqlexception");
+            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
             return;
         } catch (ServerOverloadedException ex) {
-            startOver("exception.errormessage.serveroverloaded");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
             return;
         } 
         if (orderId == 0) {
-            startOver("order.errormessage.nosuchorder");
+            sendRedirect(null, "order.errormessage.nosuchorder", "mainMenu");
             return;
         }
-        makeRedirect(orderId);
+        sendRedirect(null, null, "getOrder&orderId=" + orderId);
+//        makeRedirect(orderId);
         
     }
     
@@ -76,34 +75,35 @@ public class MakeOrder extends Action {
         try {
             return (List<Meal>) mealCreator.getAllEntities();
         } catch (SQLException ex) {
-            startOver("exception.errormessage.sqlexception");
+            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
         } catch (ServerOverloadedException ex) {
-            startOver("exception.errormessage.serveroverloaded");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
         }
         return null;
     }
     
-    private void makeRedirect(int orderId) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + 
-                "/servlet?getAction=getOrder&orderId=" + orderId);
-    } 
+//    private void makeRedirect(int orderId) throws ServletException, IOException {
+//        response.sendRedirect(request.getContextPath() + 
+//                "/servlet?getAction=getOrder&orderId=" + orderId);
+//    } 
     
-    /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
-     * 
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        session.setAttribute("errorMessage", errorMessage);
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=mainMenu");
-//        new MainMenu().execute(request, response);
-        response.sendRedirect(request.getContextPath() + 
-                "/servlet?getAction=mainMenu");
-    }
+//    /**
+//     * Back to filling the form couse of uncorrect field filling and sending 
+//     * correspond error message
+//     * 
+//     * @param errorMessage text value of text property file which corresponds 
+//     * to the error message
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void startOver(String errorMessage) throws ServletException, 
+//            IOException {
+//        session.setAttribute("errorMessage", errorMessage);
+////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=mainMenu");
+////        new MainMenu().execute(request, response);
+//        response.sendRedirect(request.getContextPath() + 
+//                "/servlet?getAction=mainMenu");
+//        
+//    }
     
 }

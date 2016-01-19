@@ -5,8 +5,6 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
-import controller.action.getactions.Orders;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -18,7 +16,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class RemoveOrder extends Action {
+public class RemoveOrder extends PostAction {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
@@ -40,18 +38,20 @@ public class RemoveOrder extends Action {
             return;
         }
         if (isRemoved) {
-            makeRedirect();
+            sendRedirect("order.message.orderwasremoved", null, "orders");
+//            makeRedirect();
         } else {
             showMessage("exception.errormessage.serveroverloaded");
         }
     }
     
-    private void makeRedirect() throws ServletException, IOException {
-        session.setAttribute("message", "order.message.orderwasremoved");
-//        request.setAttribute("action", "orders");
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=orders");
-//        new Orders().execute(request, response);
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=orders");
-    }
+//    private void makeRedirect() throws ServletException, IOException {
+//        session.setAttribute("message", "order.message.orderwasremoved");
+////        request.setAttribute("action", "orders");
+////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=orders");
+////        new Orders().execute(request, response);
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=orders");
+//        
+//    }
     
 }

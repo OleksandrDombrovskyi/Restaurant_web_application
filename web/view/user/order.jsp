@@ -17,8 +17,13 @@
         <title><fmt:message key="${title}" /></title>
     </head>
     <body>
+        <c:if test="${not empty errorMessage}" >
+            <fmt:message key="${errorMessage}" />
+            <c:remove var="errorMessage" scope="session" />
+        </c:if>
         <c:if test="${not empty message}" >
             <fmt:message key="${message}" />
+            <c:remove var="message" scope="session" />
         </c:if>
         <h3><fmt:message key="order.text.ordernumber" /> ${order.id}</h3>
         <h5>

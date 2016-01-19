@@ -5,8 +5,6 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
-import controller.action.getactions.LoginRequest;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -18,7 +16,7 @@ import model.entity.User;
  * Set log in
  * @author Sasha
  */
-public class Login extends Action {
+public class Login extends PostAction {
 
     /**
      * Log in
@@ -35,55 +33,64 @@ public class Login extends Action {
         try {
             user = (User) builder.getUserByEmail(email);
             if (user == null) {
-                startOver("login.errormessage.nosuchuser");
+                sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
                 return;
             }
             if (!user.getPassword().equals(password)) {
-                startOver("login.errormessage.invalidpassword");
+                sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
                 return;
             }
         } catch (ServerOverloadedException e) {
-            startOver("exception.errormessage.serveroverloaded");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "loginRequest");
             return;
         } catch (SQLException e) {
-            startOver("exception.errormessage.sqlexception");
+            sendRedirect(null, "exception.errormessage.sqlexception", "loginRequest");
             return;
         }
         session.setAttribute("user", user);
-        makeRedirect();
-    }
-    
-    /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
-     * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     * @param errorMessage text value of text property file which corresponds to the error message
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        session.setAttribute("errorMessage", errorMessage);
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=loginRequest");
-//        new LoginRequest().execute(request, response);
-        response.sendRedirect(request.getContextPath() + 
-                "/servlet?getAction=loginRequest");
-    }
-    
-    /**
-     * Make redirect to the previous page
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void makeRedirect() throws ServletException, IOException {
         String lastAction = (String) session.getAttribute("lastAction");
         if (lastAction != null) {
-            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
+            sendRedirect(null, null, lastAction);
+//            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
             return;
         }
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
+        sendRedirect(null, null, "home");
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
+//        makeRedirect();
     }
+    
+//    /**
+//     * Back to filling the form couse of uncorrect field filling and sending 
+//     * correspond error message
+//     * 
+//     * @param request HttpServletRequest
+//     * @param response HttpServletResponse
+//     * @param errorMessage text value of text property file which corresponds to the error message
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void startOver(String errorMessage) throws ServletException, 
+//            IOException {
+//        session.setAttribute("errorMessage", errorMessage);
+////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=loginRequest");
+////        new LoginRequest().execute(request, response);
+//        response.sendRedirect(request.getContextPath() + 
+//                "/servlet?getAction=loginRequest");
+//        
+//    }
+    
+//    /**
+//     * Make redirect to the previous page
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void makeRedirect() throws ServletException, IOException {
+//        String lastAction = (String) session.getAttribute("lastAction");
+//        if (lastAction != null) {
+//            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
+//            return;
+//        }
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
+//    }
     
 }

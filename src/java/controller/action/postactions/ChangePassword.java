@@ -5,9 +5,7 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
 import controller.action.Validator;
-import controller.action.getactions.Settings;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -19,7 +17,7 @@ import model.entity.User;
  * Changes users' password
  * @author Sasha
  */
-public class ChangePassword extends Action {
+public class ChangePassword extends PostAction {
 
     /**
      * Perform password changing
@@ -40,10 +38,11 @@ public class ChangePassword extends Action {
         String errorMessage = checkAndChangePassword(user, oldPassword, 
                 newPassword, confirmPassword);
         if (errorMessage != null) {
-            startOver(errorMessage);
+            sendRedirect(null, errorMessage, "settings");
             return;
         }
-        createPage();
+        sendRedirect("settings.message.passwordcganged", null, "settings");
+//        createPage();
     }
     
     /**
@@ -107,31 +106,33 @@ public class ChangePassword extends Action {
      * @throws ServletException
      * @throws IOException 
      */
-    private void createPage() throws ServletException, IOException {
-        session.setAttribute("message", "settings.message.passwordcganged");
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
-//        new Settings().execute(request, response);
-        response.sendRedirect(request.getContextPath() 
-                + "/servlet?getAction=settings");
-    }
+//    private void createPage() throws ServletException, IOException {
+//        session.setAttribute("message", "settings.message.passwordcganged");
+////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
+////        new Settings().execute(request, response);
+//        response.sendRedirect(request.getContextPath() 
+//                + "/servlet?getAction=settings");
+//        
+//    }
     
-    /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
-     * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        session.setAttribute("errorMessage", errorMessage);
-        //session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
-        //new Settings().execute(request, response);
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
-    }
+//    /**
+//     * Back to filling the form couse of uncorrect field filling and sending 
+//     * correspond error message
+//     * 
+//     * @param request HttpServletRequest
+//     * @param response HttpServletResponse
+//     * @param errorMessage text value of text property file which corresponds 
+//     * to the error message
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void startOver(String errorMessage) throws ServletException, 
+//            IOException {
+//        session.setAttribute("errorMessage", errorMessage);
+//        //session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
+//        //new Settings().execute(request, response);
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
+//        
+//    }
     
 }

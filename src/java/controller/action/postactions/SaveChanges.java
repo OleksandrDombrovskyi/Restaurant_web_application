@@ -5,9 +5,7 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
 import controller.action.Validator;
-import controller.action.getactions.Settings;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -19,7 +17,7 @@ import model.entity.User;
  * Saving all changes of users' private information (name, last name, email)
  * @author Sasha
  */
-public class SaveChanges extends Action {
+public class SaveChanges extends PostAction {
 
     /**
      * Save all changes of users' private information (name, last name, email)
@@ -41,10 +39,11 @@ public class SaveChanges extends Action {
         String errorMessage = checkAndUpdate(firstName, lastName, email, userId);
         if (errorMessage != null) {
             saveFieldValues(firstName, lastName, email);
-            startOver(errorMessage);
+            sendRedirect(null, errorMessage, "settings");
             return;
         }
-        createPage();
+        sendRedirect("settings.message.changeswassaved", null, "settings");
+//        createPage();
     }
     
     /**
@@ -98,17 +97,18 @@ public class SaveChanges extends Action {
         }
     }
     
-    /**
-     * Create next page with all required information
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void createPage() throws ServletException, IOException {
-        session.setAttribute("message", "settings.message.changeswassaved");
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
-//        new Settings().execute(request, response);
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
-    }
+//    /**
+//     * Create next page with all required information
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void createPage() throws ServletException, IOException {
+//        session.setAttribute("message", "settings.message.changeswassaved");
+////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
+////        new Settings().execute(request, response);
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
+//        
+//    }
     
     /**
      * Save previous fields values 
@@ -123,19 +123,19 @@ public class SaveChanges extends Action {
         request.setAttribute("email", email);
     }
     
-    /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
-     * 
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        session.setAttribute("errorMessage", errorMessage);
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
-    }
+//    /**
+//     * Back to filling the form couse of uncorrect field filling and sending 
+//     * correspond error message
+//     * 
+//     * @param errorMessage text value of text property file which corresponds 
+//     * to the error message
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void startOver(String errorMessage) throws ServletException, 
+//            IOException {
+//        session.setAttribute("errorMessage", errorMessage);
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
+//    }
     
 }

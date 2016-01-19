@@ -19,10 +19,12 @@
     <body>
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
+            <c:remove var="errorMessage" scope="session" />
         </c:if>
         <h3><fmt:message key="basket.text.title" /></h3>
         <c:if test="${not empty message}" >
             <fmt:message key="${message}" />
+            <c:remove var="message" scope="session" />
         </c:if>
             <c:if test="${not empty basketOrder.orderItems}">
                 <table>

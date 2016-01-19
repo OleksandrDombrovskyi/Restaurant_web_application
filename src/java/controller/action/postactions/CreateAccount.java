@@ -5,27 +5,19 @@
  */
 package controller.action.postactions;
 
-import controller.action.Action;
 import controller.action.Validator;
-import controller.action.getactions.SignUp;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
-import model.entity.Meal;
-import model.entity.Order;
-import model.entity.OrderItem;
 import model.entity.User;
 
 /**
  * Account creator
  * @author Sasha
  */
-public class CreateAccount extends Action {
+public class CreateAccount extends PostAction {
 
     /**
      * Create new account if all required fildes are filled correctly
@@ -48,13 +40,13 @@ public class CreateAccount extends Action {
                 confirmPassword);
         if (errorMessage != null) {
             saveFieldValues(name, lastName, email);
-            startOver(errorMessage);
+            sendRedirect(null, errorMessage, "signUp");
             return;
         }
         try {
             if (userCreator.getUserByEmail(email) != null) {
                 saveFieldValues(name, lastName, email);
-                startOver("signup.errormessage.existinguser");
+                sendRedirect(null, "signup.errormessage.existinguser", "signUp");
                 return;
             }
             newUser = new User(name, lastName, email, password);
@@ -67,16 +59,18 @@ public class CreateAccount extends Action {
             }
         } catch (SQLException ex) {
             saveFieldValues(name, lastName, email);
-            startOver("exception.errormessage.sqlexception");
+            sendRedirect(null, "exception.errormessage.sqlexception", "signUp");
             return;
         } catch (ServerOverloadedException ex) {
             saveFieldValues(name, lastName, email);
-            startOver("exception.errormessage.serveroverloaded");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "signUp");
             return;
         }
 //        createBasketOrder(dbUser.getId());
         session.setAttribute("user", dbUser);
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=profile");
+        sendRedirect(null, null, "profile");
+//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=profile");
+        
     }
     
     /**
@@ -155,23 +149,24 @@ public class CreateAccount extends Action {
         request.setAttribute("previousEmail", email);
     }
     
-    /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
-     * 
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        session.setAttribute("errorMessage", errorMessage);
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=signUp");
-//        new SignUp().execute(request, response);
-        response.sendRedirect(request.getContextPath() 
-                + "/servlet?getAction=signUp");
-    }
+//    /**
+//     * Back to filling the form couse of uncorrect field filling and sending 
+//     * correspond error message
+//     * 
+//     * @param errorMessage text value of text property file which corresponds 
+//     * to the error message
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void startOver(String errorMessage) throws ServletException, 
+//            IOException {
+//        session.setAttribute("errorMessage", errorMessage);
+////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=signUp");
+////        new SignUp().execute(request, response);
+//        response.sendRedirect(request.getContextPath() 
+//                + "/servlet?getAction=signUp");
+//        
+//    }
 
 //    /**
 //     * Create basket
