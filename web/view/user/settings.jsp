@@ -20,9 +20,11 @@
         <h3>
             <c:if test="${not empty errorMessage}" >
                 <fmt:message key="${errorMessage}" />
+                <c:remove var="errorMessage" scope="session" />
             </c:if>
             <c:if test="${not empty message}" >
                 <fmt:message key="${message}" />
+                <c:remove var="message" scope="session" />
             </c:if>
         </h3>
         <form action="servlet" method="post" >
@@ -41,21 +43,22 @@
             <input type="submit" value=<fmt:message key="settings.button.savechanges" /> />
             <input type="hidden" name="postAction" value="saveChanges" />
         </form>
-            <form action="servlet" method="post" >
-                <h3>
-                    <fmt:message key="settings.text.oldpassword" />: 
-                    <input type="text" name="oldPassword" />
-                </h3>
-                <h3>
-                    <fmt:message key="settings.text.newpassword" />: 
-                    <input type="text" name="newPassword" />
-                </h3>
-                <h3>
-                    <fmt:message key="settings.text.confirmpassword" />: 
-                    <input type="text" name="confirmPassword" />
-                </h3>
-                <input type="submit" value=<fmt:message key="settings.button.changepassword" /> />
-                <input type="hidden" name="postAction" value="changePassword" />
-            </form>
+            <hr/>
+        <form action="servlet" method="post" >
+            <h3>
+                <fmt:message key="settings.text.oldpassword" />: 
+                <input type="text" name="oldPassword" />
+            </h3>
+            <h3>
+                <fmt:message key="settings.text.newpassword" />: 
+                <input type="text" name="newPassword" />
+            </h3>
+            <h3>
+                <fmt:message key="settings.text.confirmpassword" />: 
+                <input type="text" name="confirmPassword" />
+            </h3>
+            <input type="submit" value=<fmt:message key="settings.button.changepassword" /> />
+            <input type="hidden" name="postAction" value="changePassword" />
+        </form>
     </body>
 </html>

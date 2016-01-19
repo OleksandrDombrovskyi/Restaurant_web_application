@@ -6,6 +6,7 @@
 package controller;
 
 import controller.action.Action;
+import controller.action.getactions.Basket;
 import controller.action.postactions.Login;
 import controller.action.getactions.HomePage;
 import controller.action.getactions.ChangeLanguage;
@@ -24,6 +25,9 @@ import controller.action.postactions.SaveChanges;
 import controller.action.getactions.Settings;
 import controller.action.getactions.SignUp;
 import controller.action.getactions.UserAccount;
+import controller.action.postactions.AddToBasket;
+import controller.action.postactions.BasketConfirmation;
+import controller.action.postactions.ClearBasket;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +62,7 @@ public class Servlet extends HttpServlet {
         getActions.put("getOrder", new Order());
         getActions.put("account", new UserAccount());
         getActions.put("settings", new Settings());
+        getActions.put("basket", new Basket());
         postActions.put("login", new Login());
         postActions.put("createAccount", new CreateAccount());
         postActions.put("makeOrder", new MakeOrder());
@@ -65,6 +70,9 @@ public class Servlet extends HttpServlet {
         postActions.put("remove", new RemoveOrder());
         postActions.put("saveChanges", new SaveChanges());
         postActions.put("changePassword", new ChangePassword());
+        postActions.put("addToBasket", new AddToBasket());
+        postActions.put("basketConfirm", new BasketConfirmation());
+        postActions.put("clearBasket", new ClearBasket());
     }
     
     @Override

@@ -17,8 +17,23 @@ public class ChangeLanguage extends Action {
 
     @Override
     public void doExecute() throws ServletException, IOException {
-        request.getSession().setAttribute("language", request.getParameter("language"));
-        response.sendRedirect(request.getHeader("Referer"));
+        session.setAttribute("language", request.getParameter("language"));
+//        String lastAction = (String) session.getAttribute("lastAction");
+//        if (lastAction != null) {
+//            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
+//            return;
+//        }
+        String path = request.getHeader("Referer");
+        if (path != null) {
+            response.sendRedirect(path);
+            return;
+        }
+//        String lastPath = (String) session.getAttribute("lastPath");
+//        if (lastPath != null) {
+//            response.sendRedirect(lastPath);
+//            return;
+//        }
+        response.sendRedirect(request.getContextPath() + "/");
     }
     
 }

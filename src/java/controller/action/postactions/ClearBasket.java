@@ -6,7 +6,7 @@
 package controller.action.postactions;
 
 import controller.action.Action;
-import controller.action.getactions.Orders;
+import controller.action.getactions.Basket;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class RemoveOrder extends Action {
+public class ClearBasket extends Action {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
@@ -27,7 +27,12 @@ public class RemoveOrder extends Action {
             goToHome("login.errormessage.loginplease");
             return;
         }
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        String orderIdString = request.getParameter("orderId");
+        if (orderIdString == null) {
+            startOver("basket.errormessage.nosuchorder");
+            return;
+        }
+        int orderId = Integer.parseInt(orderIdString);
         OrderCreator orderCreator = new OrderCreator();
         boolean isRemoved = false;
         try {
@@ -47,11 +52,25 @@ public class RemoveOrder extends Action {
     }
     
     private void makeRedirect() throws ServletException, IOException {
-        session.setAttribute("message", "order.message.orderwasremoved");
-//        request.setAttribute("action", "orders");
-//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=orders");
-//        new Orders().execute(request, response);
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=orders");
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=basket");
+    }
+    
+    /**
+     * Back to filling the form couse of uncorrect field filling and sending 
+     * correspond error message
+     * 
+     * @param errorMessage text value of text property file which corresponds 
+     * to the error message
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void startOver(String errorMessage) throws ServletException, 
+            IOException {
+        session.setAttribute("errorMessage", errorMessage);
+//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=basket");
+//        new Basket().execute(request, response);
+        response.sendRedirect(request.getContextPath() 
+                + "/servlet?getAction=basket");
     }
     
 }

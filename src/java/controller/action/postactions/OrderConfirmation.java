@@ -47,7 +47,8 @@ public class OrderConfirmation extends Action {
     }
     
     private void makeRedirect(int orderId) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=getOrder&orderId=" + orderId);
+        response.sendRedirect(request.getContextPath() 
+                + "/servlet?getAction=getOrder&orderId=" + orderId);
     }
     
 //    /**

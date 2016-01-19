@@ -26,7 +26,7 @@ public class LoginRequest extends Action {
     
     private void saveURIForRedirect() {
         String from = request.getParameter("from");
-        request.getSession().setAttribute("from", from);
+        session.setAttribute("from", from);
     }
     
 }

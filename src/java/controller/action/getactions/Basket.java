@@ -5,10 +5,9 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
+import controller.action.ConcreteLink;
 import controller.action.LanguageBlock;
 import controller.action.SetAuthorizationBlock;
-import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Orders extends GetAction {
+public class Basket extends GetAction {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
@@ -33,39 +32,38 @@ public class Orders extends GetAction {
             return;
         }
         int userId = user.getId();
+        model.entity.Order basketOrder = null;
         OrderCreator orderCreator = new OrderCreator();
-        List<Order> orders = null;
         try {
-            orders = (List<Order>) orderCreator.getOrdersByUserId(userId);
-        } catch (SQLException e) {
+            basketOrder = orderCreator.getNotConfirmedOrder(userId);
+        } catch (SQLException ex) {
             startOver("exception.errormessage.sqlexception");
             return;
-        } catch (ServerOverloadedException e) {
+        } catch (ServerOverloadedException ex) {
             startOver("exception.errormessage.serveroverloaded");
             return;
         }
-        if (orders == null || orders.size() < 1) {
-            request.setAttribute("message", "orders.text.noorders");
+        if (basketOrder == null) {
+            request.setAttribute("message", "basket.message.emptybasket");
         }
-        createPage(orders);
+        createPage(basketOrder);
     }
     
-    private void createPage(List<Order> orders) throws ServletException, IOException {
-        request.setAttribute("title", "orders.text.title");
+    private void createPage(Order basketOrder) throws ServletException, 
+            IOException{
+        request.setAttribute("title", "basket.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
         setNavigationBlock();
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("/view/user/orders.jsp").
+        request.setAttribute("basketOrder", basketOrder);
+        request.getRequestDispatcher("/view/user/basket.jsp").
                 include(request, response);
-    } 
+    }
     
     /**
      * Back to filling the form couse of uncorrect field filling and sending 
      * correspond error message
      * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
      * @param errorMessage text value of text property file which corresponds 
      * to the error message
      * @throws ServletException
@@ -86,8 +84,8 @@ public class Orders extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=orders";
-        String linkName = "orders.text.title";
+        String linkValue = "/servlet?getAction=basket";
+        String linkName = "basket.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

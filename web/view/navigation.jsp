@@ -17,6 +17,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <hr/>
         <h4>
             <table>
                 <c:forEach items="${links}" var="concreteLink" >

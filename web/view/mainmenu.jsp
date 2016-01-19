@@ -54,8 +54,8 @@
                 </table>
                 <c:if test="${not empty user}" >
                     <input type="submit" value=<fmt:message 
-                               key="mainmenu.button.createorder" /> />
-                    <input type="hidden" name="postAction" value="makeOrder" />
+                               key="mainmenu.button.addtobasket" /> />
+                    <input type="hidden" name="postAction" value="addToBasket" />
                 </c:if>
             </form>
         </c:if>

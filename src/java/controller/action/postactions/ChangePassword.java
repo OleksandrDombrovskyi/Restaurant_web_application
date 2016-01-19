@@ -61,9 +61,9 @@ public class ChangePassword extends Action {
             String newPassword, String confirmPassword) throws 
             ServletException, IOException {
         if ((oldPassword == null || oldPassword.equals("")) 
-                && (newPassword == null || newPassword.equals("")) 
-                && (confirmPassword == null || confirmPassword.equals(""))) {
-            return null;
+                || (newPassword == null || newPassword.equals("")) 
+                || (confirmPassword == null || confirmPassword.equals(""))) {
+            return "settings.errormessage.easypasword";
         }
         if (!oldPassword.equals(user.getPassword())) {
             return "settings.errormessage.wrongpassword";
@@ -108,8 +108,11 @@ public class ChangePassword extends Action {
      * @throws IOException 
      */
     private void createPage() throws ServletException, IOException {
-        request.setAttribute("message", "settings.message.passwordcganged");
-        new Settings().execute(request, response);
+        session.setAttribute("message", "settings.message.passwordcganged");
+//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
+//        new Settings().execute(request, response);
+        response.sendRedirect(request.getContextPath() 
+                + "/servlet?getAction=settings");
     }
     
     /**
@@ -125,8 +128,10 @@ public class ChangePassword extends Action {
      */
     private void startOver(String errorMessage) throws ServletException, 
             IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        new Settings().execute(request, response);
+        session.setAttribute("errorMessage", errorMessage);
+        //session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
+        //new Settings().execute(request, response);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
     }
     
 }

@@ -21,6 +21,6 @@
         <h4>${user.firstName} | 
             <a href="${pageContext.request.contextPath}/servlet?getAction=logout"><fmt:message key="user.authorization.link.logout"/></a> 
             <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="user.authorization.link.profile" /></a>
-        </h4> 
+        </h4>
     </body>
 </html>

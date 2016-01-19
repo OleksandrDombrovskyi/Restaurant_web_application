@@ -5,7 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
 import controller.action.LanguageBlock;
 import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;

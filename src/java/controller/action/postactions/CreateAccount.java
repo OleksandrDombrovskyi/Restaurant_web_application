@@ -9,10 +9,16 @@ import controller.action.Action;
 import controller.action.Validator;
 import controller.action.getactions.SignUp;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.ServletException;
+import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
+import model.entity.Meal;
+import model.entity.Order;
+import model.entity.OrderItem;
 import model.entity.User;
 
 /**
@@ -68,6 +74,7 @@ public class CreateAccount extends Action {
             startOver("exception.errormessage.serveroverloaded");
             return;
         }
+//        createBasketOrder(dbUser.getId());
         session.setAttribute("user", dbUser);
         response.sendRedirect(request.getContextPath() + "/servlet?getAction=profile");
     }
@@ -159,8 +166,30 @@ public class CreateAccount extends Action {
      */
     private void startOver(String errorMessage) throws ServletException, 
             IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        new SignUp().execute(request, response);
+        session.setAttribute("errorMessage", errorMessage);
+//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=signUp");
+//        new SignUp().execute(request, response);
+        response.sendRedirect(request.getContextPath() 
+                + "/servlet?getAction=signUp");
     }
+
+//    /**
+//     * Create basket
+//     * @param userId
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void createBasketOrder(int userId) throws ServletException, IOException {
+//        OrderCreator orderCreator = new OrderCreator();
+//        try {
+//            orderCreator.createBasket(userId);
+//        } catch (SQLException ex) {
+//            startOver("exception.errormessage.sqlexception");
+//            return;
+//        } catch (ServerOverloadedException ex) {
+//            startOver("exception.errormessage.serveroverloaded");
+//            return;
+//        }
+//    }
     
 }

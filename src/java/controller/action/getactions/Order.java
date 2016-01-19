@@ -95,6 +95,7 @@ public class Order extends GetAction {
     private void startOver(String errorMessage) throws ServletException, 
             IOException {
         request.setAttribute("errorMessage", errorMessage);
+        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=orders");
         new Orders().execute(request, response);
     }
     

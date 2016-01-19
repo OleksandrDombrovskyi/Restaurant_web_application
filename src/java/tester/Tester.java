@@ -68,5 +68,15 @@ public class Tester {
 //            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        System.out.println(Order.OrderStatus.CRETATED.name());
+        Order order;
+        try {
+            orderCreator.confirmBasket(3);
+//            System.out.println("order itdem1: " + order.getOrderItems().get(0));
+//            System.out.println("order itdem2: " + order.getOrderItems().get(1));
+//            System.out.println("basket confirmation, no basket: " + orderCreator.confirmBasket(2));
+//            System.out.println("basket confirmation, yes basket: " + orderCreator.confirmBasket(1));
+        } catch (ServerOverloadedException ex) {
+            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -84,7 +84,8 @@ public class MakeOrder extends Action {
     }
     
     private void makeRedirect(int orderId) throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=getOrder&orderId=" + orderId);
+        response.sendRedirect(request.getContextPath() + 
+                "/servlet?getAction=getOrder&orderId=" + orderId);
     } 
     
     /**
@@ -98,8 +99,11 @@ public class MakeOrder extends Action {
      */
     private void startOver(String errorMessage) throws ServletException, 
             IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        new MainMenu().execute(request, response);
+        session.setAttribute("errorMessage", errorMessage);
+//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=mainMenu");
+//        new MainMenu().execute(request, response);
+        response.sendRedirect(request.getContextPath() + 
+                "/servlet?getAction=mainMenu");
     }
     
 }

@@ -27,6 +27,11 @@
             </a>
         </h3>
         <h3>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=basket" >
+                <fmt:message key="profile.link.basket" />
+            </a>
+        </h3>
+        <h3>
             <a href="${pageContext.request.contextPath}/servlet?getAction=orders" >
                 <fmt:message key="profile.link.orders" />
             </a>

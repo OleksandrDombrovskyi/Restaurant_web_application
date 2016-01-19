@@ -104,8 +104,10 @@ public class SaveChanges extends Action {
      * @throws IOException 
      */
     private void createPage() throws ServletException, IOException {
-        request.setAttribute("message", "settings.message.changeswassaved");
-        new Settings().execute(request, response);
+        session.setAttribute("message", "settings.message.changeswassaved");
+//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
+//        new Settings().execute(request, response);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
     }
     
     /**
@@ -132,8 +134,8 @@ public class SaveChanges extends Action {
      */
     private void startOver(String errorMessage) throws ServletException, 
             IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        new Settings().execute(request, response);
+        session.setAttribute("errorMessage", errorMessage);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
     }
     
 }

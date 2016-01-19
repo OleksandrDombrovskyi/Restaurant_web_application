@@ -65,8 +65,11 @@ public class Login extends Action {
      */
     private void startOver(String errorMessage) throws ServletException, 
             IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        new LoginRequest().execute(request, response);
+        session.setAttribute("errorMessage", errorMessage);
+//        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=loginRequest");
+//        new LoginRequest().execute(request, response);
+        response.sendRedirect(request.getContextPath() + 
+                "/servlet?getAction=loginRequest");
     }
     
     /**
@@ -75,18 +78,12 @@ public class Login extends Action {
      * @throws IOException 
      */
     private void makeRedirect() throws ServletException, IOException {
-        //String from = (String) session.getAttribute("from");
         String lastAction = (String) session.getAttribute("lastAction");
-//        String uri;
-//        if (from != null && lastAction != null) {
-//            uri = from + "?getAction=" + lastAction;
-//        } else {
-//            uri = from;
-//        }
-        if (lastAction == null) {
-            response.sendRedirect(request.getContextPath());
+        if (lastAction != null) {
+            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
+            return;
         }
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
+        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
     }
     
 }
