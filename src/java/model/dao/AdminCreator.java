@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.Admin;
 import model.entity.Admin.AdminType;
 import model.entity.DBEntity;
@@ -38,7 +39,11 @@ public class AdminCreator extends EntityCreator {
     
 //    /** sql query for deleting admin from the data base table */
 //    private static final String SQL_FOR_DELETING_BY_ID = "DELETE FROM admin WHERE admin_id = ?";
-
+    
+    /** sql query for getting the admin from data base by his email */
+    private static final String SQL_FOR_ADMIN_BY_EMAIL = 
+            "SELECT * FROM restaurantdatabase.admin WHERE email = ?";
+    
     /**
      * Constructor 
      */
@@ -150,6 +155,32 @@ public class AdminCreator extends EntityCreator {
 //        }
 //        return flag;
 //    }
+    
+    /**
+     * Get admin from DB by email
+     * @param email admins' email
+     * @return admin if such admin exists or null otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public DBEntity getAdminByEmail(String email) throws SQLException, 
+            ServerOverloadedException {
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_ADMIN_BY_EMAIL);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return getEntity(rs);
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return null;
+    }
     
     /**
      * Get one admin by result set

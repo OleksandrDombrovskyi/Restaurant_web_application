@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import model.entity.Admin;
 import model.entity.User;
 
 /**
@@ -28,11 +29,20 @@ public class Profile extends GetAction {
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            goToHome("login.errormessage.loginplease");
+        if (user != null) {
+            createPage();
+            request.getRequestDispatcher("/view/user/profile.jsp").
+                include(request, response);
             return;
         }
-        createPage(user);
+        Admin admin = (Admin) session.getAttribute("admin");
+        if (admin != null) {
+            createPage();
+            request.getRequestDispatcher("/view/admin/profile.jsp").
+                include(request, response);
+            return;
+        }
+        goToHome("login.errormessage.loginplease");
     }
     
     /**
@@ -42,13 +52,11 @@ public class Profile extends GetAction {
      * @throws ServletException
      * @throws IOException 
      */
-    private void createPage(User user) throws ServletException, IOException {
+    private void createPage() throws ServletException, IOException {
         request.setAttribute("title", "profile.text.title");
         new LanguageBlock().execute(request, response);
         new SetAuthorizationBlock().execute(request, response);
         setNavigationBlock();
-        request.getRequestDispatcher("/view/user/profile.jsp").
-                include(request, response);
     }
 
     /**

@@ -7,6 +7,7 @@ package controller.action;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import model.entity.Admin;
 import model.entity.User;
 
 /**
@@ -21,10 +22,16 @@ public class SetAuthorizationBlock extends Action {
         if (user != null) {
             request.getRequestDispatcher("/view/user/authorization.jsp").
                     include(request, response);
-        } else {
-            request.getRequestDispatcher("/view/guest/authorization.jsp").
-                    include(request, response);
+            return;
         }
+        Admin admin = (Admin) request.getSession().getAttribute("admin");
+        if (admin != null) {
+            request.getRequestDispatcher("/view/admin/authorization.jsp").
+                    include(request, response);
+            return;
+        }
+        request.getRequestDispatcher("/view/guest/authorization.jsp").
+                include(request, response);
     }
     
 }

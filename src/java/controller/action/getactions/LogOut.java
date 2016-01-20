@@ -17,7 +17,8 @@ public class LogOut extends Action {
 
     @Override
     public void doExecute() throws ServletException, IOException {
-        request.getSession().removeAttribute("user");
+        session.removeAttribute("user");
+        session.removeAttribute("admin");
         response.sendRedirect(request.getHeader("Referer")); //????
     }
     
