@@ -7,6 +7,8 @@ package controller.action.getactions;
 
 import controller.action.Action;
 import controller.action.ConcreteLink;
+import controller.action.LanguageBlock;
+import controller.action.SetAuthorizationBlock;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -34,5 +36,12 @@ public abstract class GetAction extends Action {
      * @return list of string links
      */
     protected abstract List<ConcreteLink> getLink();
+    
+    protected void setHead(String title) throws ServletException, IOException {
+        request.setAttribute("title", title);
+        new LanguageBlock().execute(request, response);
+        new SetAuthorizationBlock().execute(request, response);
+        setNavigationBlock();
+    }
     
 }

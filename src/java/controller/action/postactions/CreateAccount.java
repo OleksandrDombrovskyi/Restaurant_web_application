@@ -144,9 +144,9 @@ public class CreateAccount extends PostAction {
      * @param request http servlet request
      */
     private void saveFieldValues(String name, String lastName, String email) {
-        request.setAttribute("previousName", name);
-        request.setAttribute("previousLastName", lastName);
-        request.setAttribute("previousEmail", email);
+        session.setAttribute("previousName", name);
+        session.setAttribute("previousLastName", lastName);
+        session.setAttribute("previousEmail", email);
     }
     
 //    /**

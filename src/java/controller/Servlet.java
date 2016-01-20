@@ -10,6 +10,8 @@ import controller.action.getactions.Basket;
 import controller.action.postactions.Login;
 import controller.action.getactions.HomePage;
 import controller.action.getactions.ChangeLanguage;
+import controller.action.getactions.Contacts;
+import controller.action.getactions.Info;
 import controller.action.postactions.ChangePassword;
 import controller.action.postactions.CreateAccount;
 import controller.action.getactions.LogOut;
@@ -17,10 +19,8 @@ import controller.action.getactions.LoginRequest;
 import controller.action.getactions.MainMenu;
 import controller.action.postactions.MakeOrder;
 import controller.action.getactions.Order;
-import controller.action.postactions.OrderConfirmation;
 import controller.action.getactions.Orders;
 import controller.action.getactions.Profile;
-import controller.action.postactions.RemoveOrder;
 import controller.action.postactions.SaveChanges;
 import controller.action.getactions.Settings;
 import controller.action.getactions.SignUp;
@@ -50,7 +50,7 @@ public class Servlet extends HttpServlet {
     private final Map<String, Action> postActions = new HashMap<>();
     
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public synchronized void init(ServletConfig config) throws ServletException {
         getActions.put("home", new HomePage());
         getActions.put("logout", new LogOut());
         getActions.put("changeLanguage", new ChangeLanguage());
@@ -63,6 +63,8 @@ public class Servlet extends HttpServlet {
         getActions.put("account", new UserAccount());
         getActions.put("settings", new Settings());
         getActions.put("basket", new Basket());
+        getActions.put("info", new Info());
+        getActions.put("contacts", new Contacts());
         postActions.put("login", new Login());
         postActions.put("createAccount", new CreateAccount());
         postActions.put("makeOrder", new MakeOrder());
@@ -76,10 +78,14 @@ public class Servlet extends HttpServlet {
     }
     
     @Override
-    protected void doGet(HttpServletRequest request, 
+    protected synchronized void doGet(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
+//        response.setContentType("text/html");
+//        response.setCharacterEncoding("UTF-8");
+//        response.setContentType ("text/html;charset=utf-8");
+        request.setCharacterEncoding("windows-1251");
+        response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
         String actionKey = request.getParameter("getAction");
         if (actionKey == null) {
             actionKey = "home";
@@ -90,10 +96,14 @@ public class Servlet extends HttpServlet {
     }
     
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected synchronized void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+//        response.setContentType("text/html");
+//        response.setCharacterEncoding("UTF-8");
+//        request.setCharacterEncoding("Cp1251");
+        request.setCharacterEncoding("windows-1251");
+        response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
         String actionKey = request.getParameter("postAction");
         Action action = postActions.get(actionKey);
         action.execute(request, response);

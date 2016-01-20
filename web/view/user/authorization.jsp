@@ -2,9 +2,13 @@
     Document   : LogInLogOut
     Created on : 10.01.2016, 23:16:02
     Author     : Sasha
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+<%@ page contentType="text/html; charset=windows-1251" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
@@ -14,7 +18,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
         <title><fmt:message key="user.authorization.text.title" /></title>
     </head>
     <body>

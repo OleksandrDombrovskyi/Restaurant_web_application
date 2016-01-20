@@ -2,9 +2,11 @@
     Document   : signup
     Created on : 15.01.2016, 12:58:14
     Author     : Sasha
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=windows-1251" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <fmt:setLocale value="${language}" /> 
@@ -13,7 +15,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
         <title>JSP Page</title>
     </head>
     <body>
@@ -31,6 +33,7 @@
                 <input type="text" name="name" 
                     <c:if test="${not empty previousName}" >
                         value="${previousName}"
+                        <c:remove var="previousName" scope="session" />
                     </c:if>
                        />
             </h3>
@@ -39,6 +42,7 @@
                 <input type="text" name="lastname" 
                     <c:if test="${not empty previousLastName}" >
                         value="${previousLastName}"
+                        <c:remove var="previousLastName" scope="session" />
                     </c:if>
                        />
             </h3>
@@ -47,6 +51,7 @@
                 <input type="text" name="email" 
                     <c:if test="${not empty previousEmail}" >
                         value="${previousEmail}"
+                        <c:remove var="previousEmail" scope="session" />
                     </c:if>
                        />
             </h3>
