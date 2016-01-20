@@ -66,8 +66,8 @@ public class Servlet extends HttpServlet {
         postActions.put("login", new Login());
         postActions.put("createAccount", new CreateAccount());
         postActions.put("makeOrder", new MakeOrder());
-        postActions.put("confirm", new OrderConfirmation());
-        postActions.put("remove", new RemoveOrder());
+//        postActions.put("confirm", new OrderConfirmation()); // delete together with classes!!!
+//        postActions.put("remove", new RemoveOrder()); // delete together with classes!!!
         postActions.put("saveChanges", new SaveChanges());
         postActions.put("changePassword", new ChangePassword());
         postActions.put("addToBasket", new AddToBasket());

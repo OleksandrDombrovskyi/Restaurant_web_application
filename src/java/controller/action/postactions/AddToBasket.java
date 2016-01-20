@@ -41,6 +41,10 @@ public class AddToBasket extends PostAction {
             sendRedirect(null, "mainmenu.errormessage.nomeals", "mainMenu");
             return;
         }
+        if (newBasketOrder.getOrderItems().size() < 1) {
+            sendRedirect("mainmenu.message.noselectedmeals", null, "mainMenu");
+            return;
+        }
         OrderCreator orderCreator = new OrderCreator();
         Order basketOrder = null;
         try {

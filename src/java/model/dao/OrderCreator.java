@@ -122,11 +122,9 @@ public class OrderCreator extends EntityCreator {
                     if (generatedKeys.next()) {
                         order.setId((int) generatedKeys.getLong(1));
                         insertItems(order, wrapperConnection);
-                    } else {
-                        throw new SQLException();
+                        orderId = order.getId();
                     }
                 }
-                orderId = order.getId();
             }
         } finally {
             if (wrapperConnection != null) {

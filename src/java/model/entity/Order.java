@@ -106,6 +106,9 @@ public class Order extends DBEntity {
      * @return list of order items
      */
     public List<OrderItem> getOrderItems() {
+        if (orderItems == null) {
+            orderItems = new ArrayList<>();
+        }
         return orderItems;
     }
     
