@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.postactions;
+package controller.action.postactions.personal.user;
 
+import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
