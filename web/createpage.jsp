@@ -22,10 +22,10 @@
         
         <%-- include authorization block --%>
         <c:if test="${not empty user}" >
-            <jsp:include page="/view/user/authorization.jsp" flush="true" />
+            <jsp:include page="/view/person/user/authorization.jsp" flush="true" />
         </c:if>
         <c:if test="${not empty admin}" >
-            <jsp:include page="/view/admin/authorization.jsp" flush="true" />
+            <jsp:include page="/view/person/admin/authorization.jsp" flush="true" />
         </c:if>
         <c:if test="${empty user and empty admin}" >
             <jsp:include page="/view/guest/authorization.jsp" flush="true" />

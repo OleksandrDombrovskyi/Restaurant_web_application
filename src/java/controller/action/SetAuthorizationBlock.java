@@ -16,17 +16,22 @@ import model.entity.User;
  */
 public class SetAuthorizationBlock extends Action {
 
+    /**
+     * Show authorization block for user or person
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
-            request.getRequestDispatcher("/view/user/authorization.jsp").
+            request.getRequestDispatcher("/view/person/user/authorization.jsp").
                     include(request, response);
             return;
         }
         Admin admin = (Admin) request.getSession().getAttribute("admin");
         if (admin != null) {
-            request.getRequestDispatcher("/view/admin/authorization.jsp").
+            request.getRequestDispatcher("/view/person/admin/authorization.jsp").
                     include(request, response);
             return;
         }

@@ -3,66 +3,63 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions.personal.user;
+package controller.action.getactions.personal.admin;
 
-import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
+import controller.action.getactions.HomePage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
-import model.entity.Order;
+import model.dao.UserCreator;
+import model.entity.Admin;
 import model.entity.User;
 
 /**
  *
  * @author Sasha
  */
-public class Orders extends GetAction {
+public class GetUsers extends GetAction {
 
     /**
-     * Show all users' orders
+     * Get all users from data base and show them
      * @throws ServletException
      * @throws IOException 
      */
     @Override
     protected void doExecute() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
+        Admin admin = (Admin) session.getAttribute("admin");
+        if (admin == null) {
             sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
-        int userId = user.getId();
-        List<Order> orders = getOrdersByUserId(userId);
-        if (orders == null || orders.size() < 1) {
-            request.setAttribute("message", "orders.text.noorders");
+        List<User> users = getAllUsers();
+        if (users == null || users.size() < 1) {
+            request.setAttribute("message", "administration.user.message.nousers");
         } else {
-            request.setAttribute("orders", orders);
+            request.setAttribute("users", users);
         }
-        goToPage("orders.text.title", "/view/person/orders.jsp");
+        goToPage("users.text.title", "/view/person/admin/users.jsp");
     }
     
     /**
-     * Get all orders by user id
-     * @param userId user id
-     * @return orders if they exist in data base or null otherwise
+     * Get all users from data base
+     * @return list of users
      * @throws ServletException
      * @throws IOException 
      */
-    private List<Order> getOrdersByUserId(int userId) 
-            throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+    private List<User> getAllUsers() throws ServletException, IOException {
+        UserCreator userCreator = new UserCreator();
         try {
-            return (List<Order>) orderCreator.getOrdersByUserId(userId);
+            return (List<User>) userCreator.getAllEntities();
         } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "profile");
+            sendRedirect(null, "exception.errormessage.sqlexception", "administration");
             return null;
-        } catch (ServerOverloadedException e) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
             return null;
         }
     }
@@ -77,9 +74,9 @@ public class Orders extends GetAction {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=orders";
-        String linkName = "orders.text.title";
+        links.addAll(new Administration().getLink());
+        String linkValue = "/servlet?getAction=getUsers";
+        String linkName = "administration.users.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

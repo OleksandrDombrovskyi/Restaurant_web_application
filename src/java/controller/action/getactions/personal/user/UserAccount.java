@@ -35,7 +35,7 @@ public class UserAccount extends GetAction {
         }
         BigDecimal account = user.getAccount();
         request.setAttribute("account", account);
-        goToPage("account.text.title", "/view/user/account.jsp");
+        goToPage("account.text.title", "/view/person/user/account.jsp");
     }
     
     /**

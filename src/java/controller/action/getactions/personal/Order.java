@@ -14,6 +14,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
+import model.entity.Admin;
 import model.entity.User;
 
 /**
@@ -31,9 +32,12 @@ public class Order extends GetAction {
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
+        Admin admin = (Admin) session.getAttribute("admin");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+            if (admin == null) {
+                sendRedirect(null, "login.errormessage.loginplease", "home");
+                return;
+            }
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
@@ -46,10 +50,10 @@ public class Order extends GetAction {
             sendRedirect(null, "order.errormessage.nosuchorder", "orders");
             return;
         }
-        if (checkUserValidation(user, order)) {
+        if (admin != null || checkUserValidation(user, order)) {
             request.setAttribute("order", order);
             request.setAttribute("items", order.getOrderItems());
-            goToPage("order.text.title", "/view/user/order.jsp");
+            goToPage("order.text.title", "/view/person/order.jsp");
         } else {
             sendRedirect(null, "login.errormessage.loginplease", "home");
         }

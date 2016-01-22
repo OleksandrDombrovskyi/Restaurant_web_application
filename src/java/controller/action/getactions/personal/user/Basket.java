@@ -42,7 +42,7 @@ public class Basket extends GetAction {
             request.setAttribute("message", "basket.message.emptybasket");
         }
         request.setAttribute("basketOrder", basketOrder);
-        goToPage("basket.text.title", "/view/user/basket.jsp");
+        goToPage("basket.text.title", "/view/person/user/basket.jsp");
     }
     
     /**

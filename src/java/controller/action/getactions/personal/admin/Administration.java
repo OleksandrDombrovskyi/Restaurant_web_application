@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions.personal;
+package controller.action.getactions.personal.admin;
 
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
@@ -13,34 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import model.entity.Admin;
-import model.entity.User;
 
 /**
  *
  * @author Sasha
  */
-public class Profile extends GetAction {
+public class Administration extends GetAction {
 
-    /**
-     * Output user profile page
-     * @throws ServletException
-     * @throws IOException 
-     */
     @Override
     protected void doExecute() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            goToPage("profile.text.title", "/view/person/user/profile.jsp");
-            return;
-        }
         Admin admin = (Admin) session.getAttribute("admin");
-        if (admin != null) {
-            goToPage("profile.text.title", "/view/person/admin/profile.jsp");
+        if (admin == null) {
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
-        sendRedirect(null, "login.errormessage.loginplease", "home");
+        goToPage("administration.text.title", "/view/person/admin/administration.jsp");
     }
-
+    
     /**
      * Get array list of link chain direct to current page (in fact this method 
      * gets link chain of its' previous page, add its' own link and return 
@@ -52,8 +41,8 @@ public class Profile extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = "/servlet?getAction=profile";
-        String linkName = "profile.text.title";
+        String linkValue = "/servlet?getAction=administration";
+        String linkName = "administration.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;
