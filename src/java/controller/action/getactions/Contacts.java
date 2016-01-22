@@ -35,7 +35,7 @@ public class Contacts extends GetAction {
      * @return array list of links
      */
     @Override
-    protected List<ConcreteLink> getLink() {
+    public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
         String linkValue = "/servlet?getAction=contacts";

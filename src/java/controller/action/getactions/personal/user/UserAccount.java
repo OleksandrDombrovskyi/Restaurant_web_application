@@ -3,42 +3,41 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions;
+package controller.action.getactions.personal.user;
 
+import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
+import controller.action.getactions.GetAction;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.entity.Admin;
 import model.entity.User;
 
 /**
  *
  * @author Sasha
  */
-public class Profile extends GetAction {
+public class UserAccount extends GetAction {
 
     /**
-     * Output user profile page
+     * Show user accaunt balance
      * @throws ServletException
      * @throws IOException 
      */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
-        if (user != null) {
-            goToPage("profile.text.title", "/view/user/profile.jsp");
+        if (user == null) {
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (admin != null) {
-            goToPage("profile.text.title", "/view/admin/profile.jsp");
-            return;
-        }
-        sendRedirect(null, "login.errormessage.loginplease", "home");
+        BigDecimal account = user.getAccount();
+        request.setAttribute("account", account);
+        goToPage("account.text.title", "/view/user/account.jsp");
     }
-
+    
     /**
      * Get array list of link chain direct to current page (in fact this method 
      * gets link chain of its' previous page, add its' own link and return 
@@ -47,11 +46,11 @@ public class Profile extends GetAction {
      * @return array list of links
      */
     @Override
-    protected List<ConcreteLink> getLink() {
+    public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        links.addAll(new HomePage().getLink());
-        String linkValue = "/servlet?getAction=profile";
-        String linkName = "profile.text.title";
+        links.addAll(new Profile().getLink());
+        String linkValue = "/servlet?getAction=account";
+        String linkName = "account.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions;
+package controller.action.getactions.personal;
 
 import controller.action.Action;
 import java.io.IOException;

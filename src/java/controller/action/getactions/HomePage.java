@@ -35,7 +35,7 @@ public class HomePage extends GetAction {
      * @return array list of links
      */
     @Override
-    protected List<ConcreteLink> getLink() {
+    public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList();
         String linkValue = "/";
         String linkName = "home.text.title";

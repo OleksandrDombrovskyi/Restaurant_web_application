@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions;
+package controller.action.getactions.personal.user;
 
+import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
+import controller.action.getactions.GetAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,10 +22,10 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Orders extends GetAction {
+public class Basket extends GetAction {
 
     /**
-     * Show all users' orders
+     * Show page with basket of current user
      * @throws ServletException
      * @throws IOException 
      */
@@ -35,31 +37,38 @@ public class Orders extends GetAction {
             return;
         }
         int userId = user.getId();
-        List<Order> orders = getOrdersByUserId(userId);
-        if (orders == null || orders.size() < 1) {
-            request.setAttribute("message", "orders.text.noorders");
-        } else {
-            request.setAttribute("orders", orders);
+        model.entity.Order basketOrder = getBasketOrder(userId);
+        if (basketOrder == null || basketOrder.getOrderItems().size() < 1) {
+            request.setAttribute("message", "basket.message.emptybasket");
         }
-        goToPage("orders.text.title", "/view/user/orders.jsp");
+        request.setAttribute("basketOrder", basketOrder);
+        goToPage("basket.text.title", "/view/user/basket.jsp");
     }
     
     /**
-     * Get all orders by user id
+     * Get basket ordrer from the data base by user id
+     * 
      * @param userId user id
-     * @return orders if they exist in data base or null otherwise
+     * @return basket order object if it exists in the data base for current user 
      * @throws ServletException
      * @throws IOException 
      */
-    private List<Order> getOrdersByUserId(int userId) 
-            throws ServletException, IOException {
+    private Order getBasketOrder(int userId) throws ServletException, 
+            IOException {
+        model.entity.Order basketOrder = null;
         OrderCreator orderCreator = new OrderCreator();
         try {
-            return (List<Order>) orderCreator.getOrdersByUserId(userId);
-        } catch (SQLException e) {
+            basketOrder =  orderCreator.getNotConfirmedOrder(userId);
+            if (basketOrder == null) {
+                request.setAttribute("message", "basket.message.emptybasket");
+                return null;
+            } else {
+                return basketOrder;
+            }
+        } catch (SQLException ex) {
             sendRedirect(null, "exception.errormessage.sqlexception", "profile");
             return null;
-        } catch (ServerOverloadedException e) {
+        } catch (ServerOverloadedException ex) {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
             return null;
         }
@@ -76,8 +85,8 @@ public class Orders extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=orders";
-        String linkName = "orders.text.title";
+        String linkValue = "/servlet?getAction=basket";
+        String linkName = "basket.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

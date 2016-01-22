@@ -58,6 +58,6 @@ public abstract class GetAction extends Action {
      * 
      * @return array list of links
      */
-    protected abstract List<ConcreteLink> getLink();
+    public abstract List<ConcreteLink> getLink();
     
 }

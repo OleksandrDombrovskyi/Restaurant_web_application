@@ -3,27 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions;
+package controller.action.getactions.personal;
 
 import controller.action.ConcreteLink;
+import controller.action.getactions.GetAction;
+import controller.action.getactions.HomePage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import model.entity.Admin;
-import model.entity.Person;
 import model.entity.User;
 
 /**
- * Show profile settings
+ *
  * @author Sasha
  */
-public class Settings extends GetAction {
+public class Profile extends GetAction {
 
     /**
-     * Check if user or admin are in the current session and show corresponding
-     * setting page, or back to home page if there is no person in the session
-     * 
+     * Output user profile page
      * @throws ServletException
      * @throws IOException 
      */
@@ -31,35 +30,17 @@ public class Settings extends GetAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            setParameters(user);
-            goToPage("settings.text.title", "/view/person/settings.jsp");
+            goToPage("profile.text.title", "/view/user/profile.jsp");
             return;
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
-            setParameters(admin);
-            goToPage("settings.text.title", "/view/person/settings.jsp");
+            goToPage("profile.text.title", "/view/admin/profile.jsp");
             return;
         }
         sendRedirect(null, "login.errormessage.loginplease", "home");
     }
-    
-    /**
-     * Set all users' parameters into request
-     * @param user user object with old information
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void setParameters(Person person) throws ServletException, 
-            IOException {
-        String firstName = person.getFirstName();
-        String lastName = person.getLastName();
-        String email = person.getEmail();
-        request.setAttribute("firstName", firstName);
-        request.setAttribute("lastName", lastName);
-        request.setAttribute("email", email);
-    }
-    
+
     /**
      * Get array list of link chain direct to current page (in fact this method 
      * gets link chain of its' previous page, add its' own link and return 
@@ -70,9 +51,9 @@ public class Settings extends GetAction {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=settings";
-        String linkName = "settings.text.title";
+        links.addAll(new HomePage().getLink());
+        String linkValue = "/servlet?getAction=profile";
+        String linkName = "profile.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

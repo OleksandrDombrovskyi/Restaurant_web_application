@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions;
+package controller.action.getactions.personal.user;
 
+import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
+import controller.action.getactions.GetAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,10 +22,10 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Basket extends GetAction {
+public class Orders extends GetAction {
 
     /**
-     * Show page with basket of current user
+     * Show all users' orders
      * @throws ServletException
      * @throws IOException 
      */
@@ -35,38 +37,31 @@ public class Basket extends GetAction {
             return;
         }
         int userId = user.getId();
-        model.entity.Order basketOrder = getBasketOrder(userId);
-        if (basketOrder == null || basketOrder.getOrderItems().size() < 1) {
-            request.setAttribute("message", "basket.message.emptybasket");
+        List<Order> orders = getOrdersByUserId(userId);
+        if (orders == null || orders.size() < 1) {
+            request.setAttribute("message", "orders.text.noorders");
+        } else {
+            request.setAttribute("orders", orders);
         }
-        request.setAttribute("basketOrder", basketOrder);
-        goToPage("basket.text.title", "/view/user/basket.jsp");
+        goToPage("orders.text.title", "/view/user/orders.jsp");
     }
     
     /**
-     * Get basket ordrer from the data base by user id
-     * 
+     * Get all orders by user id
      * @param userId user id
-     * @return basket order object if it exists in the data base for current user 
+     * @return orders if they exist in data base or null otherwise
      * @throws ServletException
      * @throws IOException 
      */
-    private Order getBasketOrder(int userId) throws ServletException, 
-            IOException {
-        model.entity.Order basketOrder = null;
+    private List<Order> getOrdersByUserId(int userId) 
+            throws ServletException, IOException {
         OrderCreator orderCreator = new OrderCreator();
         try {
-            basketOrder =  orderCreator.getNotConfirmedOrder(userId);
-            if (basketOrder == null) {
-                request.setAttribute("message", "basket.message.emptybasket");
-                return null;
-            } else {
-                return basketOrder;
-            }
-        } catch (SQLException ex) {
+            return (List<Order>) orderCreator.getOrdersByUserId(userId);
+        } catch (SQLException e) {
             sendRedirect(null, "exception.errormessage.sqlexception", "profile");
             return null;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
             return null;
         }
@@ -83,8 +78,8 @@ public class Basket extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=basket";
-        String linkName = "basket.text.title";
+        String linkValue = "/servlet?getAction=orders";
+        String linkName = "orders.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;
