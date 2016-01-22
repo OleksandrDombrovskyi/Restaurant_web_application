@@ -15,7 +15,7 @@ import model.entity.Person;
  * Saving all changes of users' private information (name, last name, email)
  * @author Sasha
  */
-public abstract class SaveChanges extends PostAction {
+public abstract class SaveChanges extends PersonalPostAction {
 
     /**
      * Save all changes of users' private information (name, last name, email)
@@ -92,15 +92,15 @@ public abstract class SaveChanges extends PostAction {
         request.setAttribute("email", email);
     }
 
-    /**
-     * Get person from the session
-     * 
-     * @return person object if it is in the session and null otherwise (in this 
-     * case redirection will be performed by this method)
-     * @throws ServletException
-     * @throws IOException 
-     */
-    protected abstract Person getPersonFromSession() throws ServletException, IOException;
+//    /**
+//     * Get person from the session
+//     * 
+//     * @return person object if it is in the session and null otherwise (in this 
+//     * case redirection will be performed by this method)
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    protected abstract Person getPersonFromSession() throws ServletException, IOException;
 
     /**
      * Update persons' private information (first name, last name and email). If

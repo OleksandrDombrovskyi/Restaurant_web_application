@@ -13,31 +13,12 @@ import model.dao.AdminCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Admin;
 import model.entity.Admin.AdminType;
-import model.entity.Person;
 
 /**
  *
  * @author Sasha
  */
 public class AdminSaveChanges extends SaveChanges {
-
-    /**
-     * Get admin from the session
-     * 
-     * @return admin object if it is in the session and null otherwise (in this 
-     * case redirection will be performed by this method)
-     * @throws ServletException
-     * @throws IOException 
-     */
-    @Override
-    protected Person getPersonFromSession() throws ServletException, IOException {
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (admin == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return null;
-        }
-        return admin;
-    }
 
     /**
      * Update admins' private information (first name, last name and email). If

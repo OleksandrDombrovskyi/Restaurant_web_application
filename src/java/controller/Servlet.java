@@ -12,7 +12,7 @@ import controller.action.getactions.HomePage;
 import controller.action.getactions.ChangeLanguage;
 import controller.action.getactions.Contacts;
 import controller.action.getactions.Info;
-import controller.action.postactions.ChangePassword;
+import controller.action.postactions.personal.ChangePassword;
 import controller.action.postactions.CreateAccount;
 import controller.action.getactions.LogOut;
 import controller.action.getactions.LoginRequest;

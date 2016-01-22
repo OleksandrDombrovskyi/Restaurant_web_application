@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
-import model.entity.Person;
 import model.entity.User;
 
 /**
@@ -19,24 +18,6 @@ import model.entity.User;
  * @author Sasha
  */
 public class UserSaveChanges extends SaveChanges {
-    
-    /**
-     * Get user from the session
-     * 
-     * @return user object if it is in the session and null otherwise (in this 
-     * case redirection will be performed by this method)
-     * @throws ServletException
-     * @throws IOException 
-     */
-    @Override
-    protected Person getPersonFromSession() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return null;
-        }
-        return user;
-    }
     
     /**
      * Update users' private information (first name, last name and email). If
