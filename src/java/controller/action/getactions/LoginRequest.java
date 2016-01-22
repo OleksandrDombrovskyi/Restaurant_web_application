@@ -16,6 +16,11 @@ import javax.servlet.ServletException;
  */
 public class LoginRequest extends Action {
 
+    /**
+     * Show login page
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() throws ServletException, IOException {
         saveURIForRedirect();
@@ -24,6 +29,9 @@ public class LoginRequest extends Action {
         request.getRequestDispatcher("/view/login.jsp").include(request, response);
     }
     
+    /**
+     * Save URI before go to login page for coming back after authorization
+     */
     private void saveURIForRedirect() {
         String from = request.getParameter("from");
         session.setAttribute("from", from);

@@ -18,11 +18,16 @@ import model.entity.User;
  */
 public class ClearBasket extends PostAction {
 
+    /**
+     * Clear basket (remove basket order, with status NOT_CONFIRMED)
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         String orderIdString = request.getParameter("orderId");
@@ -31,47 +36,34 @@ public class ClearBasket extends PostAction {
             return;
         }
         int orderId = Integer.parseInt(orderIdString);
-        OrderCreator orderCreator = new OrderCreator();
-        boolean isRemoved = false;
-        try {
-            isRemoved = orderCreator.removeOrder(orderId);
-        } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "basket");
-            return;
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
-            return;
-        }
-        if (isRemoved) {
+        if (isRemoved(orderId)) {
             sendRedirect(null, null, "basket");
-//            makeRedirect();
         } else {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
         }
     }
     
-//    private void makeRedirect() throws ServletException, IOException {
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=basket");
-//        
-//    }
-    
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param errorMessage text value of text property file which corresponds 
-//     * to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=basket");
-////        new Basket().execute(request, response);
-//        response.sendRedirect(request.getContextPath() 
-//                + "/servlet?getAction=basket");
-//        
-//    }
+    /**
+     * Was basket order removed ot not
+     * @param orderId basket order id
+     * @return true is basket order was removed and false otherwise
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private boolean isRemoved(int orderId) throws ServletException, IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            if (orderCreator.removeOrder(orderId)) {
+                return true;
+            } else {
+                sendRedirect(null, "exception.errormessage.sqlexception", "basket");
+            }
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "basket");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
+        }
+        return false;
+    }
     
 }

@@ -39,8 +39,6 @@ public class Login extends PostAction {
                 sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
             }
         }
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
-//        makeRedirect();
     }
     
     /**
@@ -130,40 +128,6 @@ public class Login extends PostAction {
         }
         sendRedirect(null, null, "home");
     }
-    
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param request HttpServletRequest
-//     * @param response HttpServletResponse
-//     * @param errorMessage text value of text property file which corresponds to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=loginRequest");
-////        new LoginRequest().execute(request, response);
-//        response.sendRedirect(request.getContextPath() + 
-//                "/servlet?getAction=loginRequest");
-//        
-//    }
-    
-//    /**
-//     * Make redirect to the previous page
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void makeRedirect() throws ServletException, IOException {
-//        String lastAction = (String) session.getAttribute("lastAction");
-//        if (lastAction != null) {
-//            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
-//            return;
-//        }
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
-//    }
 
     /**
      * Check whether is string variable equals null or empty string

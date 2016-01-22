@@ -29,20 +29,18 @@ public class ChangePassword extends PostAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
-        String errorMessage = checkAndChangePassword(user, oldPassword, 
-                newPassword, confirmPassword);
-        if (errorMessage != null) {
-            sendRedirect(null, errorMessage, "settings");
+        if (!checkPasswords(user, oldPassword, newPassword, confirmPassword) 
+                || !changePassword(user, newPassword) 
+                || !setUserToSession(user.getEmail())) {
             return;
         }
-        sendRedirect("settings.message.passwordcganged", null, "settings");
-//        createPage();
+        sendRedirect("settings.message.passwordchanged", null, "settings");
     }
     
     /**
@@ -54,27 +52,32 @@ public class ChangePassword extends PostAction {
      * @param oldPassword existing password
      * @param newPassword new password
      * @param confirmPassword password confirmation
-     * @return error message or null if password passed all checks
+     * @return boolean true if all fields are correct and false otherwise (in 
+     * this case redirection will be performed in this method)
      */
-    private String checkAndChangePassword(User user, String oldPassword, 
+    private boolean checkPasswords(User user, String oldPassword, 
             String newPassword, String confirmPassword) throws 
             ServletException, IOException {
         if ((oldPassword == null || oldPassword.equals("")) 
                 || (newPassword == null || newPassword.equals("")) 
                 || (confirmPassword == null || confirmPassword.equals(""))) {
-            return "settings.errormessage.easypasword";
+            sendRedirect(null, "settings.errormessage.easypasword", "settings");
+            return false;
         }
         if (!oldPassword.equals(user.getPassword())) {
-            return "settings.errormessage.wrongpassword";
+            sendRedirect(null, "settings.errormessage.wrongpassword", "settings");
+            return false;
         }
         if (!newPassword.equals(confirmPassword)) {
-            return "settings.errormessage.paswordnotmatched";
+            sendRedirect(null, "settings.errormessage.paswordnotmatched", "settings");
+            return false;
         }
         Validator validator = new Validator();
         if (!validator.checkPassword(newPassword)) {
-            return "settings.errormessage.easypasword";
+            sendRedirect(null, "settings.errormessage.easypasword", "settings");
+            return false;
         }
-        return changePassword(user, newPassword);
+        return true;
     }
 
     /**
@@ -83,56 +86,25 @@ public class ChangePassword extends PostAction {
      * 
      * @param user user needs to change password
      * @param newPassword new password
-     * @return error message or null if changing is successful.
+     * @return true if password cganging was seccessful and false otherwise (in 
+     * this case redirection will be performed in this method)
      */
-    private String changePassword(User user, String newPassword) throws 
+    private boolean changePassword(User user, String newPassword) throws 
             ServletException, IOException {
         UserCreator userCreator = new UserCreator();
         try {
             if (!userCreator.changePassword(user, newPassword)) {
-                return "settings.errormessage.passwordnotchanged";
+                sendRedirect(null, "settings.errormessage.passwordnotchanged", "settings");
+                return false;
             }
-            return setUserToSession(user.getEmail());
+            return true;
         } catch (SQLException ex) {
-            return "exception.errormessage.sqlexception";
+            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            return false;
         } catch (ServerOverloadedException ex) {
-            return "exception.errormessage.serveroverloaded";
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            return false;
         }
     }
-    
-    /**
-     * Create next page with all required information
-     * 
-     * @throws ServletException
-     * @throws IOException 
-     */
-//    private void createPage() throws ServletException, IOException {
-//        session.setAttribute("message", "settings.message.passwordcganged");
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
-////        new Settings().execute(request, response);
-//        response.sendRedirect(request.getContextPath() 
-//                + "/servlet?getAction=settings");
-//        
-//    }
-    
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param request HttpServletRequest
-//     * @param response HttpServletResponse
-//     * @param errorMessage text value of text property file which corresponds 
-//     * to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-//        //session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
-//        //new Settings().execute(request, response);
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
-//        
-//    }
     
 }

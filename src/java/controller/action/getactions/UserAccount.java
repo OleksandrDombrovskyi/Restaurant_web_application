@@ -5,8 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -21,31 +19,29 @@ import model.entity.User;
  */
 public class UserAccount extends GetAction {
 
+    /**
+     * Show user accaunt balance
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         BigDecimal account = user.getAccount();
-        createPage(account);
-    }
-
-    private void createPage(BigDecimal account) throws ServletException, 
-            IOException {
-        request.setAttribute("title", "account.text.title");
         request.setAttribute("account", account);
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        request.getRequestDispatcher("/view/user/account.jsp").
-                include(request, response);
+        goToPage("account.text.title", "/view/user/account.jsp");
     }
     
     /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {

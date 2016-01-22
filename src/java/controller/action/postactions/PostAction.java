@@ -7,7 +7,11 @@ package controller.action.postactions;
 
 import controller.action.Action;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.ServerOverloadedException;
+import model.dao.UserCreator;
+import model.entity.User;
 
 /**
  *
@@ -16,26 +20,34 @@ import javax.servlet.ServletException;
 public abstract class PostAction extends Action {
     
     /**
-     * Send redirect to some get action
-     * @param message message if it is required in some case
-     * @param errorMessage error message if it is required in some case
-     * @param action specific servlet get action
-     * @throws ServletException 
+     * Get the same user from data base by its' email with updated information 
+     * and set it to current session
+     * 
+     * @param email users' email
+     * @return boolean true if setting was successful and false otherwise (in 
+     * this case redirection will be performed by this method)
+     * @throws ServletException
      * @throws IOException 
      */
-    protected void sendRedirect(String message, String errorMessage, String action) 
-            throws ServletException, IOException {
-        if (message != null && !message.equals("")) {
-            session.setAttribute("message", message);
+    protected boolean setUserToSession(String email) throws ServletException, 
+            IOException {
+        try {
+            User user = null;
+            UserCreator userCreator = new UserCreator();
+            user = (User) userCreator.getUserByEmail(email);
+            if (user == null) {
+                sendRedirect(null, "login.errormessage.nosuchuser", "settings");
+                return false;
+            }
+            session.setAttribute("user", user);
+            return true;
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            return false;
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            return false;
         }
-        if (errorMessage != null && !errorMessage.equals("")) {
-            session.setAttribute("errorMessage", errorMessage);
-        }
-        if (action != null && !action.equals("")) {
-            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + action);
-            return;
-        }
-        response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
     }
     
 }

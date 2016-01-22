@@ -5,8 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,22 +17,22 @@ import javax.servlet.ServletException;
  */
 public class HomePage extends GetAction {
 
+    /**
+     * Show home page
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() throws ServletException, IOException {
-        request.setAttribute("title", "home.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        request.getRequestDispatcher("/view/home.jsp").include(request, response);
-//        try (PrintWriter out = response.getWriter()) {
-//            out.println("request.getParameter(language): " + request.getParameter("language")); // input this expression to the jsp file
-//            out.println("request.getSession().getAttribute(\"action\"): " + request.getSession().getAttribute("action"));
-//        }
+        goToPage("home.text.title", "/view/home.jsp");
     }
 
     /**
-     * Get link to home page
-     * @return list with one link only
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     protected List<ConcreteLink> getLink() {

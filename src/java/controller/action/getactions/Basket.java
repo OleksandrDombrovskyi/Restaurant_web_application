@@ -6,8 +6,6 @@
 package controller.action.getactions;
 
 import controller.action.ConcreteLink;
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,61 +22,62 @@ import model.entity.User;
  */
 public class Basket extends GetAction {
 
+    /**
+     * Show page with basket of current user
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         int userId = user.getId();
-        model.entity.Order basketOrder = null;
-        OrderCreator orderCreator = new OrderCreator();
-        try {
-            basketOrder = orderCreator.getNotConfirmedOrder(userId);
-        } catch (SQLException ex) {
-            startOver("exception.errormessage.sqlexception");
-            return;
-        } catch (ServerOverloadedException ex) {
-            startOver("exception.errormessage.serveroverloaded");
-            return;
-        }
-        if (basketOrder == null) {
+        model.entity.Order basketOrder = getBasketOrder(userId);
+        if (basketOrder == null || basketOrder.getOrderItems().size() < 1) {
             request.setAttribute("message", "basket.message.emptybasket");
         }
-        createPage(basketOrder);
-    }
-    
-    private void createPage(Order basketOrder) throws ServletException, 
-            IOException{
-        request.setAttribute("title", "basket.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
         request.setAttribute("basketOrder", basketOrder);
-        request.getRequestDispatcher("/view/user/basket.jsp").
-                include(request, response);
+        goToPage("basket.text.title", "/view/user/basket.jsp");
     }
     
     /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
+     * Get basket ordrer from the data base by user id
      * 
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
+     * @param userId user id
+     * @return basket order object if it exists in the data base for current user 
      * @throws ServletException
      * @throws IOException 
      */
-    private void startOver(String errorMessage) throws ServletException, 
+    private Order getBasketOrder(int userId) throws ServletException, 
             IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=profile");
-        new Profile().execute(request, response);
+        model.entity.Order basketOrder = null;
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            basketOrder =  orderCreator.getNotConfirmedOrder(userId);
+            if (basketOrder == null) {
+                request.setAttribute("message", "basket.message.emptybasket");
+                return null;
+            } else {
+                return basketOrder;
+            }
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "profile");
+            return null;
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
+            return null;
+        }
     }
     
     /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {

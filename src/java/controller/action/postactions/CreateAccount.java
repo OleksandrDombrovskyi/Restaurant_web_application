@@ -66,10 +66,8 @@ public class CreateAccount extends PostAction {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "signUp");
             return;
         }
-//        createBasketOrder(dbUser.getId());
         session.setAttribute("user", dbUser);
         sendRedirect(null, null, "profile");
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=profile");
         
     }
     
@@ -148,43 +146,5 @@ public class CreateAccount extends PostAction {
         session.setAttribute("previousLastName", lastName);
         session.setAttribute("previousEmail", email);
     }
-    
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param errorMessage text value of text property file which corresponds 
-//     * to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=signUp");
-////        new SignUp().execute(request, response);
-//        response.sendRedirect(request.getContextPath() 
-//                + "/servlet?getAction=signUp");
-//        
-//    }
-
-//    /**
-//     * Create basket
-//     * @param userId
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void createBasketOrder(int userId) throws ServletException, IOException {
-//        OrderCreator orderCreator = new OrderCreator();
-//        try {
-//            orderCreator.createBasket(userId);
-//        } catch (SQLException ex) {
-//            startOver("exception.errormessage.sqlexception");
-//            return;
-//        } catch (ServerOverloadedException ex) {
-//            startOver("exception.errormessage.serveroverloaded");
-//            return;
-//        }
-//    }
     
 }

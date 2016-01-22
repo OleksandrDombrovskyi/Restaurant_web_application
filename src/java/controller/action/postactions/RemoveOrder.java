@@ -18,31 +18,38 @@ import model.entity.User;
  */
 public class RemoveOrder extends PostAction {
 
+//    @Override
+//    protected void doExecute() throws ServletException, IOException {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
+
     @Override
     protected void doExecute() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            goToHome("login.errormessage.loginplease");
-            return;
-        }
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
-        OrderCreator orderCreator = new OrderCreator();
-        boolean isRemoved = false;
-        try {
-            isRemoved = orderCreator.removeOrder(orderId);
-        } catch (SQLException ex) {
-            showMessage("exception.errormessage.sqlexception");
-            return;
-        } catch (ServerOverloadedException ex) {
-            showMessage("exception.errormessage.serveroverloaded");
-            return;
-        }
-        if (isRemoved) {
-            sendRedirect("order.message.orderwasremoved", null, "orders");
-//            makeRedirect();
-        } else {
-            showMessage("exception.errormessage.serveroverloaded");
-        }
+//        User user = (User) session.getAttribute("user");
+//        if (user == null) {
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+//            return;
+//        }
+//        int orderId = Integer.parseInt(request.getParameter("orderId"));
+//        OrderCreator orderCreator = new OrderCreator();
+//        boolean isRemoved = false;
+//        try {
+//            isRemoved = orderCreator.removeOrder(orderId);
+//        } catch (SQLException ex) {
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+//            showMessage("exception.errormessage.sqlexception");
+//            return;
+//        } catch (ServerOverloadedException ex) {
+//            showMessage("exception.errormessage.serveroverloaded");
+//            return;
+//        }
+//        if (isRemoved) {
+//            sendRedirect("order.message.orderwasremoved", null, "orders");
+////            makeRedirect();
+//        } else {
+//            showMessage("exception.errormessage.serveroverloaded");
+//        }
+        throw new UnsupportedOperationException("Not supported yet!");
     }
     
 //    private void makeRedirect() throws ServletException, IOException {

@@ -67,7 +67,7 @@ public class Servlet extends HttpServlet {
         getActions.put("contacts", new Contacts());
         postActions.put("login", new Login());
         postActions.put("createAccount", new CreateAccount());
-        postActions.put("makeOrder", new MakeOrder());
+//        postActions.put("makeOrder", new MakeOrder());
 //        postActions.put("confirm", new OrderConfirmation()); // delete together with classes!!!
 //        postActions.put("remove", new RemoveOrder()); // delete together with classes!!!
         postActions.put("saveChanges", new SaveChanges());
@@ -110,7 +110,8 @@ public class Servlet extends HttpServlet {
     }
     
     private void saveActionForRedirect(String actionKey, HttpServletRequest request) {
-        if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp")) {
+        if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp") 
+                && !actionKey.equals("changeLanguage")) {
             request.getSession().setAttribute("lastAction", actionKey);
         }
     }

@@ -5,9 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,62 +22,55 @@ import model.entity.User;
  */
 public class Orders extends GetAction {
 
+    /**
+     * Show all users' orders
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         int userId = user.getId();
-        OrderCreator orderCreator = new OrderCreator();
-        List<Order> orders = null;
-        try {
-            orders = (List<Order>) orderCreator.getOrdersByUserId(userId);
-        } catch (SQLException e) {
-            startOver("exception.errormessage.sqlexception");
-            return;
-        } catch (ServerOverloadedException e) {
-            startOver("exception.errormessage.serveroverloaded");
-            return;
-        }
+        List<Order> orders = getOrdersByUserId(userId);
         if (orders == null || orders.size() < 1) {
             request.setAttribute("message", "orders.text.noorders");
+        } else {
+            request.setAttribute("orders", orders);
         }
-        createPage(orders);
+        goToPage("orders.text.title", "/view/user/orders.jsp");
     }
     
-    private void createPage(List<Order> orders) throws ServletException, IOException {
-        request.setAttribute("title", "orders.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("/view/user/orders.jsp").
-                include(request, response);
-    } 
-    
     /**
-     * Back to filling the form couse of uncorrect field filling and sending 
-     * correspond error message
-     * 
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
+     * Get all orders by user id
+     * @param userId user id
+     * @return orders if they exist in data base or null otherwise
      * @throws ServletException
      * @throws IOException 
      */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=profile");
-        new Profile().execute(request, response);
+    private List<Order> getOrdersByUserId(int userId) 
+            throws ServletException, IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            return (List<Order>) orderCreator.getOrdersByUserId(userId);
+        } catch (SQLException e) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "profile");
+            return null;
+        } catch (ServerOverloadedException e) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
+            return null;
+        }
     }
     
     /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {

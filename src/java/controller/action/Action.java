@@ -8,6 +8,7 @@ package controller.action;
 import controller.action.getactions.HomePage;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,58 +57,26 @@ public abstract class Action {
     protected abstract void doExecute() throws ServletException, IOException;
     
     /**
-     * Get the same user from data base by its' email with updated information 
-     * and set it to current session
-     * 
-     * @param email users' email
-     * @return error message or null if setting was successsful
-     * @throws ServletException
-     * @throws IOException 
-     * @throws java.sql.SQLException 
-     * @throws model.dao.ServerOverloadedException 
-     */
-    protected String setUserToSession(String email) throws ServletException, 
-            IOException, SQLException, ServerOverloadedException {
-        User user = null;
-        UserCreator userCreator = new UserCreator();
-        user = (User) userCreator.getUserByEmail(email);
-        if (user == null) {
-            return "login.errormessage.nosuchuser";
-        }
-        session.setAttribute("user", user);
-        return null;
-    }
-    
-    /**
-     * Back to home page and print error message if error message parameter 
-     * does not equals null
-     * 
-     * @param errorMessage error message
-     * @throws javax.servlet.ServletException
-     * @throws IOException 
-     */
-    protected void goToHome(String errorMessage) throws ServletException, IOException {
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
-        }
-        new HomePage().execute(request, response);
-    }
-    
-    /**
-     * Show error message only
-     * 
-     * @param message error message
-     * @throws IOException
+     * Send redirect to some get action
+     * @param message message if it is required in some case
+     * @param errorMessage error message if it is required in some case
+     * @param action specific servlet get action
      * @throws ServletException 
+     * @throws IOException 
      */
-    public void showMessage(String message) throws IOException, 
-            ServletException {
-        request.setAttribute("title", message);
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        request.setAttribute("errorMessage", message);
-        request.getRequestDispatcher("/view/error.jsp").
-                include(request, response);
+    protected void sendRedirect(String message, String errorMessage, String action) 
+            throws ServletException, IOException {
+        if (message != null && !message.equals("")) {
+            session.setAttribute("message", message);
+        }
+        if (errorMessage != null && !errorMessage.equals("")) {
+            session.setAttribute("errorMessage", errorMessage);
+        }
+        if (action != null && !action.equals("")) {
+            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + action);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
+        }
     }
     
 }

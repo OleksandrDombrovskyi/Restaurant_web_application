@@ -21,29 +21,30 @@ public class OrderConfirmation extends PostAction {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            goToHome("login.errormessage.loginplease");
-            return;
-        }
-        String orderIdString = request.getParameter("orderId");
-        if (orderIdString == null) {
-            goToHome(null);
-            return;
-        }
-        int orderId = Integer.parseInt(orderIdString);
-        OrderCreator orderCreator = new OrderCreator();
-        try {
-            orderCreator.setStatus(orderId, OrderStatus.CREATED);
-        } catch (SQLException ex) {
-            showMessage("exception.errormessage.sqlexception");
-            return;
-        } catch (ServerOverloadedException ex) {
-            showMessage("exception.errormessage.serveroverloaded");
-            return;
-        } 
-        sendRedirect(null, null, "getOrder&orderId=" + orderId);
-//        makeRedirect(orderId);
+//        User user = (User) session.getAttribute("user");
+//        if (user == null) {
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+//            return;
+//        }
+//        String orderIdString = request.getParameter("orderId");
+//        if (orderIdString == null) {
+//            sendRedirect(null, null, "home");
+//            return;
+//        }
+//        int orderId = Integer.parseInt(orderIdString);
+//        OrderCreator orderCreator = new OrderCreator();
+//        try {
+//            orderCreator.setStatus(orderId, OrderStatus.CREATED);
+//        } catch (SQLException ex) {
+//            showMessage("exception.errormessage.sqlexception");
+//            return;
+//        } catch (ServerOverloadedException ex) {
+//            showMessage("exception.errormessage.serveroverloaded");
+//            return;
+//        } 
+//        sendRedirect(null, null, "getOrder&orderId=" + orderId);
+////        makeRedirect(orderId);
+        throw new UnsupportedOperationException("Not supported yet!");
     }
     
 //    private void makeRedirect(int orderId) throws ServletException, IOException {

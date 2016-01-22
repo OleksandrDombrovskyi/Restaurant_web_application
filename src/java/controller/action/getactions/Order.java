@@ -5,12 +5,9 @@
  */
 package controller.action.getactions;
 
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import model.dao.OrderCreator;
@@ -33,75 +30,74 @@ public class Order extends GetAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            goToHome(null);
+            sendRedirect(null, null, "home");
             return;
         }
         int orderId = Integer.parseInt(orderIdString);
+        model.entity.Order order = getOrderById(orderId);
+        if (order == null) {
+            sendRedirect(null, "order.errormessage.nosuchorder", "orders");
+            return;
+        }
+        if (checkUserValidation(user, order)) {
+            request.setAttribute("order", order);
+            request.setAttribute("items", order.getOrderItems());
+            goToPage("order.text.title", "/view/user/order.jsp");
+        } else {
+            sendRedirect(null, "login.errormessage.loginplease", "home");
+        }
+    }
+
+    /**
+     * Get order by order id
+     * @param orderId order id
+     * @return order if it exists in the date base and false otherwise
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private model.entity.Order getOrderById(int orderId) 
+            throws ServletException, IOException {
         model.entity.Order order = null;
         OrderCreator orderCreator = new OrderCreator();
         try {
             order = (model.entity.Order) orderCreator.getEntityById(orderId);
+            if (order == null) {
+                sendRedirect(null, "order.errormessage.nosuchorder", "orders");
+                return null;
+            }
+            return order;
         } catch (SQLException e) {
-            startOver("exception.errormessage.sqlexception");
-            return;
+            sendRedirect(null, "exception.errormessage.sqlexception", "orders");
+            return null;
         } catch (ServerOverloadedException ex) {
-            startOver("exception.errormessage.serveroverloaded");
-            return;
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "orders");
+            return null;
         }
-        if (order == null) {
-            startOver("order.errormessage.nosuchorder");
-            return;
-        }
+    }
+
+    /**
+     * Check validation of user according to this order
+     * @param user user object
+     * @param order order object
+     * @return true is this order really belongs to this user and false otherwise
+     */
+    private boolean checkUserValidation(User user, model.entity.Order order) {
         int userId = user.getId();
         int orderUserId = order.getUserId();
-        if (userId == orderUserId) {
-            createPage(order);
-        } else {
-            goToHome("login.errormessage.loginplease");
-        }
+        return userId == orderUserId;
     }
     
     /**
-     * Create jsp page
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
      * 
-     * @param order order selected or created by user
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void createPage(model.entity.Order order) throws ServletException, IOException {
-        request.setAttribute("title", "order.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        request.setAttribute("order", order);
-        request.setAttribute("items", order.getOrderItems());
-        request.getRequestDispatcher("/view/user/order.jsp").
-                include(request, response);
-    }
-    
-    /**
-     * Back to the same page couse of exception
-     * 
-     * @param errorMessage text value of text property file which corresponds 
-     * to the error message
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void startOver(String errorMessage) throws ServletException, 
-            IOException {
-        request.setAttribute("errorMessage", errorMessage);
-        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=orders");
-        new Orders().execute(request, response);
-    }
-    
-    /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {

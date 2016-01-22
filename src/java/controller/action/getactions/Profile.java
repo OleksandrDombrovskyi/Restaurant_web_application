@@ -5,8 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,38 +28,23 @@ public class Profile extends GetAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            createPage();
-            request.getRequestDispatcher("/view/user/profile.jsp").
-                include(request, response);
+            goToPage("profile.text.title", "/view/user/profile.jsp");
             return;
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
-            createPage();
-            request.getRequestDispatcher("/view/admin/profile.jsp").
-                include(request, response);
+            goToPage("profile.text.title", "/view/admin/profile.jsp");
             return;
         }
-        goToHome("login.errormessage.loginplease");
-    }
-    
-    /**
-     * Create next page
-     * 
-     * @param user user object
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void createPage() throws ServletException, IOException {
-        request.setAttribute("title", "profile.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
+        sendRedirect(null, "login.errormessage.loginplease", "home");
     }
 
     /**
-     * Get all links before profile and profile link inclusive
-     * @return list of link objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     protected List<ConcreteLink> getLink() {

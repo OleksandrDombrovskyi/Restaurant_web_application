@@ -17,12 +17,23 @@ import javax.servlet.ServletException;
  */
 public class Info extends GetAction {
 
+    /**
+     * Show info page
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
-        setHead("info.text.title");
-        request.getRequestDispatcher("/view/info.jsp").include(request, response);
+        goToPage("info.text.title", "/view/info.jsp");
     }
     
+    /**
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
+     */
     @Override
     protected List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();

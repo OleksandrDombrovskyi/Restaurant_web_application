@@ -5,9 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,19 +17,22 @@ import javax.servlet.ServletException;
  */
 public class SignUp extends GetAction {
 
+    /**
+     * Show registration page
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() throws ServletException, IOException {
-        request.setAttribute("title", "signup.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        request.getRequestDispatcher("/view/signup.jsp").
-                include(request, response);
+        goToPage("signup.text.title", "/view/signup.jsp");
     }
     
     /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {

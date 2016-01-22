@@ -18,71 +18,75 @@ import model.entity.User;
  */
 public class BasketConfirmation extends PostAction {
 
+    /**
+     * Confirm order in the basket
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            goToHome("login.errormessage.loginplease");
-            return;
-        }
-        String userIdString = request.getParameter("userId");
-        if (userIdString == null) {
-            sendRedirect("basket.message.notconfirmed", null, "basket");
-            return;
-        }
-        int userId = Integer.parseInt(userIdString);
-        if (userId != user.getId()) {
+        if (!userValidation(user)) {
             sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
-        OrderCreator orderCreator = new OrderCreator();
-        try {
-            if (orderCreator.confirmBasket(userId) == 0) {
-                sendRedirect("basket.message.notconfirmed", null, "basket");
-                return;
-            }
-        } catch (SQLException ex) {
-            showMessage("exception.errormessage.sqlexception");
-            return;
-        } catch (ServerOverloadedException ex) {
-            showMessage("exception.errormessage.serveroverloaded");
+        int userId = user.getId();
+        if (!confirmBasket(userId)) {
             return;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder", "basket");
-            return;
+        } else {
+            sendRedirect(null, null, 
+                "getOrder&orderId=" + orderIdString);
         }
-        int orderId = Integer.parseInt(orderIdString);
-        sendRedirect(null, "basket.errormessage.nosuchorder", "getOrder&orderId=" + orderId);
-//        makeRedirect(orderId);
+    }
+
+    /**
+     * Valid current user
+     * @param user user object
+     * @return true if user is valid and false if user is invalid
+     */
+    private boolean userValidation(User user) {
+        if (user == null) {
+            return false;
+        }
+        String userIdString = request.getParameter("userId");
+        if (userIdString == null) {
+            return false;
+        }
+        int userId = Integer.parseInt(userIdString);
+        if (userId != user.getId()) {
+            return false;
+        }
+        return true;
     }
     
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param errorMessage text value of text property file which corresponds 
-//     * to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=basket");
-////        new Basket().execute(request, response);
-//        response.sendRedirect(request.getContextPath() 
-//                + "/servlet?getAction=basket");
-//        
-//    }
-
-//    private void makeRedirect(int orderId) throws ServletException, 
-//            IOException{
-//        response.sendRedirect(request.getContextPath() + 
-//                "/servlet?getAction=getOrder&orderId=" + orderId);
-//        
-//        
-//    }
+    /**
+     * Confirm order in the basket (set status CREATED instead NOT_CONFIRMED)
+     * @param userId user id whose basket order is it
+     * @return true if confirmation was performed 
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private boolean confirmBasket(int userId) throws ServletException, 
+            IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            if (orderCreator.confirmBasket(userId) == 0) {
+                sendRedirect("basket.message.notconfirmed", null, "basket");
+                return false;
+            }
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "basket");
+            return false;
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "basket");
+            return false;
+        }
+        return true;
+    }
     
 }

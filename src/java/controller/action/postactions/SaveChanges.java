@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
+import model.entity.Person;
 import model.entity.User;
 
 /**
@@ -26,51 +27,59 @@ public class SaveChanges extends PostAction {
      */    
     @Override
     protected void doExecute() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            goToHome("login.errormessage.loginplease");
+        Person person = getPersonFromSession();
+        if (person == null) {
             return;
         }
+        
+//        Admin admin = (Admin) session.getAttribute("admin");
+//        if (admin == null) {
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+//            return;
+//        }
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
-        int userId = user.getId();
+        saveFieldValues(firstName, lastName, email);
         
-        String errorMessage = checkAndUpdate(firstName, lastName, email, userId);
-        if (errorMessage != null) {
-            saveFieldValues(firstName, lastName, email);
-            sendRedirect(null, errorMessage, "settings");
+        if (!checkFields(firstName, lastName, email)) {
+            return;
+        }
+        int personId = person.getId();
+        if (!updatePerson(personId, firstName, lastName, email)) {
             return;
         }
         sendRedirect("settings.message.changeswassaved", null, "settings");
-//        createPage();
     }
     
     /**
-     * Check all input fields. If it is successful, update it
+     * Check all input fields
      * @param firstName users' first name
      * @param lastName users' last name
      * @param email users' email
-     * @return error message or null if updating was successful
+     * @return boolean true if all fields are correct and false otherwise (in 
+     * this case redirection will be performed in this method)
      */
-    private String checkAndUpdate(String firstName, String lastName, 
-            String email, int userId) throws ServletException, IOException {
+    private boolean checkFields(String firstName, String lastName, 
+            String email) throws ServletException, IOException {
         if (firstName == null || firstName.equals("")) {
-            return "settings.errormessage.emptyname";
+            sendRedirect(null, "settings.errormessage.emptyname", "settings");
+            return false;
         }
         if (lastName == null || lastName.equals("")) {
-            return "settings.errormessage.emptylastname";
+            sendRedirect(null, "settings.errormessage.emptylastname", "settings");
+            return false;
         }
         if (email == null || email.equals("")) {
-            return "settings.errormessage.emptyemail";
+            sendRedirect(null, "settings.errormessage.emptyemail", "settings");
+            return false;
         }
         Validator validator = new Validator();
         if (!validator.checkEmail(email)) {
-            return "settings.errormessage.uncorrectemail";
+            sendRedirect(null, "settings.errormessage.uncorrectemail", "settings");
+            return false;
         }
-        User newUser = new User(firstName, lastName, email, "unusedPassword");
-        newUser.setId(userId);
-        return updateUser(newUser);
+        return true;
     }
 
     /**
@@ -79,36 +88,30 @@ public class SaveChanges extends PostAction {
      * with updated information and set it to the current session
      * 
      * @param newUser user object with updated private information
-     * @return error message or null if updating was successful
+     * @return true if user update was seccessful and false otherwise (in this 
+     * case redirection will be performed in this method)
      * @throws ServletException
      * @throws IOException 
      */
-    private String updateUser(User newUser) throws ServletException, IOException {
+    private boolean updatePerson(int userId, String firstName, String lastName, 
+            String email) throws ServletException, IOException {
+        User newUser = new User(firstName, lastName, email, "unusedPassword");
+        newUser.setId(userId);
         UserCreator userCreator = new UserCreator();
         try {
             if (!userCreator.updateUser(newUser)) {
-                return "settings.errormessage.changesnotsaved";
+                sendRedirect(null, "settings.errormessage.changesnotsaved", "settings");
+                return false;
             }
             return setUserToSession(newUser.getEmail());
         } catch (SQLException ex) {
-            return "exception.errormessage.sqlexception";
+            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            return false;
         } catch (ServerOverloadedException ex) {
-            return "exception.errormessage.serveroverloaded";
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            return false;
         }
     }
-    
-//    /**
-//     * Create next page with all required information
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void createPage() throws ServletException, IOException {
-//        session.setAttribute("message", "settings.message.changeswassaved");
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=settings");
-////        new Settings().execute(request, response);
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
-//        
-//    }
     
     /**
      * Save previous fields values 
@@ -122,20 +125,22 @@ public class SaveChanges extends PostAction {
         request.setAttribute("lastName", lastName);
         request.setAttribute("email", email);
     }
-    
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param errorMessage text value of text property file which corresponds 
-//     * to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=settings");
-//    }
+
+    /**
+     * Get user from the session
+     * 
+     * @return user object if it is in the session and null otherwise (in this 
+     * case redirection will be performed by this method)
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private Person getPersonFromSession() throws ServletException, IOException {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            sendRedirect(null, "login.errormessage.loginplease", "home");
+            return null;
+        }
+        return user;
+    }
     
 }

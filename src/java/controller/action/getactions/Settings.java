@@ -5,13 +5,13 @@
  */
 package controller.action.getactions;
 
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import model.entity.Admin;
+import model.entity.Person;
 import model.entity.User;
 
 /**
@@ -21,44 +21,51 @@ import model.entity.User;
 public class Settings extends GetAction {
 
     /**
-     * Show settings page
+     * Check if user or admin are in the current session and show corresponding
+     * setting page, or back to home page if there is no person in the session
+     * 
      * @throws ServletException
      * @throws IOException 
      */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            goToHome("login.errormessage.loginplease");
+        if (user != null) {
+            setParameters(user);
+            goToPage("settings.text.title", "/view/user/settings.jsp");
             return;
         }
-        createPage(user);
+        Admin admin = (Admin) session.getAttribute("admin");
+        if (admin != null) {
+            setParameters(admin);
+            goToPage("settings.text.title", "/view/user/settings.jsp");
+            return;
+        }
+        sendRedirect(null, "login.errormessage.loginplease", "home");
     }
     
     /**
-     * Create settings page
+     * Set all users' parameters into request
      * @param user user object with old information
      * @throws ServletException
      * @throws IOException 
      */
-    private void createPage(User user) throws ServletException, IOException {
-        request.setAttribute("title", "settings.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        String firstName = user.getFirstName();
-        String lastName = user.getLastName();
-        String email = user.getEmail();
+    private void setParameters(Person person) throws ServletException, 
+            IOException {
+        String firstName = person.getFirstName();
+        String lastName = person.getLastName();
+        String email = person.getEmail();
         request.setAttribute("firstName", firstName);
         request.setAttribute("lastName", lastName);
         request.setAttribute("email", email);
-        request.getRequestDispatcher("/view/user/settings.jsp").
-                include(request, response);
     }
     
     /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {

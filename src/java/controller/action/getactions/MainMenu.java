@@ -5,9 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.action.Action;
-import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -24,35 +21,27 @@ import model.entity.Meal;
  */
 public class MainMenu extends GetAction {
 
+    /**
+     * Show main menu page
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() throws ServletException, IOException {
-        request.setAttribute("title", "mainmenu.text.title");
-        new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
-        setNavigationBlock();
-        List<Meal> meals = null;
-        MealCreator mealCreator = new MealCreator();
-        try {
-            meals = (List<Meal>) mealCreator.getAllEntities();
-            if (meals == null) {
-                request.setAttribute("errorMessage", 
-                    "mainmenu.errormessage.nomeals");
-            }
-        } catch (SQLException e) {
-            request.setAttribute("errorMessage", 
-                    "exception.errormessage.sqlexception");
-        } catch (ServerOverloadedException e) {
-            request.setAttribute("errorMessage", 
-                    "exception.errormessage.serveroverloaded");
+        List<Meal> meals = getAllMeals();
+        if (meals == null || meals.size() < 1) {
+            sendRedirect(null, "mainmenu.errormessage.nomeals", "home");
         }
         request.setAttribute("meals", meals);
-        request.getRequestDispatcher("view/mainmenu.jsp").include(request, 
-                response);
+        goToPage("mainmenu.text.title", "view/mainmenu.jsp");
     }
     
     /**
-     * Get all links before settings and aettings link inclusive
-     * @return list of links objects
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
      */
     @Override
     public List<ConcreteLink> getLink() {
@@ -63,6 +52,25 @@ public class MainMenu extends GetAction {
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;
+    }
+
+    /**
+     * Get all meal from the data base
+     * @return array list of all meals 
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private List<Meal> getAllMeals() throws ServletException, IOException {
+        MealCreator mealCreator = new MealCreator();
+        try {
+            return (List<Meal>) mealCreator.getAllEntities();
+        } catch (SQLException e) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "home");
+            return null;
+        } catch (ServerOverloadedException e) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "home");
+            return null;
+        }
     }
     
 }

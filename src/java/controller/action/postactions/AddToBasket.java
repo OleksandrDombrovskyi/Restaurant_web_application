@@ -26,11 +26,19 @@ import model.entity.User;
  */
 public class AddToBasket extends PostAction {
 
+    /**
+     * Put meals into the basket. If basket has been created before, just put
+     * new meal has been chosen by user. If basket has not been created yet, 
+     * create basket order (with NOT_CONFIRMED status) basis on the user choise
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null || user.getId() == 0) {
-            goToHome("login.errormessage.loginplease");
+            sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         int userId = user.getId();
@@ -45,35 +53,33 @@ public class AddToBasket extends PostAction {
             sendRedirect("mainmenu.message.noselectedmeals", null, "mainMenu");
             return;
         }
-        OrderCreator orderCreator = new OrderCreator();
         Order basketOrder = null;
+        OrderCreator orderCreator = new OrderCreator();
         try {
             basketOrder = orderCreator.getNotConfirmedOrder(userId);
             if (basketOrder == null) {
                 createNewBasket(newBasketOrder);
-                return;
+            } else {
+                if (orderCreator.addItemsToBasket(basketOrder, newBasketOrder)) {
+                    sendRedirect(null, null, "basket");
+                } else {
+                    sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
+                }
             }
         } catch (SQLException ex) {
             sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
-            return;
         } catch (ServerOverloadedException ex) {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
-            return;
         }
-        try {
-            if (!orderCreator.addItemsToBasket(basketOrder, newBasketOrder)) {
-                sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
-            }
-        } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
-            return;
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
-            return;
-        }
-        sendRedirect(null, null, "basket");
     }
     
+    /**
+     * Get all meal from the data base in the main manu
+     * 
+     * @return array list of the menu meal
+     * @throws ServletException
+     * @throws IOException 
+     */
     private List<Meal> getAllMeals() throws ServletException, IOException {
         MealCreator mealCreator = new MealCreator();
         try {
@@ -86,6 +92,15 @@ public class AddToBasket extends PostAction {
         return null;
     }
     
+    /**
+     * Insert chose order items by user into the new basket order has been 
+     * created in the previous method
+     * 
+     * @param newBasketOrder
+     * @return
+     * @throws ServletException
+     * @throws IOException 
+     */
     private boolean insertOrderItems(Order newBasketOrder) 
             throws ServletException, IOException {
         List<Meal> allMeals = getAllMeals();
@@ -108,6 +123,16 @@ public class AddToBasket extends PostAction {
         return true;
     } 
     
+    /**
+     * Create new basket order (with NOT_CONFIRMED status) basis on the current 
+     * user choise from main manu
+     * 
+     * @param newBasketOrder order with items user has been chosen
+     * @throws ServletException
+     * @throws IOException
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     private void createNewBasket(Order newBasketOrder) throws ServletException, 
             IOException, SQLException, ServerOverloadedException {
         OrderCreator orderCreator = new OrderCreator();
@@ -118,28 +143,5 @@ public class AddToBasket extends PostAction {
             sendRedirect(null, null, "basket");
         }
     }
-    
-//    /**
-//     * Back to filling the form couse of uncorrect field filling and sending 
-//     * correspond error message
-//     * 
-//     * @param errorMessage text value of text property file which corresponds 
-//     * to the error message
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void startOver(String errorMessage) throws ServletException, 
-//            IOException {
-//        session.setAttribute("errorMessage", errorMessage);
-////        session.setAttribute("lastPath", request.getContextPath() + "/servlet?getAction=mainMenu");
-////        new MainMenu().execute(request, response);
-//        response.sendRedirect(request.getContextPath() 
-//                + "/servlet?getAction=mainMenu");
-//        sendRedirect(null, null, "mainMenu");
-//    }
-    
-//    private void makeRedirect() throws ServletException, IOException {
-//        response.sendRedirect(request.getContextPath() + "/servlet?getAction=basket");
-//    }
     
 }
