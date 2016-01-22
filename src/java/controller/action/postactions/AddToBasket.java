@@ -21,7 +21,7 @@ import model.entity.OrderItem;
 import model.entity.User;
 
 /**
- *
+ * Adding new items to basket
  * @author Sasha
  */
 public class AddToBasket extends PostAction {
@@ -53,23 +53,13 @@ public class AddToBasket extends PostAction {
             sendRedirect("mainmenu.message.noselectedmeals", null, "mainMenu");
             return;
         }
-        Order basketOrder = null;
-        OrderCreator orderCreator = new OrderCreator();
-        try {
-            basketOrder = orderCreator.getNotConfirmedOrder(userId);
-            if (basketOrder == null) {
-                createNewBasket(newBasketOrder);
-            } else {
-                if (orderCreator.addItemsToBasket(basketOrder, newBasketOrder)) {
-                    sendRedirect(null, null, "basket");
-                } else {
-                    sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
-                }
+        Order basketOrder = getBasketOrder(userId);
+        if (basketOrder == null) {
+            createNewBasket(newBasketOrder);
+        } else {
+            if (addItemsToBasket(basketOrder, newBasketOrder)) {
+                sendRedirect(null, null, "basket");
             }
-        } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
         }
     }
     
@@ -134,14 +124,60 @@ public class AddToBasket extends PostAction {
      * @throws ServerOverloadedException 
      */
     private void createNewBasket(Order newBasketOrder) throws ServletException, 
-            IOException, SQLException, ServerOverloadedException {
+            IOException {
         OrderCreator orderCreator = new OrderCreator();
-        int orderId = orderCreator.insertOrder(newBasketOrder);
-        if (orderId == 0) {
-            sendRedirect(null, "order.errormessage.nosuchorder", "mainMenu");
-        } else {
-            sendRedirect(null, null, "basket");
+        try {
+            int orderId = orderCreator.insertOrder(newBasketOrder);
+            if (orderId == 0) {
+                sendRedirect(null, "order.errormessage.nosuchorder", "mainMenu");
+            } else {
+                sendRedirect(null, null, "basket");
+            }
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
         }
+    }
+
+    /**
+     * Get basket order (order with status NOT_CONFIRMED)
+     * @param userId user id
+     * @return basket order
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private Order getBasketOrder(int userId) throws ServletException, IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            return orderCreator.getNotConfirmedOrder(userId);
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
+        }
+        return null;
+    }
+
+    /**
+     * Add items to basket
+     * @param basketOrder basket order was created by the current user before
+     * @param newBasketOrder new order with items are creating by user now
+     * @return true if items added successfuly or false otherwise
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private boolean addItemsToBasket(Order basketOrder, Order newBasketOrder) 
+            throws ServletException, IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            return orderCreator.addItemsToBasket(basketOrder, newBasketOrder);
+        } catch (SQLException ex) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "mainMenu");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "mainMenu");
+        }
+        return false;
     }
     
 }
