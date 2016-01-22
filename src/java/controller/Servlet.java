@@ -12,7 +12,6 @@ import controller.action.getactions.HomePage;
 import controller.action.getactions.ChangeLanguage;
 import controller.action.getactions.Contacts;
 import controller.action.getactions.Info;
-import controller.action.postactions.personal.ChangePassword;
 import controller.action.postactions.CreateAccount;
 import controller.action.getactions.LogOut;
 import controller.action.getactions.LoginRequest;
@@ -26,7 +25,9 @@ import controller.action.getactions.UserAccount;
 import controller.action.postactions.AddToBasket;
 import controller.action.postactions.BasketConfirmation;
 import controller.action.postactions.ClearBasket;
+import controller.action.postactions.personal.admin.AdminChangePassword;
 import controller.action.postactions.personal.admin.AdminSaveChanges;
+import controller.action.postactions.personal.user.UserChangePassword;
 import controller.action.postactions.personal.user.UserSaveChanges;
 import java.io.IOException;
 import java.util.HashMap;
@@ -67,12 +68,10 @@ public class Servlet extends HttpServlet {
         getActions.put("contacts", new Contacts());
         postActions.put("login", new Login());
         postActions.put("createAccount", new CreateAccount());
-//        postActions.put("makeOrder", new MakeOrder());
-//        postActions.put("confirm", new OrderConfirmation()); // delete together with classes!!!
-//        postActions.put("remove", new RemoveOrder()); // delete together with classes!!!
         postActions.put("userSaveChanges", new UserSaveChanges());
         postActions.put("adminSaveChanges", new AdminSaveChanges());
-        postActions.put("changePassword", new ChangePassword());
+        postActions.put("userChangePassword", new UserChangePassword());
+        postActions.put("adminChangePassword", new AdminChangePassword());
         postActions.put("addToBasket", new AddToBasket());
         postActions.put("basketConfirm", new BasketConfirmation());
         postActions.put("clearBasket", new ClearBasket());

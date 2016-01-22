@@ -63,7 +63,12 @@
                 <input type="text" name="confirmPassword" />
             </h3>
             <input type="submit" value=<fmt:message key="settings.button.changepassword" /> />
-            <input type="hidden" name="postAction" value="changePassword" />
+            <c:if test="${not empty user}" >
+                <input type="hidden" name="postAction" value="userChangePassword" />
+            </c:if>
+            <c:if test="${not empty admin}" >
+                <input type="hidden" name="postAction" value="adminChangePassword" />
+            </c:if>
         </form>
     </body>
 </html>

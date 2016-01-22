@@ -6,7 +6,6 @@
 package controller.action.postactions.personal;
 
 import controller.action.Validator;
-import controller.action.postactions.PostAction;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import model.entity.Person;
@@ -28,12 +27,6 @@ public abstract class SaveChanges extends PersonalPostAction {
         if (person == null) {
             return;
         }
-        
-//        Admin admin = (Admin) session.getAttribute("admin");
-//        if (admin == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-//            return;
-//        }
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
@@ -91,16 +84,6 @@ public abstract class SaveChanges extends PersonalPostAction {
         request.setAttribute("lastName", lastName);
         request.setAttribute("email", email);
     }
-
-//    /**
-//     * Get person from the session
-//     * 
-//     * @return person object if it is in the session and null otherwise (in this 
-//     * case redirection will be performed by this method)
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    protected abstract Person getPersonFromSession() throws ServletException, IOException;
 
     /**
      * Update persons' private information (first name, last name and email). If

@@ -123,7 +123,6 @@ public class Login extends PostAction {
         String lastAction = (String) session.getAttribute("lastAction");
         if (lastAction != null) {
             sendRedirect(null, null, lastAction);
-//            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + lastAction);
             return;
         }
         sendRedirect(null, null, "home");

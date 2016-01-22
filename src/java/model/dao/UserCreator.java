@@ -113,6 +113,14 @@ public class UserCreator extends EntityCreator {
         return flag;
     }
     
+    /**
+     * Change user password 
+     * @param user user object (here admin id is required only)
+     * @param newPassword new user password
+     * @return true if password changing is successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     public boolean changePassword(User user, String newPassword) throws SQLException, 
             ServerOverloadedException {
         boolean flag = false;

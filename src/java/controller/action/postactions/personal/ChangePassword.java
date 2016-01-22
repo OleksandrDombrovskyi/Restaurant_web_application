@@ -6,19 +6,15 @@
 package controller.action.postactions.personal;
 
 import controller.action.Validator;
-import controller.action.postactions.PostAction;
 import java.io.IOException;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
-import model.dao.ServerOverloadedException;
-import model.dao.UserCreator;
-import model.entity.User;
+import model.entity.Person;
 
 /**
  * Changes users' password
  * @author Sasha
  */
-public class ChangePassword extends PostAction {
+public abstract class ChangePassword extends PersonalPostAction {
 
     /**
      * Perform password changing
@@ -28,17 +24,15 @@ public class ChangePassword extends PostAction {
      */
     @Override
     protected void doExecute() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
+        Person person = getPersonFromSession();
+        if (person == null) {
             return;
         }
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
-        if (!checkPasswords(user, oldPassword, newPassword, confirmPassword) 
-                || !changePassword(user, newPassword) 
-                || !setUserToSession(user.getEmail())) {
+        if (!checkPasswords(person, oldPassword, newPassword, confirmPassword) 
+                || !changePassword(person, newPassword)) {
             return;
         }
         sendRedirect("settings.message.passwordchanged", null, "settings");
@@ -56,7 +50,7 @@ public class ChangePassword extends PostAction {
      * @return boolean true if all fields are correct and false otherwise (in 
      * this case redirection will be performed in this method)
      */
-    private boolean checkPasswords(User user, String oldPassword, 
+    private boolean checkPasswords(Person person, String oldPassword, 
             String newPassword, String confirmPassword) throws 
             ServletException, IOException {
         if ((oldPassword == null || oldPassword.equals("")) 
@@ -65,7 +59,7 @@ public class ChangePassword extends PostAction {
             sendRedirect(null, "settings.errormessage.easypasword", "settings");
             return false;
         }
-        if (!oldPassword.equals(user.getPassword())) {
+        if (!oldPassword.equals(person.getPassword())) {
             sendRedirect(null, "settings.errormessage.wrongpassword", "settings");
             return false;
         }
@@ -85,27 +79,14 @@ public class ChangePassword extends PostAction {
      * Change password. If it is successful, set user with new password to 
      * current session
      * 
-     * @param user user needs to change password
+     * @param person person needs to change password
      * @param newPassword new password
      * @return true if password cganging was seccessful and false otherwise (in 
      * this case redirection will be performed in this method)
+     * @throws javax.servlet.ServletException
+     * @throws java.io.IOException
      */
-    private boolean changePassword(User user, String newPassword) throws 
-            ServletException, IOException {
-        UserCreator userCreator = new UserCreator();
-        try {
-            if (!userCreator.changePassword(user, newPassword)) {
-                sendRedirect(null, "settings.errormessage.passwordnotchanged", "settings");
-                return false;
-            }
-            return true;
-        } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
-            return false;
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
-            return false;
-        }
-    }
+    protected abstract boolean changePassword(Person person, String newPassword) throws 
+            ServletException, IOException;
     
 }

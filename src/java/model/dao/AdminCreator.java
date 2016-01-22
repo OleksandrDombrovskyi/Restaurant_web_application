@@ -15,6 +15,7 @@ import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.Admin;
 import model.entity.Admin.AdminType;
 import model.entity.DBEntity;
+import model.entity.User;
 
 /**
  *
@@ -48,6 +49,10 @@ public class AdminCreator extends EntityCreator {
     private static final String SQL_FOR_ADMIN_UPDATING = 
             "UPDATE restaurantdatabase.admin SET "
             + "first_name = ?, last_name = ?, email = ? WHERE admin_id = ?";
+    
+    /** sql query for updating user in the data base */
+    private final static String SQL_TO_CHANGE_PASSWORD = 
+            "UPDATE restaurantdatabase.admin SET password = ? WHERE admin_id = ?";
     
     /**
      * Constructor 
@@ -236,5 +241,34 @@ public class AdminCreator extends EntityCreator {
         }
         return flag;
     }
+
+    /**
+     * Change admin password 
+     * @param admin admin object (here admin id is required only)
+     * @param newPassword new admin password
+     * @return true if password changing is successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public boolean changePassword(Admin admin, String newPassword) throws SQLException, 
+            ServerOverloadedException {
+        boolean flag = false;
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = wrapperConnection.
+                    prepareStatement(SQL_TO_CHANGE_PASSWORD)) {
+                ps.setString(1, newPassword);
+                ps.setInt(2, admin.getId());
+                ps.executeUpdate();
+                flag = true;
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return flag;
+    } 
     
 }
