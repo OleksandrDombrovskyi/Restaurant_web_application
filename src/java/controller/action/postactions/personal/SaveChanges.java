@@ -3,22 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.postactions;
+package controller.action.postactions.personal;
 
 import controller.action.Validator;
+import controller.action.postactions.PostAction;
 import java.io.IOException;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
-import model.dao.ServerOverloadedException;
-import model.dao.UserCreator;
 import model.entity.Person;
-import model.entity.User;
 
 /**
  * Saving all changes of users' private information (name, last name, email)
  * @author Sasha
  */
-public class SaveChanges extends PostAction {
+public abstract class SaveChanges extends PostAction {
 
     /**
      * Save all changes of users' private information (name, last name, email)
@@ -81,37 +78,6 @@ public class SaveChanges extends PostAction {
         }
         return true;
     }
-
-    /**
-     * Update users' private information (first name, last name and email). If
-     * updating is successful, get the same user from data base by its' email 
-     * with updated information and set it to the current session
-     * 
-     * @param newUser user object with updated private information
-     * @return true if user update was seccessful and false otherwise (in this 
-     * case redirection will be performed in this method)
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private boolean updatePerson(int userId, String firstName, String lastName, 
-            String email) throws ServletException, IOException {
-        User newUser = new User(firstName, lastName, email, "unusedPassword");
-        newUser.setId(userId);
-        UserCreator userCreator = new UserCreator();
-        try {
-            if (!userCreator.updateUser(newUser)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", "settings");
-                return false;
-            }
-            return setUserToSession(newUser.getEmail());
-        } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
-            return false;
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
-            return false;
-        }
-    }
     
     /**
      * Save previous fields values 
@@ -127,20 +93,30 @@ public class SaveChanges extends PostAction {
     }
 
     /**
-     * Get user from the session
+     * Get person from the session
      * 
-     * @return user object if it is in the session and null otherwise (in this 
+     * @return person object if it is in the session and null otherwise (in this 
      * case redirection will be performed by this method)
      * @throws ServletException
      * @throws IOException 
      */
-    private Person getPersonFromSession() throws ServletException, IOException {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return null;
-        }
-        return user;
-    }
+    protected abstract Person getPersonFromSession() throws ServletException, IOException;
+
+    /**
+     * Update persons' private information (first name, last name and email). If
+     * updating is successful, get the same person from data base by its' email 
+     * with updated information and set it to the current session
+     * 
+     * @param personId person id
+     * @param firstName person first name 
+     * @param lastName person last name
+     * @param email person email
+     * @return true if person update was seccessful and false otherwise (in this 
+     * case redirection will be performed in this method)
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected abstract boolean updatePerson(int personId, String firstName, 
+            String lastName, String email) throws ServletException, IOException;
     
 }

@@ -17,17 +17,17 @@ import controller.action.postactions.CreateAccount;
 import controller.action.getactions.LogOut;
 import controller.action.getactions.LoginRequest;
 import controller.action.getactions.MainMenu;
-import controller.action.postactions.MakeOrder;
 import controller.action.getactions.Order;
 import controller.action.getactions.Orders;
 import controller.action.getactions.Profile;
-import controller.action.postactions.SaveChanges;
 import controller.action.getactions.Settings;
 import controller.action.getactions.SignUp;
 import controller.action.getactions.UserAccount;
 import controller.action.postactions.AddToBasket;
 import controller.action.postactions.BasketConfirmation;
 import controller.action.postactions.ClearBasket;
+import controller.action.postactions.personal.admin.AdminSaveChanges;
+import controller.action.postactions.personal.user.UserSaveChanges;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +70,8 @@ public class Servlet extends HttpServlet {
 //        postActions.put("makeOrder", new MakeOrder());
 //        postActions.put("confirm", new OrderConfirmation()); // delete together with classes!!!
 //        postActions.put("remove", new RemoveOrder()); // delete together with classes!!!
-        postActions.put("saveChanges", new SaveChanges());
+        postActions.put("userSaveChanges", new UserSaveChanges());
+        postActions.put("adminSaveChanges", new AdminSaveChanges());
         postActions.put("changePassword", new ChangePassword());
         postActions.put("addToBasket", new AddToBasket());
         postActions.put("basketConfirm", new BasketConfirmation());

@@ -44,6 +44,11 @@ public class AdminCreator extends EntityCreator {
     private static final String SQL_FOR_ADMIN_BY_EMAIL = 
             "SELECT * FROM restaurantdatabase.admin WHERE email = ?";
     
+    /** sql query for updating admin in the data base */
+    private static final String SQL_FOR_ADMIN_UPDATING = 
+            "UPDATE restaurantdatabase.admin SET "
+            + "first_name = ?, last_name = ?, email = ? WHERE admin_id = ?";
+    
     /**
      * Constructor 
      */
@@ -168,7 +173,8 @@ public class AdminCreator extends EntityCreator {
         WrapperConnectionProxy wrapperConnection = null;
         try {
             wrapperConnection = CONNECTION_POOL.getConnection();
-            PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_ADMIN_BY_EMAIL);
+            PreparedStatement ps = wrapperConnection.
+                    prepareStatement(SQL_FOR_ADMIN_BY_EMAIL);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -199,6 +205,36 @@ public class AdminCreator extends EntityCreator {
         Admin newAdmin = new Admin(firstName, lastName, email, password, adminType);
         newAdmin.setId(id);
         return newAdmin;
+    }
+
+    /**
+     * Update admin' private information (first name, last name and email only)
+     * @param newAdmin admin object with new information
+     * @return boolean true if updating was successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public boolean updateAdmin(Admin newAdmin) throws SQLException, 
+            ServerOverloadedException {
+        boolean flag = false;
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = wrapperConnection.
+                    prepareStatement(SQL_FOR_ADMIN_UPDATING)) {
+                ps.setString(1, newAdmin.getFirstName());
+                ps.setString(2, newAdmin.getLastName());
+                ps.setString(3, newAdmin.getEmail());
+                ps.setInt(4, newAdmin.getId());
+                ps.executeUpdate();
+                flag = true;
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return flag;
     }
     
 }

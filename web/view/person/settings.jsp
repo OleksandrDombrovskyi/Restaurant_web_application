@@ -41,7 +41,12 @@
                 <input type="text" name="email" value="${email}" />
             </h3>
             <input type="submit" value=<fmt:message key="settings.button.savechanges" /> />
-            <input type="hidden" name="postAction" value="saveChanges" />
+            <c:if test="${not empty user}" >
+                <input type="hidden" name="postAction" value="userSaveChanges" />
+            </c:if>
+            <c:if test="${not empty admin}" >
+                <input type="hidden" name="postAction" value="adminSaveChanges" />
+            </c:if>
         </form>
             <hr/>
         <form action="servlet" method="post" >

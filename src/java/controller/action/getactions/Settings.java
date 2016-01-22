@@ -32,13 +32,13 @@ public class Settings extends GetAction {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             setParameters(user);
-            goToPage("settings.text.title", "/view/user/settings.jsp");
+            goToPage("settings.text.title", "/view/person/settings.jsp");
             return;
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
             setParameters(admin);
-            goToPage("settings.text.title", "/view/user/settings.jsp");
+            goToPage("settings.text.title", "/view/person/settings.jsp");
             return;
         }
         sendRedirect(null, "login.errormessage.loginplease", "home");

@@ -41,6 +41,7 @@ public class UserCreator extends EntityCreator {
             "UPDATE restaurantdatabase.user SET "
             + "first_name = ?, last_name = ?, email = ? WHERE user_id = ?";
     
+    /** sql query for updating user in the data base */
     private final static String SQL_TO_CHANGE_PASSWORD = 
             "UPDATE restaurantdatabase.user SET password = ? WHERE user_id = ?";
     
