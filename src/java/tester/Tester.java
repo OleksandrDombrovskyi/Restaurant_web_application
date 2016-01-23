@@ -11,13 +11,14 @@ import java.util.logging.Logger;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Order;
+import model.entity.Order.OrderStatus;
 
 /**
  *
  * @author Sasha
  */
 public class Tester {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
 //        Timestamp date = new Timestamp(new Date().getTime());
 //        Order order = new Order(1, OrderStatus.NOT_CONFIRMED, BigDecimal.TEN, date);
 //        Meal meal1 = new Meal(BigDecimal.ONE, "Express Lunch", "mealName", "veryLongDescription", 10);
@@ -70,13 +71,16 @@ public class Tester {
 //        System.out.println(Order.OrderStatus.CRETATED.name());
         Order order;
         try {
-            orderCreator.confirmBasket(3);
+            orderCreator.setOrderStatus(12, OrderStatus.ACCEPTED);
+            
 //            System.out.println("order itdem1: " + order.getOrderItems().get(0));
 //            System.out.println("order itdem2: " + order.getOrderItems().get(1));
 //            System.out.println("basket confirmation, no basket: " + orderCreator.confirmBasket(2));
 //            System.out.println("basket confirmation, yes basket: " + orderCreator.confirmBasket(1));
         } catch (ServerOverloadedException ex) {
             Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }

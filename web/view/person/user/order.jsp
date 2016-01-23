@@ -63,11 +63,11 @@
             <c:when test="${order.status == 'CREATED'}">
                 <fmt:message key="order.status.created" />
             </c:when>
-            <c:when test="${order.status == 'VAITING'}">
-                <fmt:message key="order.status.vaiting" />
+            <c:when test="${order.status == 'ACCEPTED'}">
+                <fmt:message key="order.status.accepted" />
             </c:when>
-            <c:when test="${order.status == 'PREPARING'}">
-                <fmt:message key="order.status.preparing" />
+            <c:when test="${order.status == 'PREPARED'}">
+                <fmt:message key="order.status.prepared" />
             </c:when>
             <c:when test="${order.status == 'READY'}">
                 <fmt:message key="order.status.ready" />
@@ -77,7 +77,6 @@
             </c:when>
             <c:otherwise>undefined</c:otherwise>
         </c:choose>    
-            </h3> 
-            
+            </h3>   
     </body>
 </html>

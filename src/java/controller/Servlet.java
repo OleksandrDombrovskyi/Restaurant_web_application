@@ -33,6 +33,7 @@ import controller.action.postactions.personal.user.BasketConfirmation;
 import controller.action.postactions.personal.user.ClearBasket;
 import controller.action.postactions.personal.admin.AdminChangePassword;
 import controller.action.postactions.personal.admin.AdminSaveChanges;
+import controller.action.postactions.personal.admin.SendToKitchen;
 import controller.action.postactions.personal.user.UserChangePassword;
 import controller.action.postactions.personal.user.UserSaveChanges;
 import java.io.IOException;
@@ -87,6 +88,7 @@ public class Servlet extends HttpServlet {
         postActions.put("addToBasket", new AddToBasket());
         postActions.put("basketConfirm", new BasketConfirmation());
         postActions.put("clearBasket", new ClearBasket());
+        postActions.put("sendToKitchen", new SendToKitchen());
     }
     
     @Override

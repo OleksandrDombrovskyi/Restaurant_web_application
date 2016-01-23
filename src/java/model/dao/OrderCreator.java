@@ -86,6 +86,11 @@ public class OrderCreator extends EntityCreator {
             + "(SELECT SUM(price) FROM restaurantdatabase.order_items "
             + "WHERE order_id = ?)";
     
+    /** set required order status */
+    private static final String SQL_FOR_ORDER_STATUS_SETTING = 
+            "UPDATE restaurantdatabase.order SET status = ? "
+            + "WHERE order_id = ?";
+    
     /**
      * Constructor 
      */
@@ -467,6 +472,33 @@ public class OrderCreator extends EntityCreator {
                     prepareStatement(SQL_FOR_PRICE_UPDATING)) {
                 ps.setInt(1, orderId);
                 ps.executeUpdate();
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+    }
+    
+    /**
+     * Set status of order with concrete id 
+     * 
+     * @param orderId order id
+     * @param orderStatus order status
+     * @return 0 if there is no orders with such id and 1 status setting was 
+     * performed successfully (see more in JavaDocs for PreparedStatement.executeUpdate)
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public int setOrderStatus(int orderId, OrderStatus orderStatus) throws SQLException, 
+            ServerOverloadedException {
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = wrapperConnection.prepareStatement(SQL_FOR_ORDER_STATUS_SETTING)) {
+                ps.setString(1, orderStatus.name());
+                ps.setInt(2, orderId);
+                return ps.executeUpdate();
             }
         } finally {
             if (wrapperConnection != null) {

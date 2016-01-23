@@ -63,24 +63,32 @@
             </tr>
         </table>
             <h3>  
-        <c:choose>
-            <c:when test="${order.status == 'CREATED'}">
-                <fmt:message key="order.status.created" />
-            </c:when>
-            <c:when test="${order.status == 'VAITING'}">
-                <fmt:message key="order.status.vaiting" />
-            </c:when>
-            <c:when test="${order.status == 'PREPARING'}">
-                <fmt:message key="order.status.preparing" />
-            </c:when>
-            <c:when test="${order.status == 'READY'}">
-                <fmt:message key="order.status.ready" />
-            </c:when>
-            <c:when test="${order.status == 'PAYED'}">
-                <fmt:message key="order.status.payed" />
-            </c:when>
-            <c:otherwise>undefined</c:otherwise>
-        </c:choose>    
+                <form action="servlet" method="post" >
+                    <c:choose>
+                        <c:when test="${order.status == 'CREATED'}">
+                            <fmt:message key="order.status.created" />
+                            <input type="submit" value="Send to the kitchen" />
+                            <input type="hidden" name="postAction" value="sendToKitchen" />
+                            <input type="hidden" name="orderId" value="${order.id}" />
+                        </c:when>
+                        <c:when test="${order.status == 'ACCEPTED'}">
+                            <fmt:message key="order.status.accepted" />
+                        </c:when>
+                        <c:when test="${order.status == 'PREPARED'}">
+                            <fmt:message key="order.status.prepared" />
+                            <input type="submit" value="Confirm prepared order" />
+                            <input type="hidden" name="postAction" value="confirmPreparedOrder" />
+                            <input type="hidden" name="orderId" value="${order.id}" />
+                        </c:when>
+                        <c:when test="${order.status == 'READY'}">
+                            <fmt:message key="order.status.ready" />
+                        </c:when>
+                        <c:when test="${order.status == 'PAYED'}">
+                            <fmt:message key="order.status.payed" />
+                        </c:when>
+                        <c:otherwise>undefined</c:otherwise>
+                    </c:choose>  
+                </form>
             </h3> 
     </body>
 </html>
