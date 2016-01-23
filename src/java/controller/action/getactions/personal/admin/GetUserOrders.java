@@ -6,15 +6,15 @@
 package controller.action.getactions.personal.admin;
 
 import controller.action.ConcreteLink;
+import controller.action.getactions.personal.AbstractOrders;
+import controller.action.getactions.personal.Profile;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
+import model.dao.UserCreator;
 import model.entity.Admin;
 import model.entity.Order;
 import model.entity.User;
@@ -23,7 +23,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class GetAllOrders extends AdminGetAction {
+public class GetUserOrders extends AbstractOrders {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
@@ -32,52 +32,44 @@ public class GetAllOrders extends AdminGetAction {
             sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
-        List<Order> orders = getAllOrders();
+        String userIdString = request.getParameter("userId");
+        if (userIdString == null) {
+            sendRedirect(null, "administration.user.errormessage.wrongparameteruserid", "getUsers");
+            return;
+        }
+        int userId = Integer.parseInt(userIdString);
+        User concreteUser = getUserById(userId);
+        if (concreteUser == null) {
+            sendRedirect(null, "administration.user.errormessage.nosuchuser", "getUsers");
+            return;
+        }
+        List<Order> orders = getOrdersByUserId(userId);
         if (orders == null || orders.size() < 1) {
-            request.setAttribute("message", "administration.orders.message.noorders");
+            request.setAttribute("message", "administration.user.message.noorders");
         } else {
-            request.setAttribute("orders", orders);
+            concreteUser.setOrders(orders);
+            request.setAttribute("concreteUser", concreteUser);
         }
-        List<User> users = getAllUsers();
-        if (users == null || users.size() < 1) {
-            request.setAttribute("message", "administration.users.message.nousers");
-        } else {
-            Map<Integer, User> userMap = createUserMap(users);
-            request.setAttribute("userMap", userMap);
-        }
-        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
+        goToPage("administration.user.orders.text.title", "/view/person/admin/userorders.jsp");
     }
-    
+
     /**
-     * Get all orders from data base
-     * @return list oof orders
+     * Get user by id
+     * @param userId user id
+     * @return user object
      * @throws ServletException
      * @throws IOException 
      */
-    private List<Order> getAllOrders() throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+    private User getUserById(int userId) throws ServletException, IOException {
+        UserCreator userCreator = new UserCreator();
         try {
-            return (List<Order>) orderCreator.getAllEntities();
+            return (User) userCreator.getEntityById(userId);
         } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "administration");
-            return null;
+            sendRedirect(null, "exception.errormessage.sqlexception", "getAllOrders");
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
-            return null;
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "getAllOrders");
         }
-    }
-    
-    /**
-     * Create user map: key is user id, value = user object
-     * @param users list of users
-     * @return hash map with users by user id keys
-     */
-    private Map<Integer, User> createUserMap(List<User> users) {
-        Map<Integer, User> userMap = new HashMap<>();
-        for (User user : users) {
-            userMap.put(user.getId(), user);
-        }
-        return userMap;
+        return null;
     }
     
     /**

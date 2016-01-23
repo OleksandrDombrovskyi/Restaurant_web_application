@@ -6,15 +6,10 @@
 package controller.action.getactions.personal.admin;
 
 import controller.action.ConcreteLink;
-import controller.action.getactions.GetAction;
-import controller.action.getactions.HomePage;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.ServerOverloadedException;
-import model.dao.UserCreator;
 import model.entity.Admin;
 import model.entity.User;
 
@@ -22,7 +17,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class GetUsers extends GetAction {
+public class GetUsers extends AdminGetAction {
 
     /**
      * Get all users from data base and show them
@@ -38,30 +33,11 @@ public class GetUsers extends GetAction {
         }
         List<User> users = getAllUsers();
         if (users == null || users.size() < 1) {
-            request.setAttribute("message", "administration.user.message.nousers");
+            request.setAttribute("message", "administration.users.message.nousers");
         } else {
             request.setAttribute("users", users);
         }
-        goToPage("users.text.title", "/view/person/admin/users.jsp");
-    }
-    
-    /**
-     * Get all users from data base
-     * @return list of users
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private List<User> getAllUsers() throws ServletException, IOException {
-        UserCreator userCreator = new UserCreator();
-        try {
-            return (List<User>) userCreator.getAllEntities();
-        } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "administration");
-            return null;
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
-            return null;
-        }
+        goToPage("administration.user.text.title", "/view/person/admin/users.jsp");
     }
     
     /**

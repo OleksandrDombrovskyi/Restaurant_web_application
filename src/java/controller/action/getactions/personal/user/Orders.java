@@ -5,16 +5,13 @@
  */
 package controller.action.getactions.personal.user;
 
-import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
-import controller.action.getactions.GetAction;
+import controller.action.getactions.personal.AbstractOrders;
+import controller.action.getactions.personal.Profile;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
-import model.dao.ServerOverloadedException;
 import model.entity.Order;
 import model.entity.User;
 
@@ -22,7 +19,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Orders extends GetAction {
+public class Orders extends AbstractOrders {
 
     /**
      * Show all users' orders
@@ -43,28 +40,7 @@ public class Orders extends GetAction {
         } else {
             request.setAttribute("orders", orders);
         }
-        goToPage("orders.text.title", "/view/person/orders.jsp");
-    }
-    
-    /**
-     * Get all orders by user id
-     * @param userId user id
-     * @return orders if they exist in data base or null otherwise
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private List<Order> getOrdersByUserId(int userId) 
-            throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
-        try {
-            return (List<Order>) orderCreator.getOrdersByUserId(userId);
-        } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "profile");
-            return null;
-        } catch (ServerOverloadedException e) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
-            return null;
-        }
+        goToPage("orders.text.title", "/view/person/user/orders.jsp");
     }
     
     /**

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions.personal;
+package controller.action.getactions.personal.user;
 
 import controller.action.getactions.personal.user.Orders;
 import controller.action.ConcreteLink;
@@ -53,7 +53,7 @@ public class Order extends GetAction {
         if (admin != null || checkUserValidation(user, order)) {
             request.setAttribute("order", order);
             request.setAttribute("items", order.getOrderItems());
-            goToPage("order.text.title", "/view/person/order.jsp");
+            goToPage("order.text.title", "/view/person/user/order.jsp");
         } else {
             sendRedirect(null, "login.errormessage.loginplease", "home");
         }
