@@ -3,49 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions.personal.admin;
+package controller.action.getactions.personal.kitchen;
 
 import controller.action.ConcreteLink;
+import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
-import model.dao.ServerOverloadedException;
-import model.entity.Admin;
+import model.entity.Kitchen;
 import model.entity.Order;
-import model.entity.User;
+import model.entity.Order.OrderStatus;
 
 /**
  *
  * @author Sasha
  */
-public class GetAllOrders extends AdminGetAction {
+public class GetAcceptedOrders extends AbstractOrders {
 
+    /**
+     * Get and output all accepted by admin orders
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (admin == null) {
+        Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
+        if (kitchen == null) {
             sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
-        List<Order> orders = getAllOrders();
+        List<Order> orders = getOrdersByStatus(OrderStatus.ACCEPTED);
         if (orders == null || orders.size() < 1) {
-            request.setAttribute("message", "administration.orders.message.noorders");
+            session.setAttribute("message", "kitchen.message.noacceptedorders");
         } else {
             request.setAttribute("orders", orders);
         }
-        List<User> users = getAllUsers();
-        if (users == null || users.size() < 1) {
-            request.setAttribute("message", "administration.users.message.nousers");
-        } else {
-            Map<Integer, User> userMap = createUserMap(users);
-            request.setAttribute("userMap", userMap);
-        }
-        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
+        goToPage("kitchen.acceptedorders.text.title", "/view/kitchen/acceptedorders.jsp");
     }
     
     /**
@@ -58,9 +52,8 @@ public class GetAllOrders extends AdminGetAction {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        links.addAll(new Administration().getLink());
-        String linkValue = "/servlet?getAction=getAllOrders";
-        String linkName = "administration.orders.text.title";
+        String linkValue = "/servlet?getAction=showAcceptedOrders";
+        String linkName = "kitchen.authorization.link.showorders";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

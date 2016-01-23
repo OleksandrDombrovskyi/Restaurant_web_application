@@ -9,16 +9,16 @@ import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import model.entity.Admin;
-import model.entity.Order.OrderStatus;
+import model.entity.Order;
 
 /**
- * Send order to kitchen by admin (change order status to ACCEPTED)
+ * Setting order status to READY
  * @author Sasha
  */
-public class SendToKitchen extends SetOrderStatus {
-    
+public class ConfirmPreparedOrder extends SetOrderStatus {
+
     /**
-     * Set ACCEPTED status to concrete order 
+     * Set READY order status 
      * @throws ServletException
      * @throws IOException 
      */
@@ -35,10 +35,10 @@ public class SendToKitchen extends SetOrderStatus {
             return;
         }
         int orderId = Integer.parseInt(orderIdString);
-        if (!setStatus(orderId, OrderStatus.ACCEPTED)) {
+        if (!setStatus(orderId, Order.OrderStatus.READY)) {
             return;
         }
         sendRedirect(null, null);
     }
-
+    
 }

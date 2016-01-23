@@ -71,6 +71,11 @@
             </c:when>
             <c:when test="${order.status == 'READY'}">
                 <fmt:message key="order.status.ready" />
+                <form action="servlet" method="post" >
+                    <input type="submit" value="<fmt:message key="order.button.pay" />" />
+                    <input type="hidden" name="postAction" value="payOrder" />
+                    <input type="hidden" name="orderId" value="${order.id}" />
+                </form>
             </c:when>
             <c:when test="${order.status == 'PAYED'}">
                 <fmt:message key="order.status.payed" />

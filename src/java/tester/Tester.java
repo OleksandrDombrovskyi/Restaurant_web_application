@@ -8,10 +8,11 @@ package tester;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.dao.KitchenCreator;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
+import model.entity.Kitchen;
 import model.entity.Order;
-import model.entity.Order.OrderStatus;
 
 /**
  *
@@ -70,8 +71,12 @@ public class Tester {
 //        }
 //        System.out.println(Order.OrderStatus.CRETATED.name());
         Order order;
+        KitchenCreator kitchenCreator = new KitchenCreator();
+        Kitchen kitchen = null;
         try {
-            orderCreator.setOrderStatus(12, OrderStatus.ACCEPTED);
+            kitchen = (Kitchen) kitchenCreator.getKitchenByEmail("kit@gmail.com");
+            System.out.println("password: " + kitchen.getPassword());
+//            orderCreator.setOrderStatus(12, OrderStatus.ACCEPTED);
             
 //            System.out.println("order itdem1: " + order.getOrderItems().get(0));
 //            System.out.println("order itdem2: " + order.getOrderItems().get(1));

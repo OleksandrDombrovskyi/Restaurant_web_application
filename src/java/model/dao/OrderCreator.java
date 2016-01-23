@@ -91,6 +91,11 @@ public class OrderCreator extends EntityCreator {
             "UPDATE restaurantdatabase.order SET status = ? "
             + "WHERE order_id = ?";
     
+    /** sql for getting orders by status */
+    private static final String SQL_FOR_ORDERS_BY_STATUS = 
+            "SELECT * FROM restaurantdatabase.order "
+            + "WHERE status = ?";
+    
     /**
      * Constructor 
      */
@@ -375,23 +380,23 @@ public class OrderCreator extends EntityCreator {
         }
         return null;
     }
-
-    public void createBasketOrder(int userId) throws SQLException, 
-            ServerOverloadedException {
-        WrapperConnectionProxy wrapperConnection = null;
-        try {
-            wrapperConnection = CONNECTION_POOL.getConnection();
-            try (PreparedStatement ps = wrapperConnection.
-                    prepareStatement(SQL_FOR_INSERTING_BASKET)){
-                ps.setInt(1, userId);
-                ps.executeUpdate();
-            }
-        } finally {
-            if (wrapperConnection != null) {
-                wrapperConnection.close();
-            }
-        }
-    }
+//
+//    public void createBasketOrder(int userId) throws SQLException, 
+//            ServerOverloadedException {
+//        WrapperConnectionProxy wrapperConnection = null;
+//        try {
+//            wrapperConnection = CONNECTION_POOL.getConnection();
+//            try (PreparedStatement ps = wrapperConnection.
+//                    prepareStatement(SQL_FOR_INSERTING_BASKET)){
+//                ps.setInt(1, userId);
+//                ps.executeUpdate();
+//            }
+//        } finally {
+//            if (wrapperConnection != null) {
+//                wrapperConnection.close();
+//            }
+//        }
+//    }
 
     /**
      * Set CREATED (instead of NOT_CONFIRMED) status to the basket order for 
@@ -505,6 +510,36 @@ public class OrderCreator extends EntityCreator {
                 wrapperConnection.close();
             }
         }
+    }
+    
+    /**
+     * Get all orders with concrete status (orders without items)
+     * 
+     * @param orderStatus order status 
+     * @return list of orders
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
+    public List<Order> getOrdersByStatus(OrderStatus orderStatus)
+        throws SQLException, ServerOverloadedException {
+        List<Order> orders = new ArrayList<>();
+        WrapperConnectionProxy wrapperConnection = null;
+        try {
+            wrapperConnection = CONNECTION_POOL.getConnection();
+            try (PreparedStatement ps = wrapperConnection.
+                    prepareStatement(SQL_FOR_ORDERS_BY_STATUS)) {
+                ps.setString(1, orderStatus.name());
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    orders.add(getOrderWithoutItems(rs));
+                }
+            }
+        } finally {
+            if (wrapperConnection != null) {
+                wrapperConnection.close();
+            }
+        }
+        return orders;
     }
     
 }

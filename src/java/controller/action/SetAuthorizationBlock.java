@@ -8,6 +8,7 @@ package controller.action;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import model.entity.Admin;
+import model.entity.Kitchen;
 import model.entity.User;
 
 /**
@@ -23,20 +24,26 @@ public class SetAuthorizationBlock extends Action {
      */
     @Override
     public void doExecute() throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            request.getRequestDispatcher("/view/person/user/authorization.jsp").
-                    include(request, response);
-            return;
-        }
-        Admin admin = (Admin) request.getSession().getAttribute("admin");
-        if (admin != null) {
-            request.getRequestDispatcher("/view/person/admin/authorization.jsp").
-                    include(request, response);
-            return;
-        }
-        request.getRequestDispatcher("/view/guest/authorization.jsp").
-                include(request, response);
+//        User user = (User) session.getAttribute("user");
+//        if (user != null) {
+//            request.getRequestDispatcher("/view/person/user/authorization.jsp").
+//                    include(request, response);
+//            return;
+//        }
+//        Admin admin = (Admin) session.getAttribute("admin");
+//        if (admin != null) {
+//            request.getRequestDispatcher("/view/person/admin/authorization.jsp").
+//                    include(request, response);
+//            return;
+//        }
+//        Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
+//        if (kitchen != null) {
+//            request.getRequestDispatcher("/view/kitchen/authorization.jsp").
+//                    include(request, response);
+//            return;
+//        }
+//        request.getRequestDispatcher("/view/guest/authorization.jsp").
+//                include(request, response);
     }
     
 }

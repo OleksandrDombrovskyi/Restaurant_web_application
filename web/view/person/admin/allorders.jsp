@@ -18,7 +18,43 @@
     </head>
     <body>
         <h3>
-            <fmt:message key="administration.orders.text.title" />
+            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=CREATED" >
+                <fmt:message key="administration.orders.link.created" /> | 
+            </a>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=ACCEPTED" >
+                <fmt:message key="administration.orders.link.accepted" /> | 
+            </a>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=PREPARED" >
+                <fmt:message key="administration.orders.link.prepared" /> | 
+            </a>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=READY" >
+                <fmt:message key="administration.orders.link.ready" /> | 
+            </a>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=PAYED" >
+                <fmt:message key="administration.orders.link.payed" /> | 
+            </a>
+        </h3>
+        <h3>
+            <c:choose>
+                <c:when test="${status == 'CREATED'}">
+                    <fmt:message key="administration.orders.link.created" />
+                </c:when>
+                <c:when test="${status == 'ACCEPTED'}">
+                    <fmt:message key="administration.orders.link.accepted" />
+                </c:when>
+                <c:when test="${status == 'PREPARED'}">
+                    <fmt:message key="administration.orders.link.prepared" />
+                </c:when>
+                <c:when test="${status == 'READY'}">
+                    <fmt:message key="administration.orders.link.ready" />
+                </c:when>
+                <c:when test="${status == 'PAYED'}">
+                    <fmt:message key="administration.orders.link.payed" />
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="administration.orders.text.title" />
+                </c:otherwise>
+            </c:choose>
         </h3>
         <h3>
         <c:if test="${not empty errorMessage}" >
@@ -58,7 +94,7 @@
                                         <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=${order.status}" >
                                         <h3>
                                             <c:choose>
                                                 <c:when test="${order.status == 'NOT_CONFIRMED'}">

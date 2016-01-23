@@ -82,7 +82,7 @@
                                         <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=${order.status}" >
                                         <h3>
                                             <c:choose>
                                                 <c:when test="${order.status == 'NOT_CONFIRMED'}">

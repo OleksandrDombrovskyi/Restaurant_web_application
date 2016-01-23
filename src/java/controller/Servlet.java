@@ -24,16 +24,22 @@ import controller.action.getactions.SignUp;
 import controller.action.getactions.personal.admin.Administration;
 import controller.action.getactions.personal.admin.GetAllOrders;
 import controller.action.getactions.personal.admin.GetOrderAdmin;
+import controller.action.getactions.personal.admin.GetOrderByStatus;
 import controller.action.getactions.personal.admin.GetUser;
 import controller.action.getactions.personal.admin.GetUserOrders;
 import controller.action.getactions.personal.admin.GetUsers;
+import controller.action.getactions.personal.kitchen.GetAcceptedOrders;
+import controller.action.getactions.personal.kitchen.GetOrderKitchen;
+import controller.action.getactions.personal.kitchen.SetPreparedStatus;
 import controller.action.getactions.personal.user.UserAccount;
 import controller.action.postactions.personal.user.AddToBasket;
 import controller.action.postactions.personal.user.BasketConfirmation;
 import controller.action.postactions.personal.user.ClearBasket;
 import controller.action.postactions.personal.admin.AdminChangePassword;
 import controller.action.postactions.personal.admin.AdminSaveChanges;
+import controller.action.postactions.personal.admin.ConfirmPreparedOrder;
 import controller.action.postactions.personal.admin.SendToKitchen;
+import controller.action.postactions.personal.user.PayOrder;
 import controller.action.postactions.personal.user.UserChangePassword;
 import controller.action.postactions.personal.user.UserSaveChanges;
 import java.io.IOException;
@@ -79,6 +85,9 @@ public class Servlet extends HttpServlet {
         getActions.put("getUser", new GetUser());
         getActions.put("getUserOrders", new GetUserOrders());
         getActions.put("getOrderAdmin", new GetOrderAdmin());
+        getActions.put("showAcceptedOrders", new GetAcceptedOrders());
+        getActions.put("getOrderKitchen", new GetOrderKitchen());
+        getActions.put("getOrderByStatus", new GetOrderByStatus());
         postActions.put("login", new Login());
         postActions.put("createAccount", new CreateAccount());
         postActions.put("userSaveChanges", new UserSaveChanges());
@@ -89,6 +98,9 @@ public class Servlet extends HttpServlet {
         postActions.put("basketConfirm", new BasketConfirmation());
         postActions.put("clearBasket", new ClearBasket());
         postActions.put("sendToKitchen", new SendToKitchen());
+        postActions.put("setPreparedStatus", new SetPreparedStatus());
+        postActions.put("confirmPreparedOrder", new ConfirmPreparedOrder());
+        postActions.put("payOrder", new PayOrder());
     }
     
     @Override

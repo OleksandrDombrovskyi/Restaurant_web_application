@@ -27,7 +27,10 @@
         <c:if test="${not empty admin}" >
             <jsp:include page="/view/person/admin/authorization.jsp" flush="true" />
         </c:if>
-        <c:if test="${empty user and empty admin}" >
+        <c:if test="${not empty kitchen}" >
+            <jsp:include page="/view/kitchen/authorization.jsp" flush="true" />
+        </c:if>
+        <c:if test="${empty user and empty admin and empty kitchen}" >
             <jsp:include page="/view/guest/authorization.jsp" flush="true" />
         </c:if>
         

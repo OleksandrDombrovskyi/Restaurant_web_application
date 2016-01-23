@@ -67,7 +67,7 @@
                     <c:choose>
                         <c:when test="${order.status == 'CREATED'}">
                             <fmt:message key="order.status.created" />
-                            <input type="submit" value="Send to the kitchen" />
+                            <input type="submit" value="<fmt:message key="administration.user.order.button.sendtokitchen" />" />
                             <input type="hidden" name="postAction" value="sendToKitchen" />
                             <input type="hidden" name="orderId" value="${order.id}" />
                         </c:when>
@@ -76,7 +76,7 @@
                         </c:when>
                         <c:when test="${order.status == 'PREPARED'}">
                             <fmt:message key="order.status.prepared" />
-                            <input type="submit" value="Confirm prepared order" />
+                            <input type="submit" value="<fmt:message key="administration.user.order.button.confirmpreparedorder" />" />
                             <input type="hidden" name="postAction" value="confirmPreparedOrder" />
                             <input type="hidden" name="orderId" value="${order.id}" />
                         </c:when>

@@ -5,11 +5,9 @@
  */
 package controller.action.getactions.personal;
 
-import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import model.dao.OrderCreator;
@@ -39,6 +37,28 @@ public abstract class AbstractOrders extends GetAction {
             return null;
         } catch (ServerOverloadedException e) {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
+            return null;
+        }
+    }
+    
+    /**
+     * Get all orders with concrete status
+     * 
+     * @param orderStatus concrete status
+     * @return list of orders 
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected List<Order> getOrdersByStatus(Order.OrderStatus orderStatus) throws ServletException, 
+            IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            return (List<Order>) orderCreator.getOrdersByStatus(orderStatus);
+        } catch (SQLException e) {
+            sendRedirect(null, "exception.errormessage.sqlexception");
+            return null;
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded");
             return null;
         }
     }

@@ -13,8 +13,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
+import model.entity.Order;
 import model.entity.User;
 
 /**
@@ -66,17 +68,64 @@ public abstract class Action {
      */
     protected void sendRedirect(String message, String errorMessage, String action) 
             throws ServletException, IOException {
+        setMessages(message, errorMessage);
+        if (action != null && !action.equals("")) {
+            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + action);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
+        }
+    }
+    
+    /**
+     * Send redirect to the same page
+     * @param message message if it is required in some case
+     * @param errorMessage error message if it is required in some case
+     * @throws ServletException 
+     * @throws IOException 
+     */
+    protected void sendRedirect(String message, String errorMessage)
+            throws ServletException, IOException {
+        setMessages(message, errorMessage);
+        String path = request.getHeader("Referer");
+        if (path != null) {
+            response.sendRedirect(path);
+            return;
+        }
+        response.sendRedirect(request.getContextPath() + "/");
+    }
+    
+    /**
+     * Set messages if they exist
+     * @param message message
+     * @param errorMessage error message
+     */
+    private void setMessages(String message, String errorMessage) {
         if (message != null && !message.equals("")) {
             session.setAttribute("message", message);
         }
         if (errorMessage != null && !errorMessage.equals("")) {
             session.setAttribute("errorMessage", errorMessage);
         }
-        if (action != null && !action.equals("")) {
-            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + action);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
+    }
+    
+    /**
+     * Get order by id
+     * 
+     * @param orderId order id
+     * @return order object
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected Order getOrderById(int orderId) throws ServletException, IOException {
+        OrderCreator orderCreator = new OrderCreator();
+        try {
+            return (Order) orderCreator.getEntityById(orderId);
+        } catch (SQLException e) {
+            sendRedirect(null, "exception.errormessage.sqlexception");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded");
         }
+        return null;
     }
     
 }

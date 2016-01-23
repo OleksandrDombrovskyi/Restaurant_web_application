@@ -24,6 +24,7 @@ public class LogOut extends Action {
     public void doExecute() throws ServletException, IOException {
         session.removeAttribute("user");
         session.removeAttribute("admin");
+        session.removeAttribute("kitchen");
         response.sendRedirect(request.getHeader("Referer"));
     }
     

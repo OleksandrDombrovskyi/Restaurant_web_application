@@ -35,11 +35,6 @@
             <a href="${pageContext.request.contextPath}/servlet?getAction=getAllOrders" >
                 <fmt:message key="administration.link.getorders" />
             </a>
-        </h3>
-        <h3>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=editMenu" >
-                <fmt:message key="administration.link.editmainmenu" />
-            </a>
         </h3> 
     </body>
 </html>

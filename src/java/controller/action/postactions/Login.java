@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.AdminCreator;
+import model.dao.KitchenCreator;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.Admin;
+import model.entity.Kitchen;
 import model.entity.User;
 
 /**
@@ -36,7 +38,9 @@ public class Login extends PostAction {
         }
         if (!userAuthorization(email, password)) {
             if (!adminAuthorization(email, password)) {
-                sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
+                if (!kitchenAuthorization(email, password)) {
+                    sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
+                }
             }
         }
     }
@@ -102,6 +106,43 @@ public class Login extends PostAction {
             if (admin.getPassword().equals(password)) {
                 session.setAttribute("admin", admin);
                 showLastPage();
+            } else {
+                sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
+            }
+        } catch (ServerOverloadedException e) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "loginRequest");
+        } catch (SQLException e) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "loginRequest");
+        }
+        return true;
+    }
+    
+    /**
+     * Authorization of kitchen if there is one in the data base and in case of 
+     * paswords matching
+     * 
+     * @param email kitchens' email
+     * @param password kitchens' password
+     * @return true if kitchen was at least founded in the data base, does not 
+     * matter whether do passwords match or not, and false if there is no kitchen 
+     * with such email
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private boolean kitchenAuthorization(String email, String password) 
+            throws ServletException, IOException {
+        KitchenCreator creator = new KitchenCreator();
+        Kitchen kitchen = null;
+        try {
+            kitchen = (Kitchen) creator.getKitchenByEmail(email);
+            if (kitchen == null) {
+                return false;
+            }
+            if (kitchen.getPassword().equals(password)) {
+                session.setAttribute("kitchen", kitchen);
+                sendRedirect(null, null, "showAcceptedOrders");
+//                goToPage("kitchen.text.title", "/view/kitchen/acceptedorders.jsp");
             } else {
                 sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
             }

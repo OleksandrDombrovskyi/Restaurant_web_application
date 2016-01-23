@@ -3,52 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions.personal.admin;
+package controller.action.getactions.personal.kitchen;
 
 import controller.action.ConcreteLink;
+import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
-import model.dao.ServerOverloadedException;
-import model.entity.Admin;
+import model.entity.Kitchen;
 import model.entity.Order;
-import model.entity.User;
 
 /**
  *
  * @author Sasha
  */
-public class GetOrderAdmin extends AdminGetAction {
+public class GetOrderKitchen extends AbstractOrders {
 
     @Override
     protected void doExecute() throws ServletException, IOException {
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (admin == null) {
+        Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
+        if (kitchen == null) {
             sendRedirect(null, "login.errormessage.loginplease", "home");
             return;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "administration.user.orders.errormessage.wrongparameterorderid", "getAllOrders");
+            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
             return;
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-            sendRedirect(null, "order.errormessage.nosuchorder", "getAllOrders");
+            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
             return;
         }
-        int userId = order.getUserId();
-        User concreteUser = getUserById(userId);
-        if (concreteUser == null) {
-            sendRedirect(null, "administration.users.errormessage.wronguserid", "getAllOrders");
-            return;
-        }
-        request.setAttribute("concreteUser", concreteUser);
         request.setAttribute("order", order);
-        goToPage("administration.user.order.text.title", "/view/person/admin/order.jsp");
+        goToPage("kitchen.order.text.title", "/view/kitchen/order.jsp");
     }
     
     /**
@@ -60,7 +51,12 @@ public class GetOrderAdmin extends AdminGetAction {
      */
     @Override
     public List<ConcreteLink> getLink() {
-        return new GetAllOrders().getLink();
+        List<ConcreteLink> links = new ArrayList<>();
+        String linkValue = "/servlet?getAction=showAcceptedOrders";
+        String linkName = "kitchen.acceptedorders.text.title";
+        ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
+        links.add(concreteLink);
+        return links;
     }
     
 }
