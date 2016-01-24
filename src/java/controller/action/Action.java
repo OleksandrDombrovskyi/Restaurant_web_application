@@ -128,4 +128,23 @@ public abstract class Action {
         return null;
     }
     
+    /**
+     * Get user by id
+     * @param userId user id
+     * @return user object
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected User getUserById(int userId) throws ServletException, IOException {
+        UserCreator userCreator = new UserCreator();
+        try {
+            return (User) userCreator.getEntityById(userId);
+        } catch (SQLException e) {
+            sendRedirect(null, "exception.errormessage.sqlexception", "getAllOrders");
+        } catch (ServerOverloadedException ex) {
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "getAllOrders");
+        }
+        return null;
+    }
+    
 }

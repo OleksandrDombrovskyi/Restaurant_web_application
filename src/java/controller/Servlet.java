@@ -106,9 +106,6 @@ public class Servlet extends HttpServlet {
     @Override
     protected synchronized void doGet(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-//        response.setContentType("text/html");
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType ("text/html;charset=utf-8");
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
@@ -124,9 +121,6 @@ public class Servlet extends HttpServlet {
     @Override
     protected synchronized void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-//        response.setContentType("text/html");
-//        response.setCharacterEncoding("UTF-8");
-//        request.setCharacterEncoding("Cp1251");
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");

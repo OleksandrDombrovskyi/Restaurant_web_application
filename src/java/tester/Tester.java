@@ -5,14 +5,19 @@
  */
 package tester;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.dao.KitchenCreator;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
-import model.entity.Kitchen;
+import model.dao.SingletonPaymentTransaction;
 import model.entity.Order;
+import model.entity.Order.OrderStatus;
+import model.entity.User;
 
 /**
  *
@@ -70,22 +75,44 @@ public class Tester {
 //            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        System.out.println(Order.OrderStatus.CRETATED.name());
-        Order order;
-        KitchenCreator kitchenCreator = new KitchenCreator();
-        Kitchen kitchen = null;
+//        Order order;
+//        KitchenCreator kitchenCreator = new KitchenCreator();
+//        Kitchen kitchen = null;
+//        try {
+//            kitchen = (Kitchen) kitchenCreator.getKitchenByEmail("kit@gmail.com");
+//            System.out.println("password: " + kitchen.getPassword());
+////            orderCreator.setOrderStatus(12, OrderStatus.ACCEPTED);
+//            
+////            System.out.println("order itdem1: " + order.getOrderItems().get(0));
+////            System.out.println("order itdem2: " + order.getOrderItems().get(1));
+////            System.out.println("basket confirmation, no basket: " + orderCreator.confirmBasket(2));
+////            System.out.println("basket confirmation, yes basket: " + orderCreator.confirmBasket(1));
+//        } catch (ServerOverloadedException ex) {
+//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SQLException e) {
+//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, e);
+//        }
+        User user = new User("Vasia", "Vasylenko", "vasvas10@gmail.com", "VasVas10");
+        Order order = new Order(1, OrderStatus.READY, BigDecimal.valueOf(129.25), new Timestamp(new Date().getDate()));
+        order.setId(48);
+        SingletonPaymentTransaction engine = 
+                SingletonPaymentTransaction.getInstance();
         try {
-            kitchen = (Kitchen) kitchenCreator.getKitchenByEmail("kit@gmail.com");
-            System.out.println("password: " + kitchen.getPassword());
-//            orderCreator.setOrderStatus(12, OrderStatus.ACCEPTED);
-            
-//            System.out.println("order itdem1: " + order.getOrderItems().get(0));
-//            System.out.println("order itdem2: " + order.getOrderItems().get(1));
-//            System.out.println("basket confirmation, no basket: " + orderCreator.confirmBasket(2));
-//            System.out.println("basket confirmation, yes basket: " + orderCreator.confirmBasket(1));
+            engine.makePayment(user, order);
+        } catch (SQLException ex) {
+            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ServerOverloadedException ex) {
             Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException e) {
-            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, e);
         }
+
+//        BigDecimal userAccount = BigDecimal.ZERO;
+//        BigDecimal adminAccount = BigDecimal.ZERO;
+//        BigDecimal orderPrice = BigDecimal.ZERO;
+//        BigDecimal userAccountResult = BigDecimal.ZERO;
+//        BigDecimal adminAccountResult = BigDecimal.ZERO;
+//        if (userAccount.compareTo(orderPrice) > 0) {
+//            userAccountResult = userAccount.subtract(orderPrice);
+//            adminAccountResult = adminAccount.add(orderPrice);
+//        }
     }
 }

@@ -52,25 +52,6 @@ public class GetUserOrders extends AbstractOrders {
         }
         goToPage("administration.user.orders.text.title", "/view/person/admin/userorders.jsp");
     }
-
-    /**
-     * Get user by id
-     * @param userId user id
-     * @return user object
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private User getUserById(int userId) throws ServletException, IOException {
-        UserCreator userCreator = new UserCreator();
-        try {
-            return (User) userCreator.getEntityById(userId);
-        } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "getAllOrders");
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "getAllOrders");
-        }
-        return null;
-    }
     
     /**
      * Get array list of link chain direct to current page (in fact this method 

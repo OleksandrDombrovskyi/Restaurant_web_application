@@ -5,6 +5,8 @@
  */
 package model.entity;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author Sasha
@@ -13,6 +15,9 @@ public class Admin extends Person {
     
     /** admin type */
     private AdminType adminType;
+    
+    /** account */
+    private BigDecimal account;
     
     /**
      * Constructor
@@ -42,6 +47,22 @@ public class Admin extends Person {
      */
     public AdminType getAdminType() {
         return adminType;
+    }
+    
+    /**
+     * Set account
+     * @param account 
+     */
+    public void setAccount(BigDecimal account) {
+        this.account = account;
+    }
+    
+    /**
+     * Get account
+     * @return big decimal account
+     */
+    public BigDecimal getAccount() {
+        return account;
     }
     
     /**

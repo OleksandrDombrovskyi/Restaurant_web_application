@@ -72,7 +72,9 @@
             <c:when test="${order.status == 'READY'}">
                 <fmt:message key="order.status.ready" />
                 <form action="servlet" method="post" >
-                    <input type="submit" value="<fmt:message key="order.button.pay" />" />
+                    <input type="submit" value="<fmt:message key="order.button.pay" />" 
+                           onclick="return confirm('<fmt:message key="order.dialogbox.confirmation" />')"
+                           />
                     <input type="hidden" name="postAction" value="payOrder" />
                     <input type="hidden" name="orderId" value="${order.id}" />
                 </form>

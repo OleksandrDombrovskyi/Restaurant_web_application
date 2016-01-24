@@ -5,17 +5,14 @@
  */
 package model.dao;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.Admin;
 import model.entity.Admin.AdminType;
 import model.entity.DBEntity;
-import model.entity.User;
 
 /**
  *
@@ -207,7 +204,9 @@ public class AdminCreator extends EntityCreator {
         String email = rs.getString("email");
         String password = rs.getString("password");
         AdminType adminType = AdminType.valueOf(rs.getString("admin_type"));
+        BigDecimal account = rs.getBigDecimal("account");
         Admin newAdmin = new Admin(firstName, lastName, email, password, adminType);
+        newAdmin.setAccount(account);
         newAdmin.setId(id);
         return newAdmin;
     }

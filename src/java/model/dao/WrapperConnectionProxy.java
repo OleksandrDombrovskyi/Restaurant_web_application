@@ -74,4 +74,22 @@ public class WrapperConnectionProxy {
         return connection.prepareStatement(sql, statement);
     }
     
+    /**
+     * Set auto commit for connection
+     * @param doAutoCommit boolean true or false for auto commit
+     * @throws SQLException 
+     */
+    public synchronized void setAutoCommit(boolean doAutoCommit) 
+            throws SQLException {
+        connection.setAutoCommit(doAutoCommit);
+    }
+    
+    /**
+     * Do commit
+     * @throws SQLException 
+     */
+    public synchronized void commit() throws SQLException {
+        connection.commit();
+    }
+    
 }
