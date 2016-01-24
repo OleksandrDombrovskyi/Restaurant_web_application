@@ -6,46 +6,7 @@
 package controller;
 
 import controller.action.Action;
-import controller.action.getactions.personal.user.Basket;
-import controller.action.postactions.Login;
-import controller.action.getactions.HomePage;
-import controller.action.getactions.ChangeLanguage;
-import controller.action.getactions.Contacts;
-import controller.action.getactions.Info;
-import controller.action.postactions.CreateAccount;
-import controller.action.getactions.personal.LogOut;
-import controller.action.getactions.LoginRequest;
-import controller.action.getactions.MainMenu;
-import controller.action.getactions.personal.user.Order;
-import controller.action.getactions.personal.user.Orders;
-import controller.action.getactions.personal.Profile;
-import controller.action.getactions.personal.Settings;
-import controller.action.getactions.SignUp;
-import controller.action.getactions.personal.admin.Administration;
-import controller.action.getactions.personal.admin.GetAllOrders;
-import controller.action.getactions.personal.admin.GetOrderAdmin;
-import controller.action.getactions.personal.admin.GetOrderByStatus;
-import controller.action.getactions.personal.admin.GetUser;
-import controller.action.getactions.personal.admin.GetUserOrders;
-import controller.action.getactions.personal.admin.GetUsers;
-import controller.action.getactions.personal.kitchen.GetAcceptedOrders;
-import controller.action.getactions.personal.kitchen.GetOrderKitchen;
-import controller.action.getactions.personal.kitchen.SetPreparedStatus;
-import controller.action.getactions.personal.user.UserAccount;
-import controller.action.postactions.personal.user.AddToBasket;
-import controller.action.postactions.personal.user.BasketConfirmation;
-import controller.action.postactions.personal.user.ClearBasket;
-import controller.action.postactions.personal.admin.AdminChangePassword;
-import controller.action.postactions.personal.admin.AdminSaveChanges;
-import controller.action.postactions.personal.admin.ConfirmPreparedOrder;
-import controller.action.postactions.personal.admin.SendToKitchen;
-import controller.action.postactions.personal.user.PayOrder;
-import controller.action.postactions.personal.user.UserChangePassword;
-import controller.action.postactions.personal.user.UserSaveChanges;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -53,56 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Servlet class
  * @author Sasha
  */
 @WebServlet("/servlet")
 public class Servlet extends HttpServlet {
     
-    private final Map<String, Action> getActions = new HashMap<>();
-    
-    private final Map<String, Action> postActions = new HashMap<>();
-    
-    @Override
-    public synchronized void init(ServletConfig config) throws ServletException {
-        getActions.put("home", new HomePage());
-        getActions.put("logout", new LogOut());
-        getActions.put("changeLanguage", new ChangeLanguage());
-        getActions.put("loginRequest", new LoginRequest());
-        getActions.put("signUp", new SignUp());
-        getActions.put("mainMenu", new MainMenu());
-        getActions.put("profile", new Profile());
-        getActions.put("orders", new Orders());
-        getActions.put("getOrder", new Order());
-        getActions.put("account", new UserAccount());
-        getActions.put("settings", new Settings());
-        getActions.put("basket", new Basket());
-        getActions.put("info", new Info());
-        getActions.put("contacts", new Contacts());
-        getActions.put("administration", new Administration());
-        getActions.put("getUsers", new GetUsers());
-        getActions.put("getAllOrders", new GetAllOrders());
-        getActions.put("getUser", new GetUser());
-        getActions.put("getUserOrders", new GetUserOrders());
-        getActions.put("getOrderAdmin", new GetOrderAdmin());
-        getActions.put("showAcceptedOrders", new GetAcceptedOrders());
-        getActions.put("getOrderKitchen", new GetOrderKitchen());
-        getActions.put("getOrderByStatus", new GetOrderByStatus());
-        postActions.put("login", new Login());
-        postActions.put("createAccount", new CreateAccount());
-        postActions.put("userSaveChanges", new UserSaveChanges());
-        postActions.put("adminSaveChanges", new AdminSaveChanges());
-        postActions.put("userChangePassword", new UserChangePassword());
-        postActions.put("adminChangePassword", new AdminChangePassword());
-        postActions.put("addToBasket", new AddToBasket());
-        postActions.put("basketConfirm", new BasketConfirmation());
-        postActions.put("clearBasket", new ClearBasket());
-        postActions.put("sendToKitchen", new SendToKitchen());
-        postActions.put("setPreparedStatus", new SetPreparedStatus());
-        postActions.put("confirmPreparedOrder", new ConfirmPreparedOrder());
-        postActions.put("payOrder", new PayOrder());
-    }
-    
+    /**
+     * Do get servlet method
+     * @param request http servlet request
+     * @param response http servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected synchronized void doGet(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
@@ -114,21 +38,37 @@ public class Servlet extends HttpServlet {
             actionKey = "home";
         }
         saveActionForRedirect(actionKey, request);
-        Action action = getActions.get(actionKey);
+        Action action = new ActionFactory().getGetAction(actionKey);
         action.execute(request, response);
     }
     
+    /**
+     * Do post servlet method
+     * @param request http servlet request
+     * @param response http servlet response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
-    protected synchronized void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    protected synchronized void doPost(HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
         String actionKey = request.getParameter("postAction");
-        Action action = postActions.get(actionKey);
+        if (actionKey == null) {
+            doGet(request, response);
+            return;
+        }
+        Action action = new ActionFactory().getPostAction(actionKey);
         action.execute(request, response);
     }
     
+    /**
+     * Save last action to back to the last page
+     * @param actionKey action name
+     * @param request http servlet request
+     */
     private void saveActionForRedirect(String actionKey, HttpServletRequest request) {
         if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp") 
                 && !actionKey.equals("changeLanguage")) {
