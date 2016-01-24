@@ -15,6 +15,7 @@ import model.dao.UserCreator;
 import model.entity.Admin;
 import model.entity.Kitchen;
 import model.entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Set log in
@@ -36,9 +37,10 @@ public class Login extends PostAction {
             sendRedirect(null, "login.errormessage.empty", "loginRequest");
             return;
         }
-        if (!userAuthorization(email, password)) {
-            if (!adminAuthorization(email, password)) {
-                if (!kitchenAuthorization(email, password)) {
+        String hexPassword = DigestUtils.shaHex(password);
+        if (!userAuthorization(email, hexPassword)) {
+            if (!adminAuthorization(email, hexPassword)) {
+                if (!kitchenAuthorization(email, hexPassword)) {
                     sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
                 }
             }

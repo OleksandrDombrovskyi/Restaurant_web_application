@@ -25,19 +25,19 @@ public class AdminChangePassword extends ChangePassword {
      * current session
      * 
      * @param person person needs to change password
-     * @param newPassword new password
+     * @param hexNewPassword new password
      * @return true if password cganging was seccessful and false otherwise (in 
      * this case redirection will be performed in this method)
      * @throws javax.servlet.ServletException
      * @throws java.io.IOException
      */
     @Override
-    protected boolean changePassword(Person person, String newPassword) throws 
+    protected boolean changePassword(Person person, String hexNewPassword) throws 
             ServletException, IOException {
         Admin admin = (Admin) person;
         AdminCreator adminCreator = new AdminCreator();
         try {
-            if (!adminCreator.changePassword(admin, newPassword)) {
+            if (!adminCreator.changePassword(admin, hexNewPassword)) {
                 sendRedirect(null, "settings.errormessage.passwordnotchanged", "settings");
                 return false;
             }

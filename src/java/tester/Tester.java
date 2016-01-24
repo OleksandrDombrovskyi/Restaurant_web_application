@@ -18,6 +18,7 @@ import model.dao.SingletonPaymentTransaction;
 import model.entity.Order;
 import model.entity.Order.OrderStatus;
 import model.entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -92,18 +93,19 @@ public class Tester {
 //        } catch (SQLException e) {
 //            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, e);
 //        }
-        User user = new User("Vasia", "Vasylenko", "vasvas10@gmail.com", "VasVas10");
-        Order order = new Order(1, OrderStatus.READY, BigDecimal.valueOf(129.25), new Timestamp(new Date().getDate()));
-        order.setId(48);
-        SingletonPaymentTransaction engine = 
-                SingletonPaymentTransaction.getInstance();
-        try {
-            engine.makePayment(user, order);
-        } catch (SQLException ex) {
-            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ServerOverloadedException ex) {
-            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+//        User user = new User("Vasia", "Vasylenko", "vasvas10@gmail.com", "VasVas10");
+//        Order order = new Order(1, OrderStatus.READY, BigDecimal.valueOf(129.25), new Timestamp(new Date().getDate()));
+//        order.setId(48);
+//        SingletonPaymentTransaction engine = 
+//                SingletonPaymentTransaction.getInstance();
+//        try {
+//            engine.makePayment(user, order);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ServerOverloadedException ex) {
+//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
 //        BigDecimal userAccount = BigDecimal.ZERO;
 //        BigDecimal adminAccount = BigDecimal.ZERO;
@@ -114,5 +116,9 @@ public class Tester {
 //            userAccountResult = userAccount.subtract(orderPrice);
 //            adminAccountResult = adminAccount.add(orderPrice);
 //        }
+        String password = "1234560";
+
+        System.out.println(DigestUtils.shaHex("123456Аб"));
+//        System.out.println(DigestUtils.shaHex(DigestUtils.shaHex(password)));
     }
 }

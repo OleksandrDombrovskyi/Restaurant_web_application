@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Account creator
@@ -49,7 +50,8 @@ public class CreateAccount extends PostAction {
                 sendRedirect(null, "signup.errormessage.existinguser", "signUp");
                 return;
             }
-            newUser = new User(name, lastName, email, password);
+            String hexPassword = DigestUtils.shaHex(password);
+            newUser = new User(name, lastName, email, hexPassword);
             if (!userCreator.insertUser(newUser)) {
                 throw new SQLException();
             }
@@ -68,7 +70,6 @@ public class CreateAccount extends PostAction {
         }
         session.setAttribute("user", dbUser);
         sendRedirect(null, null, "profile");
-        
     }
     
     /**
