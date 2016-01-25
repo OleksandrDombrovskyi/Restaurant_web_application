@@ -12,7 +12,7 @@ package controller;
 public class HitCounter {
     
     /** allowed requests amount per one second */
-    private static final int REQUESTS_PER_SECOND = 2;
+    private static final int REQUESTS_PER_SECOND = 3;
     
     /** array with time values of requests */
     private long[] array = new long[REQUESTS_PER_SECOND];

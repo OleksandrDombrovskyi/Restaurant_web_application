@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  * Servlet class
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/servlet")
 public class Servlet extends HttpServlet {
+    
+    /** log4j logger */
+    static final Logger LOGGER = Logger.getLogger(Servlet.class);
     
     /**
      * Do get servlet method
@@ -37,9 +41,11 @@ public class Servlet extends HttpServlet {
         if (actionKey == null) {
             actionKey = "home";
         }
+        LOGGER.info("Get action was called: " + actionKey);
         saveActionForRedirect(actionKey, request);
         Action action = new ActionFactory().getGetAction(actionKey);
         action.execute(request, response);
+        LOGGER.info("Get action was performed: " + actionKey);
     }
     
     /**
@@ -60,8 +66,10 @@ public class Servlet extends HttpServlet {
             doGet(request, response);
             return;
         }
+        LOGGER.info("Post action was called: " + actionKey);
         Action action = new ActionFactory().getPostAction(actionKey);
         action.execute(request, response);
+        LOGGER.info("Post action was performed: " + actionKey);
     }
     
     /**
