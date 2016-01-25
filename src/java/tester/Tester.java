@@ -116,9 +116,9 @@ public class Tester {
 //            userAccountResult = userAccount.subtract(orderPrice);
 //            adminAccountResult = adminAccount.add(orderPrice);
 //        }
-        String password = "1234560";
-
-        System.out.println(DigestUtils.shaHex("123456Аб"));
+//        String password = "1234560";
+//
+//        System.out.println(DigestUtils.shaHex("123456Аб"));
 //        System.out.println(DigestUtils.shaHex(DigestUtils.shaHex(password)));
     }
 }
