@@ -20,7 +20,7 @@ import model.entity.Order.OrderStatus;
 import model.entity.OrderItem;
 
 /**
- *
+ * Order creator
  * @author Sasha
  */
 public class OrderCreator extends EntityCreator {
@@ -47,6 +47,7 @@ public class OrderCreator extends EntityCreator {
         WrapperConnectionProxy wrapperConnection = null;
         try {
             wrapperConnection = CONNECTION_POOL.getConnection();
+            wrapperConnection.setAutoCommit(false);
             try (PreparedStatement ps = wrapperConnection.prepareStatement(
                     SQL_FOR_INSERTING_ORDER, Statement.RETURN_GENERATED_KEYS)){
                 ps.setInt(1, order.getUserId());
@@ -65,6 +66,12 @@ public class OrderCreator extends EntityCreator {
                     }
                 }
             }
+            wrapperConnection.commit();
+            wrapperConnection.setAutoCommit(true);
+        } catch (SQLException e) {
+            wrapperConnection.rollback();
+            wrapperConnection.setAutoCommit(true);
+            throw new SQLException();
         } finally {
             if (wrapperConnection != null) {
                 wrapperConnection.close();
@@ -95,6 +102,14 @@ public class OrderCreator extends EntityCreator {
         }
     }
     
+    /**
+     * Insert item into the data base
+     * @param orderItem order item might be inserted
+     * @param orderId order is
+     * @param ps prepared statement 
+     * @throws SQLException 
+     * @throws ServerOverloadedException 
+     */
     private void insertItem(OrderItem orderItem, int orderId, PreparedStatement ps) 
             throws SQLException, ServerOverloadedException {
         ps.setInt(1, orderId);
@@ -104,6 +119,14 @@ public class OrderCreator extends EntityCreator {
         ps.executeUpdate();
     }
     
+    /**
+     * Update item in the data base
+     * @param orderItem order item
+     * @param orderId order id
+     * @param ps prepared statement
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     private void updateItem(OrderItem orderItem, int orderId, PreparedStatement ps) 
             throws SQLException, ServerOverloadedException {
         ps.setInt(1, orderItem.getMealAmount());
@@ -245,6 +268,13 @@ public class OrderCreator extends EntityCreator {
         }
     }
 
+    /**
+     * Remove order from the date base
+     * @param orderId order id
+     * @return true if updating is successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     public boolean removeOrder(int orderId) throws SQLException, 
             ServerOverloadedException {
         boolean flag = false;
@@ -268,6 +298,13 @@ public class OrderCreator extends EntityCreator {
         return flag;
     }
 
+    /**
+     * Delete item from the data base
+     * @param orderId order id
+     * @return true if deleting is successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     private boolean deleteItems(int orderId) throws SQLException, 
             ServerOverloadedException {
         boolean flag = false;
@@ -288,6 +325,15 @@ public class OrderCreator extends EntityCreator {
         return flag;
     }
 
+    /**
+     * Get order with NOT_CONFIRMED status (basket order) of user with concrete id
+     * 
+     * @param userId user id
+     * @return order with NOT_CONFIRMED status (basket order) or null if it 
+     * not exists
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     public Order getNotConfirmedOrder(int userId) throws SQLException, 
             ServerOverloadedException {
         WrapperConnectionProxy wrapperConnection = null;
@@ -341,6 +387,16 @@ public class OrderCreator extends EntityCreator {
         }
     }
 
+    /**
+     * Add item to basket
+     * 
+     * @param basketOrder basket order
+     * @param newBasketOrder basket order with new items might be added to the 
+     * old basket order
+     * @return ture if adding is successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     public boolean addItemsToBasket(Order basketOrder, Order newBasketOrder) 
             throws SQLException, ServerOverloadedException {
         boolean returnFlag = false;
@@ -380,6 +436,13 @@ public class OrderCreator extends EntityCreator {
         return returnFlag;
     }
     
+    /**
+     * Update order total price according to all items that are in this order
+     * 
+     * @param orderId order id
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     private void updateOrderTotalPrice(int orderId) throws SQLException, 
             ServerOverloadedException{
         WrapperConnectionProxy wrapperConnection = null;
