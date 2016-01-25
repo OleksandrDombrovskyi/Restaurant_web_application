@@ -21,6 +21,11 @@ import model.entity.User;
  */
 public class PayOrder extends SetOrderStatus {
 
+    /**
+     * Perform payment of the order
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");

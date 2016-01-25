@@ -13,11 +13,16 @@ import model.entity.Admin;
 import model.entity.User;
 
 /**
- *
+ * Get all registered users for admin
  * @author Sasha
  */
 public class GetUser extends AdminGetAction {
 
+    /**
+     * Get all users from data base for admin
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
@@ -37,25 +42,6 @@ public class GetUser extends AdminGetAction {
         request.setAttribute("concreteUser", concreteUser);
         goToPage("administration.user.text.title", "/view/person/admin/user.jsp");
     }
-    
-//    /**
-//     * Get user by id
-//     * @param userId user id
-//     * @return user object
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private User getUserById(int userId) throws ServletException, IOException {
-//        UserCreator userCreator = new UserCreator();
-//        try {
-//            return (User) userCreator.getEntityById(userId);
-//        } catch (SQLException e) {
-//            sendRedirect(null, "exception.errormessage.sqlexception", "getAllOrders");
-//        } catch (ServerOverloadedException ex) {
-//            sendRedirect(null, "exception.errormessage.serveroverloaded", "getAllOrders");
-//        }
-//        return null;
-//    }
     
     /**
      * Get array list of link chain direct to current page (in fact this method 

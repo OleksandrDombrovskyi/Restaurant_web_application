@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Log out
  * @author Sasha
  */
 public class LogOut extends Action {

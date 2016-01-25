@@ -15,11 +15,16 @@ import javax.servlet.ServletException;
 import model.entity.Admin;
 
 /**
- *
+ * Administration
  * @author Sasha
  */
 public class Administration extends GetAction {
 
+    /**
+     * Admin administration
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");

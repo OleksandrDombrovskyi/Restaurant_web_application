@@ -17,6 +17,7 @@
         <title><fmt:message key="${title}" /></title>
     </head>
     <body>
+        <%-- 
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
             <c:remove var="errorMessage" scope="session" />
@@ -25,6 +26,7 @@
             <fmt:message key="${message}" />
             <c:remove var="message" scope="session" />
         </c:if>
+        --%>
         <h4><fmt:message key="administration.user.text.firstname" />: ${concreteUser.firstName}</h4>
         <h4><fmt:message key="administration.user.text.lastname" />: ${concreteUser.lastName}</h4>
         <h4><fmt:message key="administration.user.text.email" />: ${concreteUser.email}</h4>

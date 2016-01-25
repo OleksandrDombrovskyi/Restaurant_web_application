@@ -92,6 +92,10 @@ public class WrapperConnectionProxy {
         connection.commit();
     }
 
+    /**
+     * Rollback
+     * @throws SQLException 
+     */
     void rollback() throws SQLException {
         connection.rollback();
     }

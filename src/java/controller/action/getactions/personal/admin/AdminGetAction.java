@@ -19,7 +19,7 @@ import model.entity.Order;
 import model.entity.User;
 
 /**
- *
+ * Get action abstract class for admin requests
  * @author Sasha
  */
 public abstract class AdminGetAction extends AbstractOrders {

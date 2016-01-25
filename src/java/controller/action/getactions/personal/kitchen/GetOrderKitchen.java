@@ -15,11 +15,16 @@ import model.entity.Kitchen;
 import model.entity.Order;
 
 /**
- *
+ * Get order for kitchen
  * @author Sasha
  */
 public class GetOrderKitchen extends AbstractOrders {
 
+    /**
+     * Get selected order for kitchen
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");

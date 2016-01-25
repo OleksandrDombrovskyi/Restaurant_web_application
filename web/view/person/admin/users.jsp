@@ -19,6 +19,7 @@
     </head>
     <body>
         <h3>
+            <%-- 
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
             <c:remove var="errorMessage" scope="session" />
@@ -27,6 +28,7 @@
             <fmt:message key="${message}" />
             <c:remove var="message" scope="session" />
         </c:if>
+            --%>
         </h3>
            
         <h3>

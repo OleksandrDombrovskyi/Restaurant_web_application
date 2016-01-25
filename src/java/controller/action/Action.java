@@ -5,10 +5,8 @@
  */
 package controller.action;
 
-import controller.action.getactions.HomePage;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +18,7 @@ import model.entity.Order;
 import model.entity.User;
 
 /**
- *
+ * Action abstract class
  * @author Sasha
  */
 public abstract class Action {

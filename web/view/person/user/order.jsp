@@ -17,6 +17,7 @@
         <title><fmt:message key="${title}" /></title>
     </head>
     <body>
+        <%--  
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
             <c:remove var="errorMessage" scope="session" />
@@ -25,6 +26,7 @@
             <fmt:message key="${message}" />
             <c:remove var="message" scope="session" />
         </c:if>
+        --%>
         <h3><fmt:message key="order.text.ordernumber" /> ${order.id}</h3>
         <h5>
             <fmt:formatDate type="time" value="${order.date}" />

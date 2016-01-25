@@ -13,6 +13,5 @@ public enum ENUMEntity {
     ADMIN,
     USER,
     MEAL,
-    ORDER,
-    ZONE
+    ORDER
 }

@@ -14,6 +14,10 @@ import javax.servlet.annotation.WebListener;
  
 import org.apache.log4j.PropertyConfigurator;
  
+/**
+ * Context listener class
+ * @author Sasha
+ */
 @WebListener("application context listener")
 public class ContextListener implements ServletContextListener {
  
@@ -32,6 +36,10 @@ public class ContextListener implements ServletContextListener {
          
     }
      
+    /**
+     * Destroy method
+     * @param event 
+     */
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         // do nothing

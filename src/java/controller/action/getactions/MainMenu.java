@@ -16,7 +16,7 @@ import model.dao.ServerOverloadedException;
 import model.entity.Meal;
 
 /**
- *
+ * Main menu 
  * @author Sasha
  */
 public class MainMenu extends GetAction {

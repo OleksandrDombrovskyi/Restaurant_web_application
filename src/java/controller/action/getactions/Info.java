@@ -12,7 +12,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Restaurant info
  * @author Sasha
  */
 public class Info extends GetAction {

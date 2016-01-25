@@ -9,11 +9,16 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Language block
  * @author Sasha
  */
 public class LanguageBlock extends Action {
 
+    /**
+     * Set language block
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void doExecute() throws ServletException, IOException {
         request.getRequestDispatcher("/view/language.jsp").include(request, response);

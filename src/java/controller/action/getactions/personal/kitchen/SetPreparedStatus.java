@@ -5,20 +5,23 @@
  */
 package controller.action.getactions.personal.kitchen;
 
-import controller.action.ConcreteLink;
 import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import model.entity.Kitchen;
 import model.entity.Order.OrderStatus;
 
 /**
- *
+ * Set prepared status by kitchen
  * @author Sasha
  */
 public class SetPreparedStatus extends SetOrderStatus {
 
+    /**
+     * Change status of order to PREPARED by the kitchen
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");

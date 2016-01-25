@@ -12,7 +12,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Home page
  * @author Sasha
  */
 public class HomePage extends GetAction {

@@ -12,7 +12,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Contacts
  * @author Sasha
  */
 public class Contacts extends GetAction {

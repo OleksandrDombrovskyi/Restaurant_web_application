@@ -7,21 +7,23 @@ package controller.action.getactions.personal.admin;
 
 import controller.action.ConcreteLink;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.OrderCreator;
-import model.dao.ServerOverloadedException;
 import model.entity.Admin;
 import model.entity.Order;
 import model.entity.User;
 
 /**
- *
+ * Get order for admin
  * @author Sasha
  */
 public class GetOrderAdmin extends AdminGetAction {
 
+    /**
+     * Get order by admin request
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");

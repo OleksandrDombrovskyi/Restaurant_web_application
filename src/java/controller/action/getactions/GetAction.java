@@ -8,13 +8,12 @@ package controller.action.getactions;
 import controller.action.Action;
 import controller.action.ConcreteLink;
 import controller.action.LanguageBlock;
-import controller.action.SetAuthorizationBlock;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Get action abstract class
  * @author Sasha
  */
 public abstract class GetAction extends Action {
@@ -45,7 +44,6 @@ public abstract class GetAction extends Action {
             ServletException {
         request.setAttribute("title", message);
         new LanguageBlock().execute(request, response);
-        new SetAuthorizationBlock().execute(request, response);
         request.setAttribute("errorMessage", message);
         request.getRequestDispatcher("/view/error.jsp").
                 include(request, response);

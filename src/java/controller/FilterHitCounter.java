@@ -23,9 +23,12 @@ import javax.servlet.http.HttpSession;
  */
 @WebFilter(filterName="hitCounter")
 public class FilterHitCounter implements Filter {
-    
-    private int hitCount;
 
+    /**
+     * Init method. Executes when class was created by servlet container
+     * @param filterConfig filter config
+     * @throws ServletException 
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
@@ -60,6 +63,9 @@ public class FilterHitCounter implements Filter {
         }
     }
 
+    /**
+     * Destroy method which calls when before class will be removed
+     */
     @Override
     public void destroy() {}
     

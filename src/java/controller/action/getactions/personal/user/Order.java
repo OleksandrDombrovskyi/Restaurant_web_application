@@ -55,33 +55,6 @@ public class Order extends AbstractOrders {
         }
     }
 
-//    /**
-//     * Get order by order id
-//     * @param orderId order id
-//     * @return order if it exists in the date base and false otherwise
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private model.entity.Order getOrderById(int orderId) 
-//            throws ServletException, IOException {
-//        model.entity.Order order = null;
-//        OrderCreator orderCreator = new OrderCreator();
-//        try {
-//            order = (model.entity.Order) orderCreator.getEntityById(orderId);
-//            if (order == null) {
-//                sendRedirect(null, "order.errormessage.nosuchorder", "orders");
-//                return null;
-//            }
-//            return order;
-//        } catch (SQLException e) {
-//            sendRedirect(null, "exception.errormessage.sqlexception", "orders");
-//            return null;
-//        } catch (ServerOverloadedException ex) {
-//            sendRedirect(null, "exception.errormessage.serveroverloaded", "orders");
-//            return null;
-//        }
-//    }
-
     /**
      * Check validation of user according to this order
      * @param user user object

@@ -16,7 +16,7 @@ import model.entity.Order;
 import model.entity.Order.OrderStatus;
 
 /**
- *
+ * Get accepted orders by kitchen for preparing
  * @author Sasha
  */
 public class GetAcceptedOrders extends AbstractOrders {

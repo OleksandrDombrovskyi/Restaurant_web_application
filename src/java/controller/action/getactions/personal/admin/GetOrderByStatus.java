@@ -19,11 +19,16 @@ import model.entity.Order.OrderStatus;
 import model.entity.User;
 
 /**
- *
+ * Get order by status 
  * @author Sasha
  */
 public class GetOrderByStatus extends AdminGetAction {
 
+    /**
+     * Get all orders with concrete status
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
@@ -53,6 +58,13 @@ public class GetOrderByStatus extends AdminGetAction {
         goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
     }
     
+    /**
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
+     */
     @Override
     public List<ConcreteLink> getLink() {
         return new GetAllOrders().getLink();

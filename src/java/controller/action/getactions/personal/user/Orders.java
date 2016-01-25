@@ -16,7 +16,7 @@ import model.entity.Order;
 import model.entity.User;
 
 /**
- *
+ * Get orders for user
  * @author Sasha
  */
 public class Orders extends AbstractOrders {

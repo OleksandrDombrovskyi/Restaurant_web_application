@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * Validator for email and password
  * @author Sasha
  */
 public class Validator {

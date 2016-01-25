@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 /**
- *
+ * Change language
  * @author Sasha
  */
 public class ChangeLanguage extends Action {

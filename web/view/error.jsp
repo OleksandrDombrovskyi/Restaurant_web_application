@@ -17,6 +17,13 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1><fmt:message key="${errorMessage}" /></h1>
+        <c:if test="${not empty errorMessage}" >
+            <fmt:message key="${errorMessage}" />
+            <c:remove var="errorMessage" scope="session" />
+        </c:if>
+        <c:if test="${not empty message}" >
+            <fmt:message key="${message}" />
+            <c:remove var="message" scope="session" />
+        </c:if>
     </body>
 </html>

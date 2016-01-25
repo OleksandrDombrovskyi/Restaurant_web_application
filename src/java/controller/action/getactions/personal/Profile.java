@@ -16,7 +16,7 @@ import model.entity.Admin;
 import model.entity.User;
 
 /**
- *
+ * Personal profile
  * @author Sasha
  */
 public class Profile extends GetAction {

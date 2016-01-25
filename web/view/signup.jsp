@@ -19,6 +19,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%--  
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
             <c:remove var="errorMessage" scope="session" />
@@ -27,6 +28,7 @@
             <fmt:message key="${message}" />
             <c:remove var="message" scope="session" />
         </c:if>
+        --%>
         <form action="servlet" method="post" >
             <h3>
                 <fmt:message key="signup.text.name" />: 

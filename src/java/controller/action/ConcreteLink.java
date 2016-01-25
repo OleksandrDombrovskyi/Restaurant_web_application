@@ -6,7 +6,7 @@
 package controller.action;
 
 /**
- *
+ * Link for navigation chain
  * @author Sasha
  */
 public class ConcreteLink {

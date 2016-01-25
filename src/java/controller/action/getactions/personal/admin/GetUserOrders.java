@@ -20,11 +20,16 @@ import model.entity.Order;
 import model.entity.User;
 
 /**
- *
+ * Get users' orders
  * @author Sasha
  */
 public class GetUserOrders extends AbstractOrders {
 
+    /**
+     * Get all orders for concrete user
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");

@@ -18,6 +18,7 @@
         <title><fmt:message key="profile.text.title" /></title>
     </head>
     <body>
+        <%-- 
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
             <c:remove var="errorMessage" scope="session" />
@@ -26,6 +27,7 @@
             <fmt:message key="${message}" />
             <c:remove var="message" scope="session" />
         </c:if>
+        --%>
         <h3>
             <a href="${pageContext.request.contextPath}/servlet?getAction=profile" >
                 <fmt:message key="profile.link.mypage" />

@@ -15,7 +15,7 @@ import model.dao.ServerOverloadedException;
 import model.entity.Order;
 
 /**
- *
+ * Abstract orders class
  * @author Sasha
  */
 public abstract class AbstractOrders extends GetAction {

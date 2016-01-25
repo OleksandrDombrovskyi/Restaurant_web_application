@@ -144,7 +144,6 @@ public class Login extends PostAction {
             if (kitchen.getPassword().equals(password)) {
                 session.setAttribute("kitchen", kitchen);
                 sendRedirect(null, null, "showAcceptedOrders");
-//                goToPage("kitchen.text.title", "/view/kitchen/acceptedorders.jsp");
             } else {
                 sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
             }
