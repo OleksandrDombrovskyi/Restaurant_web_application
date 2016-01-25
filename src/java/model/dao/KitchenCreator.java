@@ -16,16 +16,6 @@ import model.entity.Kitchen;
  * @author Sasha
  */
 public class KitchenCreator extends EntityCreator {
-    
-    /** sql value of order table name */
-    private final static String KITCHEN_TABLE = "kitchen";
-    
-    /** sql value of order id name */
-    private final static String KITCHEN_ID = "kitchen_id";
-    
-    /** sql to get kitchen by email */
-    private final static String SQL_FOR_KITCHEN_BY_EMAIL = 
-            "SELECT * FROM kitchen WHERE email = ?";
 
     /**
      * Constructor

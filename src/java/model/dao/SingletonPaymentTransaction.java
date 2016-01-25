@@ -17,41 +17,10 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class SingletonPaymentTransaction {
-    
-    /** connection pool object */
-    protected static final ConnectionPool CONNECTION_POOL = 
-            new ConnectionPool();
-    
-//    private WrapperConnectionProxy wrapperConnection;
+public class SingletonPaymentTransaction implements DAO {
     
     /** singleton payment transaction instance */
     private static SingletonPaymentTransaction instance = null;
-    
-    /** sql query for admin account updating */
-    private static final String SQL_FOR_ADMIN_ACCOUNT_APDATING = 
-            "UPDATE restaurantdatabase.admin SET account = ? WHERE admin_id = ?";
-    
-    /** sql query for user account updating */
-    private static final String SQL_FOR_USER_ACCOUNT_UPDATING = 
-            "UPDATE restaurantdatabase.user SET account = ? WHERE user_id = ?";
-    
-    /** sql query for getting the user from data base by his email */ 
-    private static final String SQL_FOR_USER_BY_EMAIL = 
-            "SELECT * FROM restaurantdatabase.user WHERE email = ?";
-    
-    /** sql query for getting the admin from data base by his email */ 
-    private static final String SQL_FOR_ADMIN_BY_EMAIL = 
-            "SELECT * FROM restaurantdatabase.admin WHERE email = ?";
-    
-    /** sql for selecting order by id */
-    private static final String SQL_FOR_ORDER_BY_ID = 
-            "SELECT * FROM restaurantdatabase.order WHERE order_id = ?";
-    
-    /** set required order status */
-    private static final String SQL_FOR_ORDER_STATUS_SETTING = 
-            "UPDATE restaurantdatabase.order SET status = ? "
-            + "WHERE order_id = ?";
     
     /**
      * Constructor
@@ -69,20 +38,15 @@ public class SingletonPaymentTransaction {
         return instance;
     }
     
-//    /**
-//     * Get connection for payment transaction
-//     * @return wrapper connection
-//     * @throws SQLException
-//     * @throws ServerOverloadedException 
-//     */
-//    private WrapperConnectionProxy getConnection() throws SQLException, 
-//            ServerOverloadedException {
-//        ConnectionPool connectionPool = new ConnectionPool();
-//        wrapperConnection = connectionPool.getConnection();
-//        wrapperConnection.setAutoCommit(false);
-//        return wrapperConnection;
-//    }
-    
+    /**
+     * Performe currency transfer from user account to admin account
+     * 
+     * @param user user who performs remittance
+     * @param order pay order
+     * @return true is transfer is successful and false otherwise
+     * @throws SQLException
+     * @throws ServerOverloadedException 
+     */
     public boolean makePayment(User user, Order order) throws SQLException, 
             ServerOverloadedException {
         boolean flag = false;
@@ -155,7 +119,11 @@ public class SingletonPaymentTransaction {
                 wrapperConnection.setAutoCommit(true);
                 flag = true;
             }
-        } finally {
+        } catch (SQLException e) {
+            wrapperConnection.rollback();
+            wrapperConnection.setAutoCommit(true);
+            throw new SQLException();
+        }finally {
             if (wrapperConnection != null) {
                 wrapperConnection.close();
             }

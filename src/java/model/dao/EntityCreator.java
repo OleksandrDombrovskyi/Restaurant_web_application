@@ -17,11 +17,7 @@ import model.entity.DBEntity;
  *
  * @author Sasha
  */
-public abstract class EntityCreator {
-    
-    /** connection pool object */
-    protected static final ConnectionPool CONNECTION_POOL = 
-            new ConnectionPool();
+public abstract class EntityCreator implements DAO {
     
     /** sql query for all entities */
     private String sqlForAllEntities;

@@ -18,9 +18,6 @@ public class User extends Person {
     /** user account */
     private BigDecimal account;
     
-    /** zone id */
-    private int zoneId;
-    
     /** list of user's orders */
     private List<Order> orders;
 
@@ -44,27 +41,11 @@ public class User extends Person {
     }
 
     /**
-     * Get user zone 
-     * @return user zone 
-     */
-    public int getZoneId() {
-        return zoneId;
-    }
-
-    /**
      * Set user account
      * @param account user account
      */
     public void setAccount(BigDecimal account) {
         this.account = account;
-    }
-
-    /**
-     * Set user zone 
-     * @param zoneId 
-     */
-    public void setZoneId(int zoneId) {
-        this.zoneId = zoneId;
     }
     
     /**

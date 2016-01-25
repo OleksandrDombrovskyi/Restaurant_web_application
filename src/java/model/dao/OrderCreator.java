@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.Meal;
 import model.entity.Order;
 import model.entity.Order.OrderStatus;
@@ -25,76 +24,6 @@ import model.entity.OrderItem;
  * @author Sasha
  */
 public class OrderCreator extends EntityCreator {
-    
-    /** sql value of order table name */
-    private final static String ORDER_TABLE = "order";
-    
-    /** sql value of order id name */
-    private final static String ORDER_ID = "order_id";
-    
-    /** sql query for inserting meal into the main menu table in the data base */
-    private static final String SQL_FOR_INSERTING_ORDER = 
-            "INSERT INTO restaurantdatabase.order "
-            + "(user_id, total_price, status, date) VALUES (?, ?, ?, ?)";
-    
-    /** sql query for order items inserting */
-    private static final String SQL_FOR_ITEMS_INSERTING = 
-            "INSERT INTO order_items (order_id, meal_id, number, price) "
-            + "VALUES (?, ?, ?, ?)";
-    
-    private static final String SQL_FOR_ITEMS_UPDATING = 
-            "UPDATE restaurantdatabase.order_items SET number = ?, price = ? "
-            + "WHERE order_id = ? AND meal_id = ?";
-    
-    /** sql query to get order item by id */
-    private static final String SQL_GET_ITEM_BY_ID = 
-            "SELECT * FROM restaurantdatabase.order_items WHERE order_id = ?";
-    
-    /** sql query to set order status */
-    private static final String SQL_SET_ORDER_STATUS = 
-            "UPDATE restaurantdatabase.order SET status = ? WHERE order_id = ?";
-    
-    /** sql query to remove order from data base */ 
-    private static final String SQL_FOR_ORDER_DELETING = 
-            "DELETE FROM restaurantdatabase.order WHERE order_id = ?";
-    
-    /** sql query to remove items from data base by order id */
-    private static final String SQL_FOR_ITEMS_DELETING = 
-            "DELETE FROM restaurantdatabase.order_items WHERE order_id = ?";
-    
-    /** sql query for all users' orders except that has status NOT_CONFIRMED */
-    private static final String SQL_FOR_ORDERS_BY_USER_ID = 
-            "SELECT * FROM restaurantdatabase.order "
-            + "WHERE user_id = ? AND status <> 'NOT_CONFIRMED'";
-    
-    /** sql query for getting not confirmed order that is uders' basket */
-    private static final String SQL_FOR_GETTING_BASKET_ORDER = 
-            "SELECT * FROM restaurantdatabase.order "
-            + "WHERE user_id = ? AND status = ?";
-    
-    private static final String SQL_FOR_INSERTING_BASKET = 
-            "INSERT INTO restaurantdatabase.order "
-            + "(user_id) VALUES (?)";
-    
-    /** sql query to set status CREATED and set current time to new order */
-    private static final String SQL_FOR_BASKET_CONFIRMATION = 
-            "UPDATE restaurantdatabase.order SET status = ?, date = ? "
-            + "WHERE user_id = ? AND status = ?";
-    
-    private static final String SQL_FOR_PRICE_UPDATING = 
-            "UPDATE restaurantdatabase.order SET total_price = "
-            + "(SELECT SUM(price) FROM restaurantdatabase.order_items "
-            + "WHERE order_id = ?)";
-    
-    /** set required order status */
-    private static final String SQL_FOR_ORDER_STATUS_SETTING = 
-            "UPDATE restaurantdatabase.order SET status = ? "
-            + "WHERE order_id = ?";
-    
-    /** sql for getting orders by status */
-    private static final String SQL_FOR_ORDERS_BY_STATUS = 
-            "SELECT * FROM restaurantdatabase.order "
-            + "WHERE status = ?";
     
     /**
      * Constructor 
@@ -380,23 +309,6 @@ public class OrderCreator extends EntityCreator {
         }
         return null;
     }
-//
-//    public void createBasketOrder(int userId) throws SQLException, 
-//            ServerOverloadedException {
-//        WrapperConnectionProxy wrapperConnection = null;
-//        try {
-//            wrapperConnection = CONNECTION_POOL.getConnection();
-//            try (PreparedStatement ps = wrapperConnection.
-//                    prepareStatement(SQL_FOR_INSERTING_BASKET)){
-//                ps.setInt(1, userId);
-//                ps.executeUpdate();
-//            }
-//        } finally {
-//            if (wrapperConnection != null) {
-//                wrapperConnection.close();
-//            }
-//        }
-//    }
 
     /**
      * Set CREATED (instead of NOT_CONFIRMED) status to the basket order for 

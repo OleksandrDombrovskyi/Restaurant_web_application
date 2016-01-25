@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import static model.dao.EntityCreator.CONNECTION_POOL;
+//import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.DBEntity;
 import model.entity.Meal;
 
@@ -18,18 +18,6 @@ import model.entity.Meal;
  * @author Sasha
  */
 public class MealCreator extends EntityCreator {
-
-    /** sql value of meal table name */
-    private final static String MEAL_TABLE = "main_menu";
-    
-    /** sql value of meal id name */
-    private final static String MEAL_ID = "meal_id";
-    
-    /** sql query for inserting meal into the main menu table in the data base */
-    private static final String SQL_FOR_INSERTING_ENTITY = 
-            "INSERT INTO main_menu "
-            + "(meal_type, meal_name, meal_description, meal_price) "
-            + "VALUES (?, ?, ?, ?)";
 
     /**
      * Constructor

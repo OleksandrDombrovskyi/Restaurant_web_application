@@ -91,5 +91,9 @@ public class WrapperConnectionProxy {
     public synchronized void commit() throws SQLException {
         connection.commit();
     }
+
+    void rollback() throws SQLException {
+        connection.rollback();
+    }
     
 }

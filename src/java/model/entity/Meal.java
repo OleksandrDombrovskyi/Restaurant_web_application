@@ -22,6 +22,8 @@ public class Meal extends Service {
     /** meal description */
     private String description;
     
+//    private BigDecimal price;
+    
     /** number of goods which are in the storehouse */
     private int presenceNumber;
     
@@ -39,6 +41,7 @@ public class Meal extends Service {
         setType(type);
         this.name = name;
         this.description = description;
+//        this.price = price;
         this.presenceNumber = presenceNumber;
     }
     
@@ -125,6 +128,22 @@ public class Meal extends Service {
     public String getDescription() {
         return description;
     }
+    
+//    /**
+//     * Set meal price
+//     * @param price meal price
+//     */
+//    public void setPrice(BigDecimal price) {
+//        this.price = price;
+//    }
+//    
+//    /**
+//     * Get meal price
+//     * @return meal price
+//     */
+//    public BigDecimal getPrice() {
+//        return price;
+//    }
     
     /**
      * Set presence number

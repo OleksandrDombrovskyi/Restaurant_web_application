@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import static model.dao.EntityCreator.CONNECTION_POOL;
 import model.entity.DBEntity;
 import model.entity.User;
 
@@ -18,32 +17,6 @@ import model.entity.User;
  * @author Sasha
  */
 public class UserCreator extends EntityCreator {
-
-    /** sql value of user table name */
-    private final static String USER_TABLE = "user";
-    
-    /** sql value of user id name */
-    private final static String USER_ID = "user_id";
-    
-    /** sql query for inserting user into the user table in the data base */
-    private static final String SQL_FOR_USER_INSERTING = 
-            "INSERT INTO user (first_name, last_name, email, password) "
-            + "VALUES (?, ?, ?, ?)";
-    
-//    /** sql query for deleting user from the data base table */
-//    private static final String SQL_FOR_DELETING_BY_ID = "DELETE FROM user WHERE user_id = ?";
-    
-    /** sql query for getting the user from data base by his email */ 
-    private static final String SQL_FOR_USER_BY_EMAIL = 
-            "SELECT * FROM user WHERE email = ?";
-
-    private static final String SQL_FOR_USER_UPDATING = 
-            "UPDATE restaurantdatabase.user SET "
-            + "first_name = ?, last_name = ?, email = ? WHERE user_id = ?";
-    
-    /** sql query for updating user in the data base */
-    private final static String SQL_TO_CHANGE_PASSWORD = 
-            "UPDATE restaurantdatabase.user SET password = ? WHERE user_id = ?";
     
     /**
      * Constructor
@@ -183,12 +156,9 @@ public class UserCreator extends EntityCreator {
         String email = rs.getString("email");
         String password = rs.getString("password");
         BigDecimal account = rs.getBigDecimal("account");
-        int zoneId = rs.getInt("zone_id");
         User newUser = new User(firstName, lastName, email, password);
         newUser.setId(id);
         newUser.setAccount(account);
-        newUser.setZoneId(zoneId);
-        //TODO: get all user's oders and add to the object's order list
         return newUser;
     }
     

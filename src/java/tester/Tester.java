@@ -118,7 +118,7 @@ public class Tester {
 //        }
 //        String password = "1234560";
 //
-//        System.out.println(DigestUtils.shaHex("123456Аб"));
+//        System.out.println(DigestUtils.shaHex("Kitchen10"));
 //        System.out.println(DigestUtils.shaHex(DigestUtils.shaHex(password)));
     }
 }

@@ -21,8 +21,6 @@ public class OrderItem {
     
     /** number of meals in this item */
     private int mealAmount;
-    
-    private Zone zone;
 
     /**
      * COnstructor
@@ -82,22 +80,6 @@ public class OrderItem {
      */
     public int getMealAmount() {
         return mealAmount;
-    }
-    
-    /**
-     * Set zone
-     * @param zone user's zone
-     */
-    public void setZone(Zone zone) {
-        this.zone = zone;
-    }
-    
-    /**
-     * Get user's zone
-     * @return zone
-     */
-    public Zone getZone() {
-        return zone;
     }
     
 }
