@@ -11,6 +11,8 @@ import controller.action.LanguageBlock;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Get action abstract class
@@ -33,21 +35,21 @@ public abstract class GetAction extends Action {
                 include(request, response); // call to page that includes all required parts of page
     }
     
-    /**
-     * Show error message only
-     * 
-     * @param message error message
-     * @throws IOException
-     * @throws ServletException 
-     */
-    protected void showMessageTest(String message) throws IOException, 
-            ServletException {
-        request.setAttribute("title", message);
-        new LanguageBlock().execute(request, response);
-        request.setAttribute("errorMessage", message);
-        request.getRequestDispatcher("/view/error.jsp").
-                include(request, response);
-    }
+//    /**
+//     * Show error message only
+//     * 
+//     * @param message error message
+//     * @throws IOException
+//     * @throws ServletException 
+//     */
+//    protected void showMessageTest(String message) throws IOException, 
+//            ServletException {
+//        request.setAttribute("title", message);
+//        new LanguageBlock().execute(request, response);
+//        request.setAttribute("errorMessage", message);
+//        request.getRequestDispatcher("/view/error.jsp").
+//                include(request, response);
+//    }
     
     /**
      * Get array list of link chain direct to current page (in fact this method 

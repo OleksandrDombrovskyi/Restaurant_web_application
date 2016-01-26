@@ -37,16 +37,11 @@ public class Servlet extends HttpServlet {
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
-//        String actionKey = request.getParameter("getAction");
-//        if (actionKey == null) {
-//            actionKey = "home";
-//        }
-//        saveActionForRedirect(actionKey, request);
         Action action = new ActionFactory().getGetAction(request);
         LOGGER.info("Get action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {
-            return;
+            page = ConfigManager.getProperty("path.home"); 
         }
         goToPage(page, request, response);
         LOGGER.info("Get action was performed: " + action.toString());
@@ -87,22 +82,6 @@ public class Servlet extends HttpServlet {
      */
     private void goToPage(String page, HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-//        String page = ConfigManager.getProperty(pageProp);
-//        String newPage = "/view/home.jsp";
-//        System.out.println(page);
-//        System.out.println(page);
-//        System.out.println(page);
-//        System.out.println(page);
-//        System.out.println(page);
-//        System.out.println(newPage);
-//        System.out.println(newPage);
-//        System.out.println(newPage);
-//        System.out.println(newPage);
-//        System.out.println(newPage);
-//        newPage = (String) page;
-        String path = null;
-//        path = "/view/home.jsp";
-        path = ConfigManager.getProperty("path.page.signup");
         request.setAttribute("relativeURI", page);
         String createPage = ConfigManager.getProperty("path.page.createpage");
         request.getRequestDispatcher(createPage).forward(request, response);

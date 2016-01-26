@@ -26,7 +26,7 @@ public class HomePage extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.page.home");
+        return ConfigManager.getProperty("path.home");
     }
 
     /**
