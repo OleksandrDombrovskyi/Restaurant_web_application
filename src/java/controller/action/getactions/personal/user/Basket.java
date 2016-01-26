@@ -9,6 +9,7 @@ import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
+import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class Basket extends GetAction {
+public class Basket extends MainPartAction {
 
     /**
      * Show page with basket of current user

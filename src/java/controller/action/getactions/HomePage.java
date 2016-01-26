@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
  * Home page
  * @author Sasha
  */
-public class HomePage extends GetAction {
+public class HomePage extends MainPartAction {
 
     /**
      * Show home page

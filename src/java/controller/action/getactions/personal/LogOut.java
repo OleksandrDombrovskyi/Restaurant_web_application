@@ -5,7 +5,7 @@
  */
 package controller.action.getactions.personal;
 
-import controller.action.Action;
+import controller.action.getactions.GetAction;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -13,7 +13,7 @@ import javax.servlet.ServletException;
  * Log out
  * @author Sasha
  */
-public class LogOut extends Action {
+public class LogOut extends GetAction {
 
     /**
      * Log out user or admin (go to user role)
@@ -24,9 +24,6 @@ public class LogOut extends Action {
     @Override
     public String doExecute() throws ServletException, IOException {
         session.invalidate();
-//        session.removeAttribute("user");
-//        session.removeAttribute("admin");
-//        session.removeAttribute("kitchen");
         return request.getHeader("Referer");
     }
     

@@ -6,6 +6,7 @@
 package controller.action;
 
 import controller.ConfigManager;
+import controller.action.getactions.GetAction;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -13,7 +14,7 @@ import javax.servlet.ServletException;
  * Language block
  * @author Sasha
  */
-public class LanguageBlock extends Action {
+public class LanguageBlock extends GetAction {
 
     /**
      * Set language block

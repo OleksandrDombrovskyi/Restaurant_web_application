@@ -20,7 +20,7 @@ import model.entity.Meal;
  * Main menu 
  * @author Sasha
  */
-public class MainMenu extends GetAction {
+public class MainMenu extends MainPartAction {
 
     /**
      * Show main menu page
@@ -38,24 +38,6 @@ public class MainMenu extends GetAction {
         request.setAttribute("meals", meals);
 //        goToPage("mainmenu.text.title", "view/mainmenu.jsp");
         return ConfigManager.getProperty("path.page.mainmenu");
-    }
-    
-    /**
-     * Get array list of link chain direct to current page (in fact this method 
-     * gets link chain of its' previous page, add its' own link and return 
-     * created array list)
-     * 
-     * @return array list of links
-     */
-    @Override
-    public List<ConcreteLink> getLink() {
-        List<ConcreteLink> links = new ArrayList<>();
-        links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.mainmenu");
-        String linkName = "mainmenu.text.title";
-        ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
-        links.add(concreteLink);
-        return links;
     }
 
     /**
@@ -75,6 +57,24 @@ public class MainMenu extends GetAction {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "home");
             return null;
         }
+    }
+    
+    /**
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
+     */
+    @Override
+    public List<ConcreteLink> getLink() {
+        List<ConcreteLink> links = new ArrayList<>();
+        links.addAll(new HomePage().getLink());
+        String linkValue = ConfigManager.getProperty("link.mainmenu");
+        String linkName = "mainmenu.text.title";
+        ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
+        links.add(concreteLink);
+        return links;
     }
     
 }

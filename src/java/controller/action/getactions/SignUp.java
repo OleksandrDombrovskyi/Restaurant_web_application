@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
  * Sign up
  * @author Sasha
  */
-public class SignUp extends GetAction {
+public class SignUp extends MainPartAction {
 
     /**
      * Show registration page
@@ -26,7 +26,7 @@ public class SignUp extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        goToPage("signup.text.title", "/view/signup.jsp");
+//        goToPage("signup.text.title", "/view/signup.jsp");
         return ConfigManager.getProperty("path.page.signup");
     }
     

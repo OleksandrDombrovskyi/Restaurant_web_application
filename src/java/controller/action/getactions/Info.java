@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
  * Restaurant info
  * @author Sasha
  */
-public class Info extends GetAction {
+public class Info extends MainPartAction {
 
     /**
      * Show info page

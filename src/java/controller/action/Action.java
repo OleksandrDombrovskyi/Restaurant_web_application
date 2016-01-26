@@ -33,31 +33,6 @@ public abstract class Action {
     protected HttpSession session;
     
     /**
-     * Initialization required variables and run doExecute method
-     * 
-     * @param request http servlet reuest
-     * @param response http servlet response
-     * @return string value of page property file
-     * @throws ServletException
-     * @throws IOException 
-     */
-    public String execute(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        this.request = request;
-        this.response = response;
-        session = request.getSession();
-        return doExecute();
-    }
-    
-    /**
-     * Execute required action
-     * @return string value of page property file
-     * @throws ServletException
-     * @throws IOException 
-     */
-    protected abstract String doExecute() throws ServletException, IOException;
-    
-    /**
      * Send redirect to some get action
      * @param message message if it is required in some case
      * @param errorMessage error message if it is required in some case

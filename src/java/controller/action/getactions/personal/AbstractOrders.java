@@ -6,6 +6,7 @@
 package controller.action.getactions.personal;
 
 import controller.action.getactions.GetAction;
+import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +19,7 @@ import model.entity.Order;
  * Abstract orders class
  * @author Sasha
  */
-public abstract class AbstractOrders extends GetAction {
+public abstract class AbstractOrders extends MainPartAction {
     
     /**
      * Get all orders by user id

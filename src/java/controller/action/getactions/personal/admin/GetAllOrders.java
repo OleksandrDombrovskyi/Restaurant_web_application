@@ -24,6 +24,7 @@ public class GetAllOrders extends AdminGetAction {
 
     /**
      * Get all orders by admin request
+     * @return 
      * @throws ServletException
      * @throws IOException 
      */

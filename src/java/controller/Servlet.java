@@ -5,7 +5,8 @@
  */
 package controller;
 
-import controller.action.Action;
+import controller.action.getactions.GetAction;
+import controller.action.postactions.PostAction;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,7 +38,7 @@ public class Servlet extends HttpServlet {
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
-        Action action = new ActionFactory().getGetAction(request);
+        GetAction action = (GetAction) new ActionFactory().getGetAction(request);
         LOGGER.info("Get action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {
@@ -65,7 +66,7 @@ public class Servlet extends HttpServlet {
 //            doGet(request, response);
 //            return;
 //        }
-        Action action = new ActionFactory().getPostAction(request);
+        PostAction action = (PostAction) new ActionFactory().getPostAction(request);
         LOGGER.info("Post action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {

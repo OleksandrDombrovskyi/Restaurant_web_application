@@ -52,7 +52,7 @@ public class Order extends AbstractOrders {
         if (admin != null || checkUserValidation(user, order)) {
             request.setAttribute("order", order);
             request.setAttribute("items", order.getOrderItems());
-            goToPage("order.text.title", "/view/person/user/order.jsp");
+//            goToPage("order.text.title", "/view/person/user/order.jsp");
             return ConfigManager.getProperty("path.page.user.getorder");
         } else {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");

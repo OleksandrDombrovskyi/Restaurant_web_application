@@ -6,7 +6,6 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
-import controller.action.Action;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -14,7 +13,7 @@ import javax.servlet.ServletException;
  * Change language
  * @author Sasha
  */
-public class ChangeLanguage extends Action {
+public class ChangeLanguage extends GetAction {
 
     /**
      * Set languge block and set the language settings

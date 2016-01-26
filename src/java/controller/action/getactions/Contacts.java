@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
  * Contacts
  * @author Sasha
  */
-public class Contacts extends GetAction {
+public class Contacts extends MainPartAction {
 
     /**
      * Show pae with contakt information

@@ -21,19 +21,44 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class GetAction extends Action {
     
     /**
+     * Initialization required variables and run doExecute method
      * 
-     * @param title
-     * @param relativeURI
+     * @param request http servlet reuest
+     * @param response http servlet response
+     * @return string value of page property file
      * @throws ServletException
      * @throws IOException 
      */
-    protected void goToPage(String title, String relativeURI) throws ServletException, IOException {
-        request.setAttribute("title", title); // set title
-        request.setAttribute("links", getLink()); // set navigation block links
-        request.setAttribute("relativeURI", relativeURI); // set relative URI of new page
-        request.getRequestDispatcher("/createpage.jsp").
-                include(request, response); // call to page that includes all required parts of page
+    public String execute(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        this.request = request;
+        this.response = response;
+        session = request.getSession();
+        return doExecute();
     }
+    
+    /**
+     * Execute required action
+     * @return string value of page property file
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected abstract String doExecute() throws ServletException, IOException;
+    
+//    /**
+//     * 
+//     * @param title
+//     * @param relativeURI
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    protected void goToPage(String title, String relativeURI) throws ServletException, IOException {
+//        request.setAttribute("title", title); // set title
+//        request.setAttribute("links", getLink()); // set navigation block links
+//        request.setAttribute("relativeURI", relativeURI); // set relative URI of new page
+//        request.getRequestDispatcher("/createpage.jsp").
+//                include(request, response); // call to page that includes all required parts of page
+//    }
     
 //    /**
 //     * Show error message only
@@ -50,14 +75,5 @@ public abstract class GetAction extends Action {
 //        request.getRequestDispatcher("/view/error.jsp").
 //                include(request, response);
 //    }
-    
-    /**
-     * Get array list of link chain direct to current page (in fact this method 
-     * gets link chain of its' previous page, add its' own link and return 
-     * created array list)
-     * 
-     * @return array list of links
-     */
-    public abstract List<ConcreteLink> getLink();
     
 }

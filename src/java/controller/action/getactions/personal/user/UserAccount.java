@@ -9,6 +9,7 @@ import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
+import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class UserAccount extends GetAction {
+public class UserAccount extends MainPartAction {
 
     /**
      * Show user accaunt balance

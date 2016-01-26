@@ -14,7 +14,7 @@ import javax.servlet.ServletException;
  * Login request
  * @author Sasha
  */
-public class LoginRequest extends Action {
+public class LoginRequest extends GetAction {
 
     /**
      * Show login page
