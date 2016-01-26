@@ -85,9 +85,24 @@ public class Servlet extends HttpServlet {
      * @param pageProp page property value
      * @param request http servlet request
      */
-    private void goToPage(String pageProp, HttpServletRequest request, 
+    private void goToPage(String page, HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-        String page = ConfigManager.getProperty(pageProp);
+//        String page = ConfigManager.getProperty(pageProp);
+//        String newPage = "/view/home.jsp";
+//        System.out.println(page);
+//        System.out.println(page);
+//        System.out.println(page);
+//        System.out.println(page);
+//        System.out.println(page);
+//        System.out.println(newPage);
+//        System.out.println(newPage);
+//        System.out.println(newPage);
+//        System.out.println(newPage);
+//        System.out.println(newPage);
+//        newPage = (String) page;
+        String path = null;
+//        path = "/view/home.jsp";
+        path = ConfigManager.getProperty("path.page.signup");
         request.setAttribute("relativeURI", page);
         String createPage = ConfigManager.getProperty("path.page.createpage");
         request.getRequestDispatcher(createPage).forward(request, response);
