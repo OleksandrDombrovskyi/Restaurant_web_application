@@ -39,7 +39,7 @@
                         <c:forEach items="${orders}" var="order" >
                             <tr>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderKitchen&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_kitchen&orderId=${order.id}" >
                                         ${order.date}</a>
                                 </td>
                             </tr>

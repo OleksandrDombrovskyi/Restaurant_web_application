@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,22 +26,27 @@ public class ClearBasket extends PostAction {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "basket.errormessage.nosuchorder", "basket");
-            return;
+//            sendRedirect(null, "basket.errormessage.nosuchorder", "basket");
+            setMessages(null, "basket.errormessage.nosuchorder");
+            return ConfigManager.getProperty("path.page.user.basket");
         }
         int orderId = Integer.parseInt(orderIdString);
         if (isRemoved(orderId)) {
-            sendRedirect(null, null, "basket");
+//            sendRedirect(null, null, "basket");
+            return ConfigManager.getProperty("path.page.user.basket");
         } else {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
+//            sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
+            setMessages(null, "exception.errormessage.serveroverloaded");
+            return ConfigManager.getProperty("path.page.user.basket");
         }
     }
     

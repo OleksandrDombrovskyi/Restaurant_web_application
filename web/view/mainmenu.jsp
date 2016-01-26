@@ -62,7 +62,7 @@
                 <c:if test="${not empty user}" >
                     <input type="submit" value=<fmt:message 
                                key="mainmenu.button.addtobasket" /> />
-                    <input type="hidden" name="postAction" value="addToBasket" />
+                    <input type="hidden" name="postAction" value="add_to_basket" />
                 </c:if>
             </form>
         </c:if>

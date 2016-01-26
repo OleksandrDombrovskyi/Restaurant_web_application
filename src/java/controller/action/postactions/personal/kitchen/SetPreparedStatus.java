@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions.personal.kitchen;
+package controller.action.postactions.personal.kitchen;
 
+import controller.ConfigManager;
 import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -23,22 +24,24 @@ public class SetPreparedStatus extends SetOrderStatus {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
-            return;
+            return null;
         }
         int orderId = Integer.parseInt(orderIdString);
         if (!setStatus(orderId, OrderStatus.PREPARED)) {
-            return;
+            return null;
         }
         sendRedirect(null, null);
+        return null;
     }
     
 }

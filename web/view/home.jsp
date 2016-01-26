@@ -29,7 +29,7 @@
         --%>
         <h1><fmt:message key="home.text.welcome" /></h1>
         <h2>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=mainMenu"><fmt:message key="home.link.mainmenu" /></a>
+            <a href="${pageContext.request.contextPath}/servlet?getAction=main_menu"><fmt:message key="home.link.mainmenu" /></a>
             <a href="${pageContext.request.contextPath}/servlet?getAction=info"><fmt:message key="home.link.info" /></a>
             <a href="${pageContext.request.contextPath}/servlet?getAction=contacts"><fmt:message key="home.link.contacts" /></a>
         </h2>

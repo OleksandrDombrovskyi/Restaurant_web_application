@@ -25,9 +25,9 @@
         <form>
             <select name="language" onchange="submit()"  >
                 <option value="en" ${language == 'en' ? 'selected' : ''}>English</option> 
-                <option value="ru" ${language == 'ru' ? 'selected' : ''}>Русский</option>
-                <option value="ua" ${language == 'ua' ? 'selected' : ''}>Українська</option>
-                <input type="hidden" name="getAction" value="changeLanguage" />
+                <option value="ru" ${language == 'ru' ? 'selected' : ''}>???????</option>
+                <option value="ua" ${language == 'ua' ? 'selected' : ''}>?????????</option>
+                <input type="hidden" name="getAction" value="change_language" />
             </select>
         </form>
     </body>

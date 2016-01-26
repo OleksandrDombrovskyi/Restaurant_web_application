@@ -5,8 +5,8 @@
  */
 package controller.action.getactions;
 
+import controller.ConfigManager;
 import controller.action.Action;
-import controller.action.LanguageBlock;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -18,23 +18,24 @@ public class LoginRequest extends Action {
 
     /**
      * Show login page
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() throws ServletException, IOException {
-        saveURIForRedirect();
-        request.setAttribute("title", "login.text.title");
-        new LanguageBlock().execute(request, response);
-        request.getRequestDispatcher("/view/login.jsp").include(request, response);
+    public String doExecute() throws ServletException, IOException {
+//        saveURIForRedirect();
+//        request.setAttribute("title", "login.text.title");
+//        new LanguageBlock().execute(request, response);
+        return ConfigManager.getProperty("path.page.loginrequest");
     }
     
-    /**
-     * Save URI before go to login page for coming back after authorization
-     */
-    private void saveURIForRedirect() {
-        String from = request.getParameter("from");
-        session.setAttribute("from", from);
-    }
+//    /**
+//     * Save URI before go to login page for coming back after authorization
+//     */
+//    private void saveURIForRedirect() {
+//        String from = request.getParameter("from");
+//        session.setAttribute("from", from);
+//    }
     
 }

@@ -37,15 +37,19 @@ public class Servlet extends HttpServlet {
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
-        String actionKey = request.getParameter("getAction");
-        if (actionKey == null) {
-            actionKey = "home";
+//        String actionKey = request.getParameter("getAction");
+//        if (actionKey == null) {
+//            actionKey = "home";
+//        }
+//        saveActionForRedirect(actionKey, request);
+        Action action = new ActionFactory().getGetAction(request);
+        LOGGER.info("Get action was called: " + action.toString());
+        String page = action.execute(request, response);
+        if (page == null) {
+            return;
         }
-        LOGGER.info("Get action was called: " + actionKey);
-        saveActionForRedirect(actionKey, request);
-        Action action = new ActionFactory().getGetAction(actionKey);
-        action.execute(request, response);
-        LOGGER.info("Get action was performed: " + actionKey);
+        goToPage(page, request, response);
+        LOGGER.info("Get action was performed: " + action.toString());
     }
     
     /**
@@ -61,27 +65,44 @@ public class Servlet extends HttpServlet {
         request.setCharacterEncoding("windows-1251");
         response.setCharacterEncoding("windows-1251");
         response.setContentType("text/html");
-        String actionKey = request.getParameter("postAction");
-        if (actionKey == null) {
-            doGet(request, response);
+//        String actionKey = request.getParameter("postAction");
+//        if (actionKey == null) {
+//            doGet(request, response);
+//            return;
+//        }
+        Action action = new ActionFactory().getPostAction(request);
+        LOGGER.info("Post action was called: " + action.toString());
+        String page = action.execute(request, response);
+        if (page == null) {
             return;
         }
-        LOGGER.info("Post action was called: " + actionKey);
-        Action action = new ActionFactory().getPostAction(actionKey);
-        action.execute(request, response);
-        LOGGER.info("Post action was performed: " + actionKey);
+        goToPage(page, request, response);
+        LOGGER.info("Post action was performed: " + action.toString());
     }
     
     /**
-     * Save last action to back to the last page
-     * @param actionKey action name
+     *  Foward to page
+     * @param pageProp page property value
      * @param request http servlet request
      */
-    private void saveActionForRedirect(String actionKey, HttpServletRequest request) {
-        if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp") 
-                && !actionKey.equals("changeLanguage")) {
-            request.getSession().setAttribute("lastAction", actionKey);
-        }
+    private void goToPage(String pageProp, HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException {
+        String page = ConfigManager.getProperty(pageProp);
+        request.setAttribute("relativeURI", page);
+        String createPage = ConfigManager.getProperty("path.page.createpage");
+        request.getRequestDispatcher(createPage).forward(request, response);
     }
+    
+//    /**
+//     * Save last action to back to the last page
+//     * @param actionKey action name
+//     * @param request http servlet request
+//     */
+//    private void saveActionForRedirect(String actionKey, HttpServletRequest request) {
+//        if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp") 
+//                && !actionKey.equals("changeLanguage")) {
+//            request.getSession().setAttribute("lastAction", actionKey);
+//        }
+//    }
     
 }

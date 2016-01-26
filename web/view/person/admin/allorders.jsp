@@ -18,19 +18,19 @@
     </head>
     <body>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=CREATED" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=CREATED" >
                 <fmt:message key="administration.orders.link.created" /> | 
             </a>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=ACCEPTED" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=ACCEPTED" >
                 <fmt:message key="administration.orders.link.accepted" /> | 
             </a>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=PREPARED" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=PREPARED" >
                 <fmt:message key="administration.orders.link.prepared" /> | 
             </a>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=READY" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=READY" >
                 <fmt:message key="administration.orders.link.ready" /> | 
             </a>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=PAYED" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=PAYED" >
                 <fmt:message key="administration.orders.link.payed" /> | 
             </a>
         </h3>
@@ -57,6 +57,7 @@
             </c:choose>
         </h3>
         <h3>
+            <%--
         <c:if test="${not empty errorMessage}" >
             <fmt:message key="${errorMessage}" />
             <c:remove var="errorMessage" scope="session" />
@@ -65,6 +66,7 @@
             <fmt:message key="${message}" />
             <c:remove var="message" scope="session" />
         </c:if>
+            --%>
         </h3>
         <form action="servlet" method="get" >
             <c:if test="${empty errorMessage}" >
@@ -82,19 +84,19 @@
                         <c:forEach items="${orders}" var="order" >
                             <tr>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_admin&orderId=${order.id}" >
                                         ${order.id}</a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_admin&orderId=${order.id}" >
                                         ${order.date}</a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_admin&orderId=${order.id}" >
                                         <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=${order.status}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=${order.status}" >
                                         <h3>
                                             <c:choose>
                                                 <c:when test="${order.status == 'NOT_CONFIRMED'}">
@@ -121,17 +123,17 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${order.userId}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_user_orders&userId=${order.userId}" >
                                         ${userMap[order.userId].firstName}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${order.userId}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_user_orders&userId=${order.userId}" >
                                         ${userMap[order.userId].lastName}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${order.userId}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_user_orders&userId=${order.userId}" >
                                         ${userMap[order.userId].email}
                                     </a>
                                 </td>

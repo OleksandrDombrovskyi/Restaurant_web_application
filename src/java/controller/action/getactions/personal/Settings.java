@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal;
 
+import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
@@ -26,24 +27,27 @@ public class Settings extends GetAction {
      * Check if user or admin are in the current session and show corresponding
      * setting page, or back to home page if there is no person in the session
      * 
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             setParameters(user);
-            goToPage("settings.text.title", "/view/person/settings.jsp");
-            return;
+//            goToPage("settings.text.title", "/view/person/settings.jsp");
+            return ConfigManager.getProperty("path.page.settings");
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
             setParameters(admin);
-            goToPage("settings.text.title", "/view/person/settings.jsp");
-            return;
+//            goToPage("settings.text.title", "/view/person/settings.jsp");
+            return ConfigManager.getProperty("path.page.settings");
         }
-        sendRedirect(null, "login.errormessage.loginplease", "home");
+//        sendRedirect(null, "login.errormessage.loginplease", "home");
+        setMessages(null, "login.errormessage.loginplease");
+        return ConfigManager.getProperty("path.page.home");
     }
     
     /**
@@ -73,7 +77,7 @@ public class Settings extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=settings";
+        String linkValue = ConfigManager.getProperty("link.settings");
         String linkName = "settings.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

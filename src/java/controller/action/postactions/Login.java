@@ -5,6 +5,7 @@
  */
 package controller.action.postactions;
 
+import controller.ConfigManager;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -25,26 +26,31 @@ public class Login extends PostAction {
 
     /**
      * Log in
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() 
+    public String doExecute() 
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (isEmpty(email) || isEmpty(password)) {
-            sendRedirect(null, "login.errormessage.empty", "loginRequest");
-            return;
+//            sendRedirect(null, "login.errormessage.empty", "loginRequest");
+            setMessages(null, "login.errormessage.empty");
+            return ConfigManager.getProperty("path.page.loginrequest");
         }
         String hexPassword = DigestUtils.shaHex(password);
         if (!userAuthorization(email, hexPassword)) {
             if (!adminAuthorization(email, hexPassword)) {
                 if (!kitchenAuthorization(email, hexPassword)) {
-                    sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
+//                    sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
+                    setMessages(null, "login.errormessage.nosuchuser");
+                    return ConfigManager.getProperty("path.page.loginrequest");
                 }
             }
         }
+        return null;
     }
     
     /**
@@ -71,7 +77,8 @@ public class Login extends PostAction {
             }
             if (user.getPassword().equals(password)) {
                 session.setAttribute("user", user);
-                showLastPage();
+                sendRedirect(null, null, "home");
+//                showLastPage();
             } else {
                 sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
             }
@@ -107,7 +114,8 @@ public class Login extends PostAction {
             }
             if (admin.getPassword().equals(password)) {
                 session.setAttribute("admin", admin);
-                showLastPage();
+                sendRedirect(null, null, "home");
+//                showLastPage();
             } else {
                 sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
             }
@@ -155,20 +163,20 @@ public class Login extends PostAction {
         return true;
     }
     
-    /**
-     * Go to page was opened before login was requested of to hme page if last 
-     * action equals null in the session
-     * @throws ServletException
-     * @throws IOException 
-     */
-    private void showLastPage() throws ServletException, IOException {
-        String lastAction = (String) session.getAttribute("lastAction");
-        if (lastAction != null) {
-            sendRedirect(null, null, lastAction);
-            return;
-        }
-        sendRedirect(null, null, "home");
-    }
+//    /**
+//     * Go to page was opened before login was requested of to hme page if last 
+//     * action equals null in the session
+//     * @throws ServletException
+//     * @throws IOException 
+//     */
+//    private void showLastPage() throws ServletException, IOException {
+//        String lastAction = (String) session.getAttribute("lastAction");
+//        if (lastAction != null) {
+//            sendRedirect(null, null, lastAction);
+//            return;
+//        }
+//        sendRedirect(null, null, "home");
+//    }
 
     /**
      * Check whether is string variable equals null or empty string

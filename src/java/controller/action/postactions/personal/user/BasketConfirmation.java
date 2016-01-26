@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,15 +26,16 @@ public class BasketConfirmation extends PostAction {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (!userValidation(user)) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         int userId = user.getId();
         if (!confirmBasket(userId)) {
-            return;
+            return null;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
@@ -42,6 +44,7 @@ public class BasketConfirmation extends PostAction {
             sendRedirect(null, null, 
                 "getOrder&orderId=" + orderIdString);
         }
+        return null;
     }
 
     /**

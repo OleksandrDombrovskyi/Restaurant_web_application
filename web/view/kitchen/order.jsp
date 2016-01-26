@@ -50,7 +50,7 @@
                         <c:when test="${order.status == 'ACCEPTED'}">
                             <fmt:message key="order.status.accepted" />
                             <input type="submit" value="<fmt:message key="kitchen.order.button.prepared" />" />
-                            <input type="hidden" name="postAction" value="setPreparedStatus" />
+                            <input type="hidden" name="postAction" value="set_prepared_status" />
                             <input type="hidden" name="orderId" value="${order.id}" />
                         </c:when>
                         <c:when test="${order.status == 'PREPARED'}">

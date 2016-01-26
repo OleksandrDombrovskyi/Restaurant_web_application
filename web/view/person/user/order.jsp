@@ -77,7 +77,7 @@
                     <input type="submit" value="<fmt:message key="order.button.pay" />" 
                            onclick="return confirm('<fmt:message key="order.dialogbox.confirmation" />')"
                            />
-                    <input type="hidden" name="postAction" value="payOrder" />
+                    <input type="hidden" name="postAction" value="pay_order" />
                     <input type="hidden" name="orderId" value="${order.id}" />
                 </form>
             </c:when>

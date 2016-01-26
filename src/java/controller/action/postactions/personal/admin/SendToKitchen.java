@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal.admin;
 
+import controller.ConfigManager;
 import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -23,22 +24,24 @@ public class SendToKitchen extends SetOrderStatus {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "administration.user.order.errormessage.wrongorderid");
-            return;
+            return null;
         }
         int orderId = Integer.parseInt(orderIdString);
         if (!setStatus(orderId, OrderStatus.ACCEPTED)) {
-            return;
+            return null;
         }
         sendRedirect(null, null);
+        return null;
     }
 
 }

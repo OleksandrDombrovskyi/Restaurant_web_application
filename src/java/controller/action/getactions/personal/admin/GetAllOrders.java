@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.admin;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,11 +28,12 @@ public class GetAllOrders extends AdminGetAction {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         List<Order> orders = getAllOrders();
         if (orders == null || orders.size() < 1) {
@@ -46,7 +48,8 @@ public class GetAllOrders extends AdminGetAction {
             Map<Integer, User> userMap = createUserMap(users);
             request.setAttribute("userMap", userMap);
         }
-        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
+//        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
+        return ConfigManager.getProperty("path.page.admin.getallorders");
     }
     
     /**
@@ -60,7 +63,7 @@ public class GetAllOrders extends AdminGetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Administration().getLink());
-        String linkValue = "/servlet?getAction=getAllOrders";
+        String linkValue = ConfigManager.getProperty("link.getallorders");
         String linkName = "administration.orders.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

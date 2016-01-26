@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -27,39 +28,41 @@ public class PayOrder extends SetOrderStatus {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder");
-            return;
+            return null;
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder");
-            return;
+            return null;
         }
         User updatedUser = getUserById(user.getId());
         if (updatedUser == null) {
             sendRedirect("login.errormessage.loginplease", null);
-            return;
+            return null;
         }
         session.setAttribute("user", updatedUser);
         BigDecimal price = order.getTotalPrice();
         BigDecimal account = updatedUser.getAccount();
         if (account.compareTo(price) < 0) {
             sendRedirect("order.message.insufficientfunds", null);
-            return;
+            return null;
         }
         if (!remitPayment(updatedUser, order)) {
-            return;
+            return null;
         }
         sendRedirect("order.message.orderwaspayed", null);
+        return null;
     }
 
     /**

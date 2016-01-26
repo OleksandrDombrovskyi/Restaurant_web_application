@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -36,11 +37,12 @@ public class AddToBasket extends PostAction {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null || user.getId() == 0) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         int userId = user.getId();
         Order newBasketOrder = new Order(userId, 
@@ -48,20 +50,22 @@ public class AddToBasket extends PostAction {
                 new Timestamp(new Date().getTime()));
         if (!insertOrderItems(newBasketOrder)) {
             sendRedirect(null, "mainmenu.errormessage.nomeals", "mainMenu");
-            return;
+            return null;
         }
         if (newBasketOrder.getOrderItems().size() < 1) {
             sendRedirect("mainmenu.message.noselectedmeals", null, "mainMenu");
-            return;
+            return null;
         }
         Order basketOrder = getBasketOrder(userId);
         if (basketOrder == null) {
             createNewBasket(newBasketOrder);
         } else {
             if (addItemsToBasket(basketOrder, newBasketOrder)) {
-                sendRedirect(null, null, "basket");
+//                sendRedirect(null, null, "basket");
+                return ConfigManager.getProperty("path.page.user.basket");
             }
         }
+        return null;
     }
     
     /**

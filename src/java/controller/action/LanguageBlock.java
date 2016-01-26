@@ -5,6 +5,7 @@
  */
 package controller.action;
 
+import controller.ConfigManager;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -16,12 +17,13 @@ public class LanguageBlock extends Action {
 
     /**
      * Set language block
+     * @return property key value 
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() throws ServletException, IOException {
-        request.getRequestDispatcher("/view/language.jsp").include(request, response);
+    public String doExecute() throws ServletException, IOException {
+        return ConfigManager.getProperty("path.page.language");
     }
     
 }

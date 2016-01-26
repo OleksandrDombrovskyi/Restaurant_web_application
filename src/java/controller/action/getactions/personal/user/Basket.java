@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
@@ -26,15 +27,17 @@ public class Basket extends GetAction {
 
     /**
      * Show page with basket of current user
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         int userId = user.getId();
         model.entity.Order basketOrder = getBasketOrder(userId);
@@ -42,7 +45,8 @@ public class Basket extends GetAction {
             request.setAttribute("message", "basket.message.emptybasket");
         }
         request.setAttribute("basketOrder", basketOrder);
-        goToPage("basket.text.title", "/view/person/user/basket.jsp");
+//        goToPage("basket.text.title", "/view/person/user/basket.jsp");
+        return ConfigManager.getProperty("path.page.user.basket");
     }
     
     /**
@@ -85,7 +89,7 @@ public class Basket extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=basket";
+        String linkValue = ConfigManager.getProperty("link.basket");
         String linkName = "basket.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

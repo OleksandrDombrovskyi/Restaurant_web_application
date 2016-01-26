@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal;
 
+import controller.ConfigManager;
 import controller.action.Validator;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -24,30 +25,34 @@ public abstract class ChangePassword extends PersonalPostAction {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Person person = getPersonFromSession();
         if (person == null) {
-            return;
+            return null;
         }
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
         if (!checkForNotNull(oldPassword, newPassword, confirmPassword)) {
-            sendRedirect(null, "settings.errormessage.easypasword", "settings");
-            return;
+//            sendRedirect(null, "settings.errormessage.easypasword", "settings");
+            setMessages(null, "settings.errormessage.easypasword");
+            return ConfigManager.getProperty("path.page.settings");
         }
         if (!isValid(newPassword)) {
-            sendRedirect(null, "settings.errormessage.easypasword", "settings");
-            return;
+//            sendRedirect(null, "settings.errormessage.easypasword", "settings");
+            setMessages(null, "settings.errormessage.easypasword");
+            return ConfigManager.getProperty("path.page.settings");
         }
         String hexOldPassword = DigestUtils.shaHex(oldPassword);
         String hexNewPassword = DigestUtils.shaHex(newPassword);
         String hexConfirmPassword = DigestUtils.shaHex(confirmPassword);
         if (!checkPasswords(person, hexOldPassword, hexNewPassword, hexConfirmPassword) 
                 || !changePassword(person, hexNewPassword)) {
-            return;
+            return null;
         }
-        sendRedirect("settings.message.passwordchanged", null, "settings");
+//        sendRedirect("settings.message.passwordchanged", null, "settings");
+        setMessages("settings.message.passwordchanged", null);
+        return ConfigManager.getProperty("path.page.settings");
     }
     
     /**

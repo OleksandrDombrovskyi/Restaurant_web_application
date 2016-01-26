@@ -42,19 +42,19 @@
                         <c:forEach items="${orders}" var="order" >
                             <tr>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order&orderId=${order.id}" >
                                         ${order.id}</a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order&orderId=${order.id}" >
                                         ${order.date}</a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order&orderId=${order.id}" >
                                         <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrder&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order&orderId=${order.id}" >
                                         <h3>
                                             <c:choose>
                                                 <c:when test="${order.status == 'NOT_CONFIRMED'}">

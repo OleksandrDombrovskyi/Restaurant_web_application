@@ -5,6 +5,7 @@
  */
 package controller.action.getactions;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,12 +20,14 @@ public class SignUp extends GetAction {
 
     /**
      * Show registration page
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() throws ServletException, IOException {
+    public String doExecute() throws ServletException, IOException {
         goToPage("signup.text.title", "/view/signup.jsp");
+        return ConfigManager.getProperty("path.page.signup");
     }
     
     /**
@@ -38,7 +41,7 @@ public class SignUp extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = "/servlet?getAction=signUp";
+        String linkValue = ConfigManager.getProperty("link.signup");
         String linkName = "signup.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

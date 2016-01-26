@@ -5,6 +5,7 @@
  */
 package controller.action.getactions;
 
+import controller.ConfigManager;
 import controller.action.Action;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -17,18 +18,18 @@ public class ChangeLanguage extends Action {
 
     /**
      * Set languge block and set the language settings
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() throws ServletException, IOException {
+    public String doExecute() throws ServletException, IOException {
         session.setAttribute("language", request.getParameter("language"));
         String path = request.getHeader("Referer");
         if (path != null) {
-            response.sendRedirect(path);
-            return;
+            return path;
         }
-        response.sendRedirect(request.getContextPath() + "/");
+        return ConfigManager.getProperty("path.page.home");
     }
     
 }

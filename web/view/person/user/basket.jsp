@@ -64,7 +64,7 @@
                         <input type="submit" value="<fmt:message key="basket.button.confirm" />" 
                                onclick="return confirm('<fmt:message key="basket.dialogbox.doconfirm" />')"
                         />
-                        <input type="hidden" name="postAction" value="basketConfirm" />
+                        <input type="hidden" name="postAction" value="basket_confirm" />
                         <input type="hidden" name="userId" value="${basketOrder.userId}" />
                         <input type="hidden" name="orderId" value="${basketOrder.id}" />
                     </form>
@@ -72,7 +72,7 @@
                         <input type="submit" value="<fmt:message key="basket.button.remove" />" 
                                onclick="return confirm('<fmt:message key="basket.dialogbox.doremove" />')"
                         />
-                        <input type="hidden" name="postAction" value="clearBasket" />
+                        <input type="hidden" name="postAction" value="clear_basket" />
                         <input type="hidden" name="orderId" value="${basketOrder.id}" />
                     </form>
                 </h3> 

@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
@@ -26,32 +27,37 @@ public class Order extends AbstractOrders {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         Admin admin = (Admin) session.getAttribute("admin");
         if (user == null) {
             if (admin == null) {
-                sendRedirect(null, "login.errormessage.loginplease", "home");
-                return;
+//                sendRedirect(null, "login.errormessage.loginplease", "home");
+                setMessages(null, "login.errormessage.loginplease");
+                return ConfigManager.getProperty("path.page.home");
             }
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, null, "home");
-            return;
+//            sendRedirect(null, null, "home");
+            return ConfigManager.getProperty("path.page.home");
         }
         int orderId = Integer.parseInt(orderIdString);
         model.entity.Order order = getOrderById(orderId);
         if (order == null) {
-            sendRedirect(null, "order.errormessage.nosuchorder", "orders");
-            return;
+//            sendRedirect(null, "order.errormessage.nosuchorder", "orders");
+            setMessages(null, "order.errormessage.nosuchorder");
+            return ConfigManager.getProperty("path.page.user.orders");
         }
         if (admin != null || checkUserValidation(user, order)) {
             request.setAttribute("order", order);
             request.setAttribute("items", order.getOrderItems());
             goToPage("order.text.title", "/view/person/user/order.jsp");
+            return ConfigManager.getProperty("path.page.user.getorder");
         } else {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
     }
 

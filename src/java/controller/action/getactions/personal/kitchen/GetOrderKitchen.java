@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.kitchen;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
@@ -26,25 +27,29 @@ public class GetOrderKitchen extends AbstractOrders {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
-            return;
+//            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
+            setMessages(null, "kitchen.acceptedorders.errormessage.nosuchorder");
+            return request.getHeader("Referer");
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
-            return;
+//            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
+            setMessages(null, "kitchen.acceptedorders.errormessage.nosuchorder");
+            return request.getHeader("Referer");
         }
         request.setAttribute("order", order);
-        goToPage("kitchen.order.text.title", "/view/kitchen/order.jsp");
+//        goToPage("kitchen.order.text.title", "/view/kitchen/order.jsp");
+        return ConfigManager.getProperty("path.page.kitchen.getorder");
     }
     
     /**
@@ -57,7 +62,7 @@ public class GetOrderKitchen extends AbstractOrders {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        String linkValue = "/servlet?getAction=showAcceptedOrders";
+        String linkValue = ConfigManager.getProperty("link.getorderkitchen");
         String linkName = "kitchen.acceptedorders.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

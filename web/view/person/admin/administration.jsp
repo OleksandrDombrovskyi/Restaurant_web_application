@@ -28,12 +28,12 @@
         </c:if>
         --%>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getUsers" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_users" >
                 <fmt:message key="administration.link.getusers" />
             </a>
         </h3>
         <h3>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getAllOrders" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_all_orders" >
                 <fmt:message key="administration.link.getorders" />
             </a>
         </h3> 

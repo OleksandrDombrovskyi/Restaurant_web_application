@@ -5,6 +5,7 @@
  */
 package controller.action.getactions;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,17 +24,20 @@ public class MainMenu extends GetAction {
 
     /**
      * Show main menu page
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() throws ServletException, IOException {
+    public String doExecute() throws ServletException, IOException {
         List<Meal> meals = getAllMeals();
         if (meals == null || meals.size() < 1) {
-            sendRedirect(null, "mainmenu.errormessage.nomeals", "home");
+            setMessages(null, "mainmenu.errormessage.nomeals");
+            return ConfigManager.getProperty("path.page.home");
         }
         request.setAttribute("meals", meals);
-        goToPage("mainmenu.text.title", "view/mainmenu.jsp");
+//        goToPage("mainmenu.text.title", "view/mainmenu.jsp");
+        return ConfigManager.getProperty("path.page.mainmenu");
     }
     
     /**
@@ -47,7 +51,7 @@ public class MainMenu extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = "/servlet?getAction=mainMenu";
+        String linkValue = ConfigManager.getProperty("link.mainmenu");
         String linkName = "mainmenu.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

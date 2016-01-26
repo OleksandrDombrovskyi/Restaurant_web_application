@@ -5,14 +5,12 @@
  */
 package controller.action.getactions.personal.admin;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
-import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 import model.entity.Admin;
 import model.entity.Order;
 import model.entity.Order.OrderStatus;
@@ -23,23 +21,39 @@ import model.entity.User;
  * @author Sasha
  */
 public class GetOrderByStatus extends AdminGetAction {
+    
+    
+    /**
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
+     */
+    @Override
+    public List<ConcreteLink> getLink() {
+        return new GetAllOrders().getLink();
+    }
 
     /**
      * Get all orders with concrete status
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String orderStatusString = request.getParameter("orderStatus"); 
         if (orderStatusString == null) {
-            sendRedirect(null, "administration.orders.errormessage.wrongorderstatus");
-            return;
+//            sendRedirect(null, "administration.orders.errormessage.wrongorderstatus");
+            setMessages(null, "administration.orders.errormessage.wrongorderstatus");
+            return request.getHeader("Referer");
         }
         OrderStatus orderStatus = OrderStatus.valueOf(orderStatusString);
         List<Order> orders = getOrdersByStatus(orderStatus);
@@ -55,19 +69,8 @@ public class GetOrderByStatus extends AdminGetAction {
             request.setAttribute("userMap", userMap);
         }
         request.setAttribute("status", orderStatusString);
-        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
-    }
-    
-    /**
-     * Get array list of link chain direct to current page (in fact this method 
-     * gets link chain of its' previous page, add its' own link and return 
-     * created array list)
-     * 
-     * @return array list of links
-     */
-    @Override
-    public List<ConcreteLink> getLink() {
-        return new GetAllOrders().getLink();
+//        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
+        return ConfigManager.getProperty("path.page.admin.getallorders");
     }
     
 }

@@ -35,7 +35,7 @@
             </form>
             <form action="servlet" method="get">
                 <input type="submit" value=<fmt:message key="login.button.signup" />>
-                <input type="hidden" name="action" value="signUp" />
+                <input type="hidden" name="action" value="sign_up" />
                 <input type="hidden" name="from" value="${param.from}">
             </form>
         </h3>

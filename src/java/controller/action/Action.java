@@ -37,24 +37,25 @@ public abstract class Action {
      * 
      * @param request http servlet reuest
      * @param response http servlet response
+     * @return string value of page property file
      * @throws ServletException
      * @throws IOException 
      */
-    public void execute(HttpServletRequest request, HttpServletResponse response) 
+    public String execute(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         this.request = request;
         this.response = response;
         session = request.getSession();
-        doExecute();
+        return doExecute();
     }
     
     /**
      * Execute required action
-     * 
+     * @return string value of page property file
      * @throws ServletException
      * @throws IOException 
      */
-    protected abstract void doExecute() throws ServletException, IOException;
+    protected abstract String doExecute() throws ServletException, IOException;
     
     /**
      * Send redirect to some get action
@@ -97,7 +98,7 @@ public abstract class Action {
      * @param message message
      * @param errorMessage error message
      */
-    private void setMessages(String message, String errorMessage) {
+    protected void setMessages(String message, String errorMessage) {
         if (message != null && !message.equals("")) {
             session.setAttribute("message", message);
         }

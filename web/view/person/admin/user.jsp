@@ -33,7 +33,7 @@
         </h3>
         <h3>
             <form action="servlet" method="get" >
-                <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${concreteUser.id}" >
+                <a href="${pageContext.request.contextPath}/servlet?getAction=get_user_orders&userId=${concreteUser.id}" >
                     <fmt:message key="administration.user.link.getorders" />
                 </a>
             </form>

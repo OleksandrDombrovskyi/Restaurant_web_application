@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.kitchen;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
@@ -23,15 +24,17 @@ public class GetAcceptedOrders extends AbstractOrders {
 
     /**
      * Get and output all accepted by admin orders
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         List<Order> orders = getOrdersByStatus(OrderStatus.ACCEPTED);
         if (orders == null || orders.size() < 1) {
@@ -39,7 +42,8 @@ public class GetAcceptedOrders extends AbstractOrders {
         } else {
             request.setAttribute("orders", orders);
         }
-        goToPage("kitchen.acceptedorders.text.title", "/view/kitchen/acceptedorders.jsp");
+//        goToPage("kitchen.acceptedorders.text.title", "/view/kitchen/acceptedorders.jsp");
+        return ConfigManager.getProperty("path.page.kitchen.showacceptedorders");
     }
     
     /**
@@ -52,7 +56,7 @@ public class GetAcceptedOrders extends AbstractOrders {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        String linkValue = "/servlet?getAction=showAcceptedOrders";
+        String linkValue = ConfigManager.getProperty("link.showacceptedorders");
         String linkName = "kitchen.authorization.link.showorders";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

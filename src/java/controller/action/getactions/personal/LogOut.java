@@ -17,15 +17,17 @@ public class LogOut extends Action {
 
     /**
      * Log out user or admin (go to user role)
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    public void doExecute() throws ServletException, IOException {
-        session.removeAttribute("user");
-        session.removeAttribute("admin");
-        session.removeAttribute("kitchen");
-        response.sendRedirect(request.getHeader("Referer"));
+    public String doExecute() throws ServletException, IOException {
+        session.invalidate();
+//        session.removeAttribute("user");
+//        session.removeAttribute("admin");
+//        session.removeAttribute("kitchen");
+        return request.getHeader("Referer");
     }
     
 }

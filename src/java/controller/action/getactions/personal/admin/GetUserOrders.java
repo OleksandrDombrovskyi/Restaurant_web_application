@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.admin;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import controller.action.getactions.personal.Profile;
@@ -31,22 +32,25 @@ public class GetUserOrders extends AbstractOrders {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         String userIdString = request.getParameter("userId");
         if (userIdString == null) {
-            sendRedirect(null, "administration.user.errormessage.wrongparameteruserid", "getUsers");
-            return;
+//            sendRedirect(null, "administration.user.errormessage.wrongparameteruserid", "getUsers");
+            setMessages(null, "administration.user.errormessage.wrongparameteruserid");
+            return ConfigManager.getProperty("path.page.admin.getusers");
         }
         int userId = Integer.parseInt(userIdString);
         User concreteUser = getUserById(userId);
         if (concreteUser == null) {
-            sendRedirect(null, "administration.user.errormessage.nosuchuser", "getUsers");
-            return;
+//            sendRedirect(null, "administration.user.errormessage.nosuchuser", "getUsers");
+            setMessages(null, "administration.user.errormessage.wrongparameteruserid");
+            return ConfigManager.getProperty("path.page.admin.getusers");
         }
         List<Order> orders = getOrdersByUserId(userId);
         if (orders == null || orders.size() < 1) {
@@ -55,7 +59,8 @@ public class GetUserOrders extends AbstractOrders {
             concreteUser.setOrders(orders);
             request.setAttribute("concreteUser", concreteUser);
         }
-        goToPage("administration.user.orders.text.title", "/view/person/admin/userorders.jsp");
+//        goToPage("administration.user.orders.text.title", "/view/person/admin/userorders.jsp");
+        return ConfigManager.getProperty("path.page.admin.getuserorders");
     }
     
     /**
@@ -69,7 +74,7 @@ public class GetUserOrders extends AbstractOrders {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Administration().getLink());
-        String linkValue = "/servlet?getAction=getAllOrders";
+        String linkValue = ConfigManager.getProperty("link.getallorders");
         String linkName = "administration.orders.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

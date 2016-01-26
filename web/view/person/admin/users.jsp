@@ -45,19 +45,19 @@
                             <c:forEach items="${users}" var="user" >
                                 <tr>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${user.id}" >
+                                        <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${user.id}" >
                                             ${user.id}</a>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${user.id}" >
+                                        <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${user.id}" >
                                             ${user.firstName}</a>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${user.id}" >
+                                        <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${user.id}" >
                                             ${user.lastName}</a>
                                     </td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${user.id}" >
+                                        <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${user.id}" >
                                         ${user.email}</a>
                                     </td>
                                 </tr>

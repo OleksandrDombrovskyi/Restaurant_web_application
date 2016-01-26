@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
@@ -27,15 +28,17 @@ public class UserAccount extends GetAction {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         BigDecimal account = user.getAccount();
         request.setAttribute("account", account);
-        goToPage("account.text.title", "/view/person/user/account.jsp");
+//        goToPage("account.text.title", "/view/person/user/account.jsp");
+        return ConfigManager.getProperty("path.page.user.account");
     }
     
     /**
@@ -49,7 +52,7 @@ public class UserAccount extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=account";
+        String linkValue = ConfigManager.getProperty("link.account");
         String linkName = "account.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

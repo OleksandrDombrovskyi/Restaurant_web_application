@@ -44,10 +44,10 @@
             </h3>
             <input type="submit" value=<fmt:message key="settings.button.savechanges" /> />
             <c:if test="${not empty user}" >
-                <input type="hidden" name="postAction" value="userSaveChanges" />
+                <input type="hidden" name="postAction" value="user_save_changes" />
             </c:if>
             <c:if test="${not empty admin}" >
-                <input type="hidden" name="postAction" value="adminSaveChanges" />
+                <input type="hidden" name="postAction" value="admin_save_changes" />
             </c:if>
         </form>
             <hr/>
@@ -66,10 +66,10 @@
             </h3>
             <input type="submit" value=<fmt:message key="settings.button.changepassword" /> />
             <c:if test="${not empty user}" >
-                <input type="hidden" name="postAction" value="userChangePassword" />
+                <input type="hidden" name="postAction" value="user_change_password" />
             </c:if>
             <c:if test="${not empty admin}" >
-                <input type="hidden" name="postAction" value="adminChangePassword" />
+                <input type="hidden" name="postAction" value="admin_change_password" />
             </c:if>
         </form>
     </body>

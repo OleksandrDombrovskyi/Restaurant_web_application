@@ -5,6 +5,7 @@
  */
 package controller.action.postactions.personal;
 
+import controller.ConfigManager;
 import controller.action.Validator;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -22,10 +23,10 @@ public abstract class SaveChanges extends PersonalPostAction {
      * @throws IOException 
      */    
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         Person person = getPersonFromSession();
         if (person == null) {
-            return;
+            return null;
         }
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -33,13 +34,15 @@ public abstract class SaveChanges extends PersonalPostAction {
         saveFieldValues(firstName, lastName, email);
         
         if (!checkFields(firstName, lastName, email)) {
-            return;
+            return null;
         }
         int personId = person.getId();
         if (!updatePerson(personId, firstName, lastName, email)) {
-            return;
+            return null;
         }
-        sendRedirect("settings.message.changeswassaved", null, "settings");
+//        sendRedirect("settings.message.changeswassaved", null, "settings");
+        setMessages("settings.message.changeswassaved", null);
+        return ConfigManager.getProperty("path.page.settings");
     }
     
     /**

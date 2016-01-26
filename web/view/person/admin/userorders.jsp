@@ -36,19 +36,19 @@
         
         <h4>
             <fmt:message key="administration.orders.table.username" />: 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${concreteUser.id}" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${concreteUser.id}" >
                 ${concreteUser.firstName}
             </a>
         </h4>
         <h4>
             <fmt:message key="administration.orders.table.userlastname" />: 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${concreteUser.id}" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${concreteUser.id}" >
                 ${concreteUser.lastName}
             </a>
         </h4>
         <h4>
             <fmt:message key="administration.orders.table.useremail" />: 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=getUser&userId=${concreteUser.id}" >
+            <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${concreteUser.id}" >
                 ${concreteUser.email}
             </a>
         </h4>
@@ -72,19 +72,19 @@
                         <c:forEach items="${concreteUser.orders}" var="order" >
                             <tr>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_admin&orderId=${order.id}" >
                                         ${order.id}</a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_admin&orderId=${order.id}" >
                                         ${order.date}</a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderAdmin&orderId=${order.id}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_admin&orderId=${order.id}" >
                                         <fmt:formatNumber value="${order.totalPrice}" type="currency" currencyCode="USD" /></a>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getOrderByStatus&orderStatus=${order.status}" >
+                                    <a href="${pageContext.request.contextPath}/servlet?getAction=get_order_by_status&orderStatus=${order.status}" >
                                         <h3>
                                             <c:choose>
                                                 <c:when test="${order.status == 'NOT_CONFIRMED'}">

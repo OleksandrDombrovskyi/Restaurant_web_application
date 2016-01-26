@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import controller.action.getactions.GetAction;
 import controller.action.getactions.HomePage;
@@ -23,22 +24,25 @@ public class Profile extends GetAction {
 
     /**
      * Output user profile page
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            goToPage("profile.text.title", "/view/person/user/profile.jsp");
-            return;
+//            goToPage("profile.text.title", "/view/person/user/profile.jsp");
+            return ConfigManager.getProperty("path.page.user.profile");
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
-            goToPage("profile.text.title", "/view/person/admin/profile.jsp");
-            return;
+//            goToPage("profile.text.title", "/view/person/admin/profile.jsp");
+            return ConfigManager.getProperty("path.page.admin.profile");
         }
-        sendRedirect(null, "login.errormessage.loginplease", "home");
+//        sendRedirect(null, "login.errormessage.loginplease", "home");
+        setMessages(null, "login.errormessage.loginplease");
+        return ConfigManager.getProperty("path.page.home");
     }
 
     /**
@@ -52,7 +56,7 @@ public class Profile extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = "/servlet?getAction=profile";
+        String linkValue = ConfigManager.getProperty("link.profile");
         String linkName = "profile.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

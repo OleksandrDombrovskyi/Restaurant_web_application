@@ -5,6 +5,7 @@
  */
 package controller.action.getactions.personal.user;
 
+import controller.ConfigManager;
 import controller.action.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import controller.action.getactions.personal.Profile;
@@ -27,11 +28,12 @@ public class Orders extends AbstractOrders {
      * @throws IOException 
      */
     @Override
-    protected void doExecute() throws ServletException, IOException {
+    protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "home");
-            return;
+//            sendRedirect(null, "login.errormessage.loginplease", "home");
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.page.home");
         }
         int userId = user.getId();
         List<Order> orders = getOrdersByUserId(userId);
@@ -40,7 +42,8 @@ public class Orders extends AbstractOrders {
         } else {
             request.setAttribute("orders", orders);
         }
-        goToPage("orders.text.title", "/view/person/user/orders.jsp");
+//        goToPage("orders.text.title", "/view/person/user/orders.jsp");
+        return ConfigManager.getProperty("path.page.user.orders");
     }
     
     /**
@@ -54,7 +57,7 @@ public class Orders extends AbstractOrders {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = "/servlet?getAction=orders";
+        String linkValue = ConfigManager.getProperty("link.orders");
         String linkName = "orders.text.title";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
