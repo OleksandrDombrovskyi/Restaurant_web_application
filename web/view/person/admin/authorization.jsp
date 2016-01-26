@@ -19,10 +19,23 @@
         <title><fmt:message key="user.authorization.text.title" /></title>
     </head>
     <body>
-        <h4>${admin.firstName} (<fmt:message key="admin.authorization.text.admin" />) | 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=logout"><fmt:message key="admin.authorization.link.logout"/></a> 
+        <h4>
+            <%--
+            ${admin.firstName} (<fmt:message key="admin.authorization.text.admin" />) | 
+            <a href="${pageContext.request.contextPath}/servlet?postAction=logout"><fmt:message key="admin.authorization.link.logout"/></a> 
             <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="admin.authorization.link.profile" /></a>
             <a href="${pageContext.request.contextPath}/servlet?getAction=administration"><fmt:message key="admin.authorization.link.administration" /></a>
+        --%>
+            
+            
+            <form name="submitForm" method="POST" action="${pageContext.request.contextPath}/servlet?postAction=logout">
+                ${admin.firstName} (<fmt:message key="admin.authorization.text.admin" />) | 
+                   <a href="javascript:document.submitForm.submit()"><fmt:message key="admin.authorization.link.logout"/></A>
+                   
+                    <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="admin.authorization.link.profile" /></a>
+                    <a href="${pageContext.request.contextPath}/servlet?getAction=administration"><fmt:message key="admin.authorization.link.administration" /></a>
+            </form>
+        
         </h4>
     </body>
 </html>

@@ -23,13 +23,13 @@ public class ChangeLanguage extends PostAction {
      * @throws IOException 
      */
     @Override
-    public String doExecute() throws ServletException, IOException {
+    public void doExecute() throws ServletException, IOException {
         session.setAttribute("language", request.getParameter("language"));
         String path = request.getHeader("Referer");
-        if (path != null) {
-            return path;
+        if (path == null) {
+            path = ConfigManager.getProperty("path.page.home");
         }
-        return ConfigManager.getProperty("path.page.home");
+        response.sendRedirect(path);
     }
     
 }

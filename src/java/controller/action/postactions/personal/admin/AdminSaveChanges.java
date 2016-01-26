@@ -43,15 +43,15 @@ public class AdminSaveChanges extends SaveChanges {
         AdminCreator adminCreator = new AdminCreator();
         try {
             if (!adminCreator.updateAdmin(newAdmin)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", "settings");
+                sendRedirect(null, "settings.errormessage.changesnotsaved", "link.settings");
                 return false;
             }
             return setAdminToSession(newAdmin.getEmail());
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
             return false;
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
             return false;
         }
     }

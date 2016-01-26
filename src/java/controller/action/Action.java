@@ -5,6 +5,7 @@
  */
 package controller.action;
 
+import controller.ConfigManager;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -36,18 +37,18 @@ public abstract class Action {
      * Send redirect to some get action
      * @param message message if it is required in some case
      * @param errorMessage error message if it is required in some case
-     * @param action specific servlet get action
+     * @param linkKey key value of the link in the property file
      * @throws ServletException 
      * @throws IOException 
      */
-    protected void sendRedirect(String message, String errorMessage, String action) 
+    protected void sendRedirect(String message, String errorMessage, String linkKey) 
             throws ServletException, IOException {
         setMessages(message, errorMessage);
-        if (action != null && !action.equals("")) {
-            response.sendRedirect(request.getContextPath() + "/servlet?getAction=" + action);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/servlet?getAction=home");
-        }
+        if (linkKey == null || linkKey.isEmpty()) {
+            linkKey = "link.home";
+        } 
+        String link = ConfigManager.getProperty(linkKey);
+        response.sendRedirect(request.getContextPath() + link);
     }
     
     /**
@@ -61,11 +62,23 @@ public abstract class Action {
             throws ServletException, IOException {
         setMessages(message, errorMessage);
         String path = request.getHeader("Referer");
-        if (path != null) {
-            response.sendRedirect(path);
-            return;
+        if (path == null) {
+            path = request.getContextPath() + ConfigManager.getProperty("link.home");
         }
-        response.sendRedirect(request.getContextPath() + "/");
+        response.sendRedirect(path);
+    }
+    
+    /**
+     * Redirecting with parameter
+     * @param actionLink link for corresponde action
+     * @param param request parameter name
+     * @param value request parameter name value
+     * @throws ServletException
+     * @throws IOException 
+     */
+    protected void sendRedirectWithParam(String actionLink, String param, String value) throws ServletException, IOException {
+        String link = ConfigManager.getProperty(actionLink) + "&" + param + "=" + value;
+        response.sendRedirect(request.getContextPath() + link);
     }
     
     /**

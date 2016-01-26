@@ -43,6 +43,9 @@ public abstract class GetAction extends Action {
         this.request = request;
         this.response = response;
         session = request.getSession();
+        request.setCharacterEncoding("windows-1251");
+        response.setCharacterEncoding("windows-1251");
+        response.setContentType("text/html");
         request.setAttribute("title", title);
         request.setAttribute("links", getLink());
         return doExecute();

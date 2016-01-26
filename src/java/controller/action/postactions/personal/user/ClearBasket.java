@@ -26,27 +26,30 @@ public class ClearBasket extends PostAction {
      * @throws IOException 
      */
     @Override
-    protected String doExecute() throws ServletException, IOException {
+    protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            return;
+//            setMessages(null, "login.errormessage.loginplease");
+//            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-//            sendRedirect(null, "basket.errormessage.nosuchorder", "basket");
-            setMessages(null, "basket.errormessage.nosuchorder");
-            return ConfigManager.getProperty("path.page.user.basket");
+            sendRedirect(null, "basket.errormessage.nosuchorder", "link.basket");
+            return;
+//            setMessages(null, "basket.errormessage.nosuchorder");
+//            return ConfigManager.getProperty("path.page.user.basket");
         }
         int orderId = Integer.parseInt(orderIdString);
         if (isRemoved(orderId)) {
-//            sendRedirect(null, null, "basket");
-            return ConfigManager.getProperty("path.page.user.basket");
+            sendRedirect(null, null, "link.basket");
+            return;
+//            return ConfigManager.getProperty("path.page.user.basket");
         } else {
-//            sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
-            setMessages(null, "exception.errormessage.serveroverloaded");
-            return ConfigManager.getProperty("path.page.user.basket");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
+//            setMessages(null, "exception.errormessage.serveroverloaded");
+//            return ConfigManager.getProperty("path.page.user.basket");
         }
     }
     
@@ -63,12 +66,12 @@ public class ClearBasket extends PostAction {
             if (orderCreator.removeOrder(orderId)) {
                 return true;
             } else {
-                sendRedirect(null, "exception.errormessage.sqlexception", "basket");
+                sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
             }
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "basket");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "basket");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
         }
         return false;
     }

@@ -22,9 +22,12 @@ public class LogOut extends PostAction {
      * @throws IOException 
      */
     @Override
-    public String doExecute() throws ServletException, IOException {
-        session.invalidate();
-        return request.getHeader("Referer");
+    public void doExecute() throws ServletException, IOException {
+//        session.invalidate();
+        session.removeAttribute("user");
+        session.removeAttribute("admin");
+        session.removeAttribute("kitchen");
+        response.sendRedirect(request.getHeader("Referer"));
     }
     
 }

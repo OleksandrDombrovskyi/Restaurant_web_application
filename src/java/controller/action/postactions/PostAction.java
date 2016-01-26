@@ -28,25 +28,26 @@ public abstract class PostAction extends Action {
      * 
      * @param request http servlet reuest
      * @param response http servlet response
-     * @return string value of page property file
      * @throws ServletException
      * @throws IOException 
      */
-    public String execute(HttpServletRequest request, HttpServletResponse response) 
+    public void execute(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         this.request = request;
         this.response = response;
+        request.setCharacterEncoding("windows-1251");
+        response.setCharacterEncoding("windows-1251");
+        response.setContentType("text/html");
         session = request.getSession();
-        return doExecute();
+        doExecute();
     }
     
     /**
      * Execute required action
-     * @return string value of page property file
      * @throws ServletException
      * @throws IOException 
      */
-    protected abstract String doExecute() throws ServletException, IOException;
+    protected abstract void doExecute() throws ServletException, IOException;
     
     /**
      * Get the same user from data base by its' email with updated information 

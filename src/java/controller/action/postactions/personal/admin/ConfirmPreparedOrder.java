@@ -24,25 +24,26 @@ public class ConfirmPreparedOrder extends SetOrderStatus {
      * @throws IOException 
      */
     @Override
-    protected String doExecute() throws ServletException, IOException {
+    protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            return;
+//            setMessages(null, "login.errormessage.loginplease");
+//            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-//            sendRedirect(null, "administration.user.order.errormessage.wrongorderid");
-            setMessages(null, "administration.user.order.errormessage.wrongorderid");
-            return request.getHeader("Referer");
+            sendRedirect(null, "administration.user.order.errormessage.wrongorderid");
+//            setMessages(null, "administration.user.order.errormessage.wrongorderid");
+//            return request.getHeader("Referer");
         }
         int orderId = Integer.parseInt(orderIdString);
         if (!setStatus(orderId, Order.OrderStatus.READY)) {
-            return null;
+            return;
         }
         sendRedirect(null, null);
-        return request.getHeader("Referer");
+//        return request.getHeader("Referer");
     }
     
 }

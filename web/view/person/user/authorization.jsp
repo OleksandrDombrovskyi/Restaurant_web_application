@@ -19,9 +19,11 @@
         <title><fmt:message key="user.authorization.text.title" /></title>
     </head>
     <body>
-        <h4>${user.firstName} | 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=logout"><fmt:message key="user.authorization.link.logout"/></a> 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="user.authorization.link.profile" /></a>
+        <h4> 
+            <form name="submitForm" method="POST" action="${pageContext.request.contextPath}/servlet?postAction=logout">
+                   ${user.firstName} | <a href="javascript:document.submitForm.submit()"><fmt:message key="user.authorization.link.logout"/></A>
+                    <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="user.authorization.link.profile" /></a>
+            </form>
         </h4>
     </body>
 </html>

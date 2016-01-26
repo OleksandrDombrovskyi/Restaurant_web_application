@@ -54,7 +54,7 @@ public class LoginRequest extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("path.page.loginrequest");
+        String linkValue = ConfigManager.getProperty("link.loginrequest");
         String linkName = "login.button.login";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

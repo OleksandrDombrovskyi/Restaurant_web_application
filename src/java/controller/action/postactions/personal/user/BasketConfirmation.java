@@ -26,25 +26,27 @@ public class BasketConfirmation extends PostAction {
      * @throws IOException 
      */
     @Override
-    protected String doExecute() throws ServletException, IOException {
+    protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (!userValidation(user)) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            return;
+//            setMessages(null, "login.errormessage.loginplease");
+//            return ConfigManager.getProperty("path.page.home");
         }
         int userId = user.getId();
         if (!confirmBasket(userId)) {
-            return null;
+            return;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "basket.errormessage.nosuchorder", "basket");
+            sendRedirect(null, "basket.errormessage.nosuchorder", "link.basket");
         } else {
-            sendRedirect(null, null, 
-                "getOrder&orderId=" + orderIdString);
+//            sendRedirect(null, null, 
+//                "getOrder&orderId=" + orderIdString);
+            sendRedirectWithParam("link.getorder", "orderId", orderIdString);
         }
-        return null;
+//        return null;
     }
 
     /**
@@ -79,15 +81,15 @@ public class BasketConfirmation extends PostAction {
         OrderCreator orderCreator = new OrderCreator();
         try {
             if (orderCreator.confirmBasket(userId) == 0) {
-                sendRedirect("basket.message.notconfirmed", null, "basket");
+                sendRedirect("basket.message.notconfirmed", null, "link.basket");
                 return false;
             }
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "basket");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
             return false;
         } catch (ServerOverloadedException ex) {
             sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "basket");
+                    "link.basket");
             return false;
         }
         return true;

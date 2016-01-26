@@ -31,26 +31,26 @@ public class Login extends PostAction {
      * @throws IOException 
      */
     @Override
-    public String doExecute() 
+    public void doExecute() 
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (isEmpty(email) || isEmpty(password)) {
-//            sendRedirect(null, "login.errormessage.empty", "loginRequest");
-            setMessages(null, "login.errormessage.empty");
-            return ConfigManager.getProperty("path.page.loginrequest");
+            sendRedirect(null, "login.errormessage.empty", "link.loginrequest");
+            return;
+//            setMessages(null, "login.errormessage.empty");
+//            return ConfigManager.getProperty("path.page.loginrequest");
         }
         String hexPassword = DigestUtils.shaHex(password);
         if (!userAuthorization(email, hexPassword)) {
             if (!adminAuthorization(email, hexPassword)) {
                 if (!kitchenAuthorization(email, hexPassword)) {
-//                    sendRedirect(null, "login.errormessage.nosuchuser", "loginRequest");
-                    setMessages(null, "login.errormessage.nosuchuser");
-                    return ConfigManager.getProperty("path.page.loginrequest");
+                    sendRedirect(null, "login.errormessage.nosuchuser", "link.loginrequest");
+//                    setMessages(null, "login.errormessage.nosuchuser");
+//                    return ConfigManager.getProperty("path.page.loginrequest");
                 }
             }
         }
-        return null;
     }
     
     /**
@@ -77,15 +77,15 @@ public class Login extends PostAction {
             }
             if (user.getPassword().equals(password)) {
                 session.setAttribute("user", user);
-                sendRedirect(null, null, "home");
-//                showLastPage();
+//                sendRedirect(null, null, "home");
+                showLastPage();
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
+                sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "loginRequest");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "loginRequest");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;
     }
@@ -114,15 +114,15 @@ public class Login extends PostAction {
             }
             if (admin.getPassword().equals(password)) {
                 session.setAttribute("admin", admin);
-                sendRedirect(null, null, "home");
-//                showLastPage();
+//                sendRedirect(null, null, "home");
+                showLastPage();
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
+                sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "loginRequest");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "loginRequest");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;
     }
@@ -151,32 +151,33 @@ public class Login extends PostAction {
             }
             if (kitchen.getPassword().equals(password)) {
                 session.setAttribute("kitchen", kitchen);
-                sendRedirect(null, null, "showAcceptedOrders");
+                sendRedirect(null, null, "link.showacceptedorders");
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", "loginRequest");
+                sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "loginRequest");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "loginRequest");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;
     }
     
-//    /**
-//     * Go to page was opened before login was requested of to hme page if last 
-//     * action equals null in the session
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    private void showLastPage() throws ServletException, IOException {
-//        String lastAction = (String) session.getAttribute("lastAction");
-//        if (lastAction != null) {
-//            sendRedirect(null, null, lastAction);
-//            return;
-//        }
-//        sendRedirect(null, null, "home");
-//    }
+    /**
+     * Go to page was opened before login was requested of to hme page if last 
+     * action equals null in the session
+     * @throws ServletException
+     * @throws IOException 
+     */
+    private void showLastPage() throws ServletException, IOException {
+        String lastAction = (String) session.getAttribute("lastAction");
+        if (lastAction == null) {
+            lastAction = ConfigManager.getProperty("link.home");
+            response.sendRedirect(request.getContextPath() + lastAction);
+        } else {
+            response.sendRedirect(lastAction);
+        }
+    }
 
     /**
      * Check whether is string variable equals null or empty string

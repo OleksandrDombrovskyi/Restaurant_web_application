@@ -24,24 +24,25 @@ public class SetPreparedStatus extends SetOrderStatus {
      * @throws IOException 
      */
     @Override
-    protected String doExecute() throws ServletException, IOException {
+    protected void doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            return;
+//            setMessages(null, "login.errormessage.loginplease");
+//            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
-            return null;
+            return;
         }
         int orderId = Integer.parseInt(orderIdString);
         if (!setStatus(orderId, OrderStatus.PREPARED)) {
-            return null;
+            return;
         }
         sendRedirect(null, null);
-        return null;
+//        return null;
     }
     
 }

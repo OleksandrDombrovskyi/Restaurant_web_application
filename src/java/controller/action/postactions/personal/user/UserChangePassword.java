@@ -38,15 +38,15 @@ public class UserChangePassword extends ChangePassword {
         UserCreator userCreator = new UserCreator();
         try {
             if (!userCreator.changePassword(user, hexNewPassword)) {
-                sendRedirect(null, "settings.errormessage.passwordnotchanged", "settings");
+                sendRedirect(null, "settings.errormessage.passwordnotchanged", "link.settings");
                 return false;
             }
             return setUserToSession(person.getEmail());
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
             return false;
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
             return false;
         }
     }

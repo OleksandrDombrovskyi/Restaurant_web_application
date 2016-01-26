@@ -28,41 +28,42 @@ public class PayOrder extends SetOrderStatus {
      * @throws IOException 
      */
     @Override
-    protected String doExecute() throws ServletException, IOException {
+    protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            return;
+//            setMessages(null, "login.errormessage.loginplease");
+//            return ConfigManager.getProperty("path.page.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder");
-            return null;
+            return;
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder");
-            return null;
+            return;
         }
         User updatedUser = getUserById(user.getId());
         if (updatedUser == null) {
             sendRedirect("login.errormessage.loginplease", null);
-            return null;
+            return;
         }
         session.setAttribute("user", updatedUser);
         BigDecimal price = order.getTotalPrice();
         BigDecimal account = updatedUser.getAccount();
         if (account.compareTo(price) < 0) {
             sendRedirect("order.message.insufficientfunds", null);
-            return null;
+            return;
         }
         if (!remitPayment(updatedUser, order)) {
-            return null;
+            return;
         }
         sendRedirect("order.message.orderwaspayed", null);
-        return null;
+//        return null;
     }
 
     /**

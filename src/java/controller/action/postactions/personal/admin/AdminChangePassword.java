@@ -38,15 +38,15 @@ public class AdminChangePassword extends ChangePassword {
         AdminCreator adminCreator = new AdminCreator();
         try {
             if (!adminCreator.changePassword(admin, hexNewPassword)) {
-                sendRedirect(null, "settings.errormessage.passwordnotchanged", "settings");
+                sendRedirect(null, "settings.errormessage.passwordnotchanged", "link.settings");
                 return false;
             }
             return setAdminToSession(person.getEmail());
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
             return false;
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
             return false;
         }
     }

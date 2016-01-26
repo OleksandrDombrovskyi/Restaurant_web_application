@@ -23,10 +23,11 @@ public abstract class SaveChanges extends PersonalPostAction {
      * @throws IOException 
      */    
     @Override
-    protected String doExecute() throws ServletException, IOException {
+    protected void doExecute() throws ServletException, IOException {
         Person person = getPersonFromSession();
         if (person == null) {
-            return null;
+            sendRedirect(null, "login.errormessage.loginplease");
+            return;
         }
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -34,15 +35,15 @@ public abstract class SaveChanges extends PersonalPostAction {
         saveFieldValues(firstName, lastName, email);
         
         if (!checkFields(firstName, lastName, email)) {
-            return null;
+            return;
         }
         int personId = person.getId();
         if (!updatePerson(personId, firstName, lastName, email)) {
-            return null;
+            return;
         }
 //        sendRedirect("settings.message.changeswassaved", null, "settings");
-        setMessages("settings.message.changeswassaved", null);
-        return ConfigManager.getProperty("path.page.settings");
+        sendRedirect("settings.message.changeswassaved", null, "link.settings");
+//        return ConfigManager.getProperty("path.page.settings");
     }
     
     /**
@@ -56,20 +57,20 @@ public abstract class SaveChanges extends PersonalPostAction {
     private boolean checkFields(String firstName, String lastName, 
             String email) throws ServletException, IOException {
         if (firstName == null || firstName.equals("")) {
-            sendRedirect(null, "settings.errormessage.emptyname", "settings");
+            sendRedirect(null, "settings.errormessage.emptyname", "link.settings");
             return false;
         }
         if (lastName == null || lastName.equals("")) {
-            sendRedirect(null, "settings.errormessage.emptylastname", "settings");
+            sendRedirect(null, "settings.errormessage.emptylastname", "link.settings");
             return false;
         }
         if (email == null || email.equals("")) {
-            sendRedirect(null, "settings.errormessage.emptyemail", "settings");
+            sendRedirect(null, "settings.errormessage.emptyemail", "link.settings");
             return false;
         }
         Validator validator = new Validator();
         if (!validator.checkEmail(email)) {
-            sendRedirect(null, "settings.errormessage.uncorrectemail", "settings");
+            sendRedirect(null, "settings.errormessage.uncorrectemail", "link.settings");
             return false;
         }
         return true;

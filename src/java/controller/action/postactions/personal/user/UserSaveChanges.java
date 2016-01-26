@@ -41,15 +41,15 @@ public class UserSaveChanges extends SaveChanges {
         UserCreator userCreator = new UserCreator();
         try {
             if (!userCreator.updateUser(newUser)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", "settings");
+                sendRedirect(null, "settings.errormessage.changesnotsaved", "link.settings");
                 return false;
             }
             return setUserToSession(newUser.getEmail());
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
             return false;
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
             return false;
         }
     }

@@ -28,7 +28,7 @@ public class CreateAccount extends PostAction {
      * @throws IOException 
      */
     @Override
-    public String doExecute() throws ServletException, IOException {
+    public void doExecute() throws ServletException, IOException {
         String name = request.getParameter("name");
         String lastName = request.getParameter("lastname");
         String email = request.getParameter("email");
@@ -42,16 +42,18 @@ public class CreateAccount extends PostAction {
                 confirmPassword);
         if (errorMessage != null) {
             saveFieldValues(name, lastName, email);
-//            sendRedirect(null, errorMessage, "signUp");
-            setMessages(null, errorMessage);
-            return ConfigManager.getProperty("path.page.signup");
+            sendRedirect(null, errorMessage, "link.signup");
+            return;
+//            setMessages(null, errorMessage);
+//            return ConfigManager.getProperty("path.page.signup");
         }
         try {
             if (userCreator.getUserByEmail(email) != null) {
                 saveFieldValues(name, lastName, email);
-//                sendRedirect(null, "signup.errormessage.existinguser", "signUp");
-                setMessages(null, "signup.errormessage.existinguser");
-                return ConfigManager.getProperty("path.page.signup");
+                sendRedirect(null, "signup.errormessage.existinguser", "link.signup");
+                return;
+//                setMessages(null, "signup.errormessage.existinguser");
+//                return ConfigManager.getProperty("path.page.signup");
             }
             String hexPassword = DigestUtils.shaHex(password);
             newUser = new User(name, lastName, email, hexPassword);
@@ -64,18 +66,20 @@ public class CreateAccount extends PostAction {
             }
         } catch (SQLException ex) {
             saveFieldValues(name, lastName, email);
-//            sendRedirect(null, "exception.errormessage.sqlexception", "signUp");
-            setMessages(null, "exception.errormessage.sqlexception");
-            return ConfigManager.getProperty("path.page.signup");
+            sendRedirect(null, "exception.errormessage.sqlexception", "link.signup");
+            return;
+//            setMessages(null, "exception.errormessage.sqlexception");
+//            return ConfigManager.getProperty("path.page.signup");
         } catch (ServerOverloadedException ex) {
             saveFieldValues(name, lastName, email);
-//            sendRedirect(null, "exception.errormessage.serveroverloaded", "signUp");
-            setMessages(null, "exception.errormessage.serveroverloaded");
-            return ConfigManager.getProperty("path.page.signup");
+            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.signup");
+            return;
+//            setMessages(null, "exception.errormessage.serveroverloaded");
+//            return ConfigManager.getProperty("path.page.signup");
         }
         session.setAttribute("user", dbUser);
-        sendRedirect(null, null, "profile");
-        return null;
+        sendRedirect(null, null, "link.profile");
+//        return null;
     }
     
     /**
@@ -121,7 +125,7 @@ public class CreateAccount extends PostAction {
      * @return boolean true if string is empty and false otherwise
      */
     private boolean isStringEmpty(String string) {
-        return string == null || string.equals("");
+        return string == null || string.isEmpty();
     }
     
     /**
@@ -133,8 +137,8 @@ public class CreateAccount extends PostAction {
      *         the same and not null and boolean false otherwise
      */
     private boolean confirmPasswords(String password, String confirmPassword) {
-        if (password == null || password.equals("") 
-                || confirmPassword == null || confirmPassword.equals("") 
+        if (password == null || password.isEmpty()
+                || confirmPassword == null || confirmPassword.isEmpty() 
                 || !password.equals(confirmPassword)) {
             return false;
         }

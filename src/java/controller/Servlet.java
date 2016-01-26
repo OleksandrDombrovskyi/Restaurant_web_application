@@ -35,9 +35,6 @@ public class Servlet extends HttpServlet {
     @Override
     protected synchronized void doGet(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("windows-1251");
-        response.setCharacterEncoding("windows-1251");
-        response.setContentType("text/html");
         GetAction action = (GetAction) new ActionFactory().getGetAction(request);
         LOGGER.info("Get action was called: " + action.toString());
         String page = action.execute(request, response);
@@ -58,9 +55,6 @@ public class Servlet extends HttpServlet {
     @Override
     protected synchronized void doPost(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("windows-1251");
-        response.setCharacterEncoding("windows-1251");
-        response.setContentType("text/html");
 //        String actionKey = request.getParameter("postAction");
 //        if (actionKey == null) {
 //            doGet(request, response);
@@ -68,11 +62,11 @@ public class Servlet extends HttpServlet {
 //        }
         PostAction action = (PostAction) new ActionFactory().getPostAction(request);
         LOGGER.info("Post action was called: " + action.toString());
-        String page = action.execute(request, response);
-        if (page == null) {
-            page = ConfigManager.getProperty("path.home"); 
-        }
-        goToPage(page, request, response);
+        action.execute(request, response);
+//        if (page == null) {
+//            page = ConfigManager.getProperty("path.home"); 
+//        }
+//        goToPage(page, request, response);
         LOGGER.info("Post action was performed: " + action.toString());
     }
     
