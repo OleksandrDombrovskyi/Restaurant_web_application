@@ -6,7 +6,7 @@
 package controller.action.getactions.personal.admin;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,16 @@ import model.entity.User;
  * @author Sasha
  */
 public class GetAllOrders extends AdminGetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "orders.text.title";
+
+    /**
+     * Constructor
+     */
+    public GetAllOrders() {
+        super(TITLE);
+    }
 
     /**
      * Get all orders by admin request

@@ -6,7 +6,7 @@
 package controller.action.getactions.personal.admin;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import controller.action.getactions.personal.Profile;
 import java.io.IOException;
@@ -25,6 +25,16 @@ import model.entity.User;
  * @author Sasha
  */
 public class GetUserOrders extends AbstractOrders {
+    
+    /** title string key value */
+    private final static String TITLE = "administration.user.orders.text.title";
+
+    /**
+     * Constructor
+     */
+    public GetUserOrders() {
+        super(TITLE);
+    }
 
     /**
      * Get all orders for concrete user

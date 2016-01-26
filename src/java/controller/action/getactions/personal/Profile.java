@@ -6,10 +6,9 @@
 package controller.action.getactions.personal;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import controller.action.getactions.HomePage;
-import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,17 @@ import model.entity.User;
  * Personal profile
  * @author Sasha
  */
-public class Profile extends MainPartAction {
+public class Profile extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "profile.text.title";
+
+    /**
+     * Constructor
+     */
+    public Profile() {
+        super(TITLE);
+    }
 
     /**
      * Output user profile page

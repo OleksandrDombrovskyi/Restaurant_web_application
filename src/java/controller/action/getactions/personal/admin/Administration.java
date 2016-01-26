@@ -6,10 +6,9 @@
 package controller.action.getactions.personal.admin;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import controller.action.getactions.HomePage;
-import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,17 @@ import model.entity.Admin;
  * Administration
  * @author Sasha
  */
-public class Administration extends MainPartAction {
+public class Administration extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "administration.text.title";
+    
+    /**
+     * Constructor
+     */
+    public Administration() {
+        super(TITLE);
+    }
 
     /**
      * Admin administration

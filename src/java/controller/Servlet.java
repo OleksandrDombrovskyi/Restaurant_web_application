@@ -70,7 +70,7 @@ public class Servlet extends HttpServlet {
         LOGGER.info("Post action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {
-            return;
+            page = ConfigManager.getProperty("path.home"); 
         }
         goToPage(page, request, response);
         LOGGER.info("Post action was performed: " + action.toString());

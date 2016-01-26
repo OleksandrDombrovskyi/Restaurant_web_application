@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action;
+package controller.action.getactions;
 
 /**
  * Link for navigation chain

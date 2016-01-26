@@ -6,8 +6,10 @@
 package controller;
 
 import controller.action.Action;
+import controller.action.postactions.ChangeLanguage;
 import controller.action.postactions.personal.kitchen.SetPreparedStatus;
 import controller.action.postactions.CreateAccount;
+import controller.action.postactions.LogOut;
 import controller.action.postactions.Login;
 import controller.action.postactions.personal.admin.AdminChangePassword;
 import controller.action.postactions.personal.admin.AdminSaveChanges;
@@ -29,6 +31,16 @@ public enum PostActionEnum {
     LOGIN { 
         { 
             this.action = new Login(); 
+        } 
+    },
+    LOGOUT { 
+        { 
+            this.action =  new LogOut();
+        } 
+    },
+    CHANGE_LANGUAGE { 
+        { 
+            this.action =  new ChangeLanguage();
         } 
     },
     CREATE_ACCOUNT { 

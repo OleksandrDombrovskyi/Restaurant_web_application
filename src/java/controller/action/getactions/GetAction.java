@@ -6,8 +6,6 @@
 package controller.action.getactions;
 
 import controller.action.Action;
-import controller.action.ConcreteLink;
-import controller.action.LanguageBlock;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -19,6 +17,17 @@ import javax.servlet.http.HttpServletResponse;
  * @author Sasha
  */
 public abstract class GetAction extends Action {
+    
+    /** page title */
+    protected String title;
+    
+    /**
+     * Constructor
+     * @param title page title
+     */
+    public GetAction (String title) {
+        this.title = title;
+    }
     
     /**
      * Initialization required variables and run doExecute method
@@ -34,6 +43,8 @@ public abstract class GetAction extends Action {
         this.request = request;
         this.response = response;
         session = request.getSession();
+        request.setAttribute("title", title);
+        request.setAttribute("links", getLink());
         return doExecute();
     }
     
@@ -44,6 +55,15 @@ public abstract class GetAction extends Action {
      * @throws IOException 
      */
     protected abstract String doExecute() throws ServletException, IOException;
+    
+    /**
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
+     */
+    public abstract List<ConcreteLink> getLink();
     
 //    /**
 //     * 

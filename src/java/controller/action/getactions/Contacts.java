@@ -6,7 +6,6 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,17 @@ import javax.servlet.ServletException;
  * Contacts
  * @author Sasha
  */
-public class Contacts extends MainPartAction {
+public class Contacts extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "contacts.text.title";
+
+    /**
+     * Constructor
+     */
+    public Contacts() {
+        super(TITLE);
+    }
 
     /**
      * Show pae with contakt information

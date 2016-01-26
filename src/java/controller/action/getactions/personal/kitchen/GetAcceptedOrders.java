@@ -6,7 +6,7 @@
 package controller.action.getactions.personal.kitchen;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +21,16 @@ import model.entity.Order.OrderStatus;
  * @author Sasha
  */
 public class GetAcceptedOrders extends AbstractOrders {
+    
+    /** title string key value */
+    private final static String TITLE = "administration.orders.link.accepted";
+
+    /**
+     * Constructor
+     */
+    public GetAcceptedOrders() {
+        super(TITLE);
+    }
 
     /**
      * Get and output all accepted by admin orders

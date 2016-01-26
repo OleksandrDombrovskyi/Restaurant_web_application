@@ -6,7 +6,7 @@
 package controller.action.getactions.personal.user;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +19,16 @@ import model.entity.User;
  * @author Sasha
  */
 public class Order extends AbstractOrders {
+    
+    /** title string key value */
+    private final static String TITLE = "order.text.title";
+
+    /**
+     * Constructor
+     */
+    public Order() {
+        super(TITLE);
+    }
 
     /**
      * Show selected order

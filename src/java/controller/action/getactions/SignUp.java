@@ -6,7 +6,6 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,17 @@ import javax.servlet.ServletException;
  * Sign up
  * @author Sasha
  */
-public class SignUp extends MainPartAction {
+public class SignUp extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "signup.text.title";
+
+    /**
+     * Constructor
+     */
+    public SignUp() {
+        super(TITLE);
+    }
 
     /**
      * Show registration page

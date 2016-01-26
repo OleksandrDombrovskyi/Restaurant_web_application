@@ -8,6 +8,8 @@ package controller.action.getactions;
 import controller.ConfigManager;
 import controller.action.Action;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 
 /**
@@ -15,7 +17,17 @@ import javax.servlet.ServletException;
  * @author Sasha
  */
 public class LoginRequest extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "login.text.title";
 
+    /**
+     * Constructor
+     */
+    public LoginRequest() {
+        super(TITLE);
+    }
+    
     /**
      * Show login page
      * @return property key value
@@ -37,5 +49,16 @@ public class LoginRequest extends GetAction {
 //        String from = request.getParameter("from");
 //        session.setAttribute("from", from);
 //    }
+
+    @Override
+    public List<ConcreteLink> getLink() {
+        List<ConcreteLink> links = new ArrayList<>();
+        links.addAll(new HomePage().getLink());
+        String linkValue = ConfigManager.getProperty("path.page.loginrequest");
+        String linkName = "login.button.login";
+        ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
+        links.add(concreteLink);
+        return links;
+    }
     
 }

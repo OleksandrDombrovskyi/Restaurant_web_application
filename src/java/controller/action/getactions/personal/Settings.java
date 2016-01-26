@@ -7,9 +7,8 @@ package controller.action.getactions.personal;
 
 import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
-import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,17 @@ import model.entity.User;
  * Show profile settings
  * @author Sasha
  */
-public class Settings extends MainPartAction {
+public class Settings extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "settings.text.title";
+    
+    /**
+     * Constructor
+     */
+    public Settings() {
+        super(TITLE);
+    }
 
     /**
      * Check if user or admin are in the current session and show corresponding

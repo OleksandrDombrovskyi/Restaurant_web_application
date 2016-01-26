@@ -7,9 +7,8 @@ package controller.action.getactions.personal.user;
 
 import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
-import controller.action.getactions.MainPartAction;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +20,17 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class UserAccount extends MainPartAction {
+public class UserAccount extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "account.text.title";
+
+    /**
+     * Constructor
+     */
+    public UserAccount() {
+        super(TITLE);
+    }
 
     /**
      * Show user accaunt balance

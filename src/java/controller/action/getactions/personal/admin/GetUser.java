@@ -6,7 +6,7 @@
 package controller.action.getactions.personal.admin;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -18,6 +18,16 @@ import model.entity.User;
  * @author Sasha
  */
 public class GetUser extends AdminGetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "administration.user.text.title";
+
+    /**
+     * Constructor
+     */
+    public GetUser() {
+        super(TITLE);
+    }
 
     /**
      * Get all users from data base for admin

@@ -6,14 +6,14 @@
 package controller;
 
 import controller.action.Action;
-import controller.action.getactions.ChangeLanguage;
+import controller.action.postactions.ChangeLanguage;
 import controller.action.getactions.Contacts;
 import controller.action.getactions.HomePage;
 import controller.action.getactions.Info;
 import controller.action.getactions.LoginRequest;
 import controller.action.getactions.MainMenu;
 import controller.action.getactions.SignUp;
-import controller.action.getactions.personal.LogOut;
+import controller.action.postactions.LogOut;
 import controller.action.getactions.personal.Profile;
 import controller.action.getactions.personal.Settings;
 import controller.action.getactions.personal.admin.Administration;
@@ -40,16 +40,6 @@ public enum GetActionEnum {
     HOME { 
         { 
             this.action =  new HomePage();
-        } 
-    }, 
-    LOGOUT { 
-        { 
-            this.action =  new LogOut();
-        } 
-    }, 
-    CHANGE_LANGUAGE { 
-        { 
-            this.action =  new ChangeLanguage();
         } 
     }, 
     LOGIN_REQUEST { 

@@ -3,32 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.action.getactions;
+package controller.action.postactions;
 
-import controller.ConfigManager;
+import controller.action.postactions.PostAction;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
 /**
- * Change language
+ * Log out
  * @author Sasha
  */
-public class ChangeLanguage extends GetAction {
+public class LogOut extends PostAction {
 
     /**
-     * Set languge block and set the language settings
+     * Log out user or admin (go to user role)
      * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        session.setAttribute("language", request.getParameter("language"));
-        String path = request.getHeader("Referer");
-        if (path != null) {
-            return path;
-        }
-        return ConfigManager.getProperty("path.page.home");
+        session.invalidate();
+        return request.getHeader("Referer");
     }
     
 }

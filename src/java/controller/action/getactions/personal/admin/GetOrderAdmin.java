@@ -6,7 +6,7 @@
 package controller.action.getactions.personal.admin;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
+import controller.action.getactions.ConcreteLink;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -19,6 +19,16 @@ import model.entity.User;
  * @author Sasha
  */
 public class GetOrderAdmin extends AdminGetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "order.text.title";
+
+    /**
+     * Constructor
+     */
+    public GetOrderAdmin() {
+        super(TITLE);
+    }
 
     /**
      * Get order by admin request

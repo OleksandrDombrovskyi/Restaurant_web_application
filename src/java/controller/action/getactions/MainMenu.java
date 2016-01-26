@@ -6,7 +6,6 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,8 +19,18 @@ import model.entity.Meal;
  * Main menu 
  * @author Sasha
  */
-public class MainMenu extends MainPartAction {
+public class MainMenu extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "mainmenu.text.title";
 
+    /**
+     * Constructor
+     */
+    public MainMenu() {
+        super(TITLE);
+    }
+    
     /**
      * Show main menu page
      * @return property key value

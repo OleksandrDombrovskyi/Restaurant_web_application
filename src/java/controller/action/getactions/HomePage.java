@@ -6,7 +6,6 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,17 @@ import javax.servlet.ServletException;
  * Home page
  * @author Sasha
  */
-public class HomePage extends MainPartAction {
+public class HomePage extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "home.text.title";
+    
+    /**
+     * Constructor
+     */
+    public HomePage() {
+        super(TITLE);
+    }
 
     /**
      * Show home page

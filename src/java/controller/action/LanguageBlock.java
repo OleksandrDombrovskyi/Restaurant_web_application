@@ -6,8 +6,10 @@
 package controller.action;
 
 import controller.ConfigManager;
+import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 
 /**
@@ -15,6 +17,10 @@ import javax.servlet.ServletException;
  * @author Sasha
  */
 public class LanguageBlock extends GetAction {
+
+    public LanguageBlock(String title) {
+        super(title);
+    }
 
     /**
      * Set language block
@@ -25,6 +31,11 @@ public class LanguageBlock extends GetAction {
     @Override
     public String doExecute() throws ServletException, IOException {
         return ConfigManager.getProperty("path.page.language");
+    }
+
+    @Override
+    public List<ConcreteLink> getLink() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

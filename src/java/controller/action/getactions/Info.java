@@ -6,7 +6,6 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
-import controller.action.ConcreteLink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,17 @@ import javax.servlet.ServletException;
  * Restaurant info
  * @author Sasha
  */
-public class Info extends MainPartAction {
+public class Info extends GetAction {
+    
+    /** title string key value */
+    private final static String TITLE = "info.text.title";
+
+    /**
+     * Constructor
+     */
+    public Info() {
+        super(TITLE);
+    }
 
     /**
      * Show info page

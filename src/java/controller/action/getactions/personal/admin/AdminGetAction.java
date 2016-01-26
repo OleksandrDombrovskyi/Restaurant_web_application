@@ -23,6 +23,14 @@ import model.entity.User;
  * @author Sasha
  */
 public abstract class AdminGetAction extends AbstractOrders {
+
+    /**
+     * Constructor
+     * @param title page title key value
+     */
+    public AdminGetAction(String title) {
+        super(title);
+    }
     
     /**
      * Get all users from data base
