@@ -44,7 +44,7 @@ public class GetAcceptedOrders extends AbstractOrders {
         if (kitchen == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         List<Order> orders = getOrdersByStatus(OrderStatus.ACCEPTED);
         if (orders == null || orders.size() < 1) {

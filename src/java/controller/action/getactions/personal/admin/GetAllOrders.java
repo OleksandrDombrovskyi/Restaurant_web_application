@@ -44,7 +44,7 @@ public class GetAllOrders extends AdminGetAction {
         if (admin == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         List<Order> orders = getAllOrders();
         if (orders == null || orders.size() < 1) {

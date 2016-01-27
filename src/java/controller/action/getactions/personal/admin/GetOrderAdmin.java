@@ -43,7 +43,7 @@ public class GetOrderAdmin extends AdminGetAction {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
 //            return;
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {

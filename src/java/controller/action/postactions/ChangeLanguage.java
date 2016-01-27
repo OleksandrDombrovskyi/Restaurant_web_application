@@ -27,7 +27,7 @@ public class ChangeLanguage extends PostAction {
         session.setAttribute("language", request.getParameter("language"));
         String path = request.getHeader("Referer");
         if (path == null) {
-            path = ConfigManager.getProperty("path.page.home");
+            path = ConfigManager.getProperty("path.home");
         }
         response.sendRedirect(path);
     }

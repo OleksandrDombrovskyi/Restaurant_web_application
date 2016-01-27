@@ -43,12 +43,12 @@ public class Order extends AbstractOrders {
         if (user == null) {
             if (admin == null) {
                 setMessages(null, "login.errormessage.loginplease");
-                return ConfigManager.getProperty("path.page.home");
+                return ConfigManager.getProperty("path.home");
             }
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         int orderId = Integer.parseInt(orderIdString);
         model.entity.Order order = getOrderById(orderId);
@@ -62,7 +62,7 @@ public class Order extends AbstractOrders {
             return ConfigManager.getProperty("path.page.user.getorder");
         } else {
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
     }
 

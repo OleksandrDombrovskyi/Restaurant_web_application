@@ -47,7 +47,7 @@ public class GetUserOrders extends AbstractOrders {
         if (admin == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         String userIdString = request.getParameter("userId");
         if (userIdString == null) {

@@ -57,7 +57,7 @@ public class Settings extends GetAction {
         }
 //        sendRedirect(null, "login.errormessage.loginplease", "home");
         setMessages(null, "login.errormessage.loginplease");
-        return ConfigManager.getProperty("path.page.home");
+        return ConfigManager.getProperty("path.home");
     }
     
     /**

@@ -43,7 +43,7 @@ public class Orders extends AbstractOrders {
         if (user == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         int userId = user.getId();
         List<Order> orders = getOrdersByUserId(userId);

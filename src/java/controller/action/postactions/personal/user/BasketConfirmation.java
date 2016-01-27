@@ -32,7 +32,7 @@ public class BasketConfirmation extends PostAction {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
 //            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.page.home");
+//            return ConfigManager.getProperty("path.home");
         }
         int userId = user.getId();
         if (!confirmBasket(userId)) {

@@ -47,7 +47,7 @@ public class Basket extends GetAction {
         if (user == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         int userId = user.getId();
         model.entity.Order basketOrder = getBasketOrder(userId);

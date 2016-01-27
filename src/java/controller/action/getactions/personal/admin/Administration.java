@@ -43,7 +43,7 @@ public class Administration extends GetAction {
         if (admin == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
 //        goToPage("administration.text.title", "/view/person/admin/administration.jsp");
         return ConfigManager.getProperty("path.page.admin.administration");

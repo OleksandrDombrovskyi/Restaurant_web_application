@@ -42,7 +42,7 @@ public class MainMenu extends GetAction {
         List<Meal> meals = getAllMeals();
         if (meals == null || meals.size() < 1) {
             setMessages(null, "mainmenu.errormessage.nomeals");
-            return ConfigManager.getProperty("path.page.homepage");
+            return ConfigManager.getProperty("path.home");
         }
         request.setAttribute("meals", meals);
 //        goToPage("mainmenu.text.title", "view/mainmenu.jsp");

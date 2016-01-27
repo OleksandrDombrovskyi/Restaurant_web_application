@@ -43,7 +43,7 @@ public class UserAccount extends GetAction {
         if (user == null) {
 //            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.page.home");
+            return ConfigManager.getProperty("path.home");
         }
         BigDecimal account = user.getAccount();
         request.setAttribute("account", account);

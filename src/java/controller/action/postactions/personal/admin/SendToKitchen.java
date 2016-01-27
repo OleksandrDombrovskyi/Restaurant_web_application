@@ -30,7 +30,7 @@ public class SendToKitchen extends SetOrderStatus {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
 //            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.page.home");
+//            return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {

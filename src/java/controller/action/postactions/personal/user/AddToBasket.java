@@ -43,7 +43,7 @@ public class AddToBasket extends PostAction {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
 //            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.page.home");
+//            return ConfigManager.getProperty("path.home");
         }
         int userId = user.getId();
         Order newBasketOrder = new Order(userId, 
