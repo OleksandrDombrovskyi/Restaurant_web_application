@@ -93,7 +93,7 @@ public enum PostActionEnum {
             this.action = new SetPreparedStatus(); 
         } 
     },
-    CONFIRM_PREPARED_STATUS { 
+    CONFIRM_PREPARED_ORDER { 
         { 
             this.action = new ConfirmPreparedOrder(); 
         } 

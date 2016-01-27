@@ -45,10 +45,10 @@ public class ActionFactory {
      * @return required post action object
      */
     public Action getPostAction(HttpServletRequest request) {
-        Action action = new HomePage();
+        Action action = null;
         String postAction = request.getParameter("postAction");
         if (postAction == null) {
-            return action;
+            return null;
         }
         try {
             PostActionEnum actionEnum = PostActionEnum.valueOf(postAction.toUpperCase());
