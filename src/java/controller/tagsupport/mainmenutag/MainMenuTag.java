@@ -16,29 +16,44 @@ import javax.servlet.jsp.tagext.TagSupport;
  */
 public class MainMenuTag extends TagSupport {
     
-    private String head;
-    {
-        head = "<td><h3><fmt:message key=\"order.table.mealname\" /></h3></td>\n" +
-                "<td><h3><fmt:message key=\"order.table.mealdescription\" /></h3></td>\n" +
-                "<td><h3><fmt:message key=\"order.table.mealprice\" /></h3></td>";
-    }
-    
+    /** count of rows */
     private int rows;
     
+    /**
+     * Set rows
+     * @param rows count of rows
+     */
     public void setRows(Integer rows) {
         this.rows = rows;
     }
     
+    /**
+     * Do start tag method
+     * @return int EVAL_BODY_INCLUDE
+     * @throws JspTagException 
+     */
     @Override
     public int doStartTag() throws JspTagException {
+        String mealName = "order.table.mealname";
+        String description = "order.table.mealdescription";
+        String price = "order.table.mealprice";
         try {
             JspWriter out = pageContext.getOut();
-            out.write("Hello");
             out.write("<table>");
             out.write("<tr>");
-            out.write("<td><h3><fmt:message key=\"order.table.mealname\" /></h3></td>");
-            out.write("<td><h3><fmt:message key=\"order.table.mealdescription\" /></h3></td>");
-            out.write("<td><h3><fmt:message key=\"order.table.mealprice\" /></h3></td>");
+            
+            out.write("<td>");
+            out.write("<fmt:message key=\"" + mealName + "\" />");
+            out.write("</td>");
+            
+            out.write("<td>");
+            out.write("<fmt:message key=\"" + description + "\" />");
+            out.write("</td>");
+            
+            out.write("<td>");
+            out.write("<fmt:message key=\"" + price + "\" />");
+            out.write("</td>");
+            
             out.write("</tr>");
             out.write("<tr>");
         } catch (IOException e) {
@@ -47,35 +62,18 @@ public class MainMenuTag extends TagSupport {
         return EVAL_BODY_INCLUDE;
     }
     
+    /**
+     * Executes after tag body
+     * @return int value that means whether continue body execution or not
+     * @throws JspTagException 
+     */
     @Override
     public int doAfterBody() throws JspTagException {
         if (rows-- > 1) {
             try {
                 JspWriter out = pageContext.getOut();
-//                if (pageContext.getSession().getAttribute("user") != null) {
-//                    out.write("<td>");
-//                    out.write("<select name=\"" + meal.getId() + "\" >");
-//                    for (int i = 0; i < 11; i++) {
-//                        out.write("<option value=\"" + i + "\" >" + i + "</option>");
-//                    }
-//                    out.write("</select>");
-//                    out.write("</td>");
-//                }
                 out.write("</tr>");
                 out.write("<tr>");
-//                out.write("<td><c:out value=\"" + meal.getName() + "\" /></td>");
-//                out.write("<td><c:out value=\"" + meal.getDescription() + "\" /></td>");
-//                out.write("<td><fmt:formatNumber value=\"" + meal.getPrice() + "\" type=\"currency\" currencyCode=\"USD\" /></td>");
-//                if (pageContext.getSession().getAttribute("user") != null) {
-//                    out.write("<td>");
-//                    out.write("<select name=\"" + meal.getId() + "\" >");
-//                    for (int i = 0; i < 11; i++) {
-//                        out.write("<option value=\"" + i + "\" >" + i + "</option>");
-//                    }
-//                    out.write("</select>");
-//                    out.write("</td>");
-//                }
-//                out.write("</tr>");
             } catch (IOException e) {
                 throw new JspTagException();
             }
@@ -85,6 +83,11 @@ public class MainMenuTag extends TagSupport {
         }
     }
     
+    /**
+     * Executes after body execution
+     * @return int that means whether evaluate page or no
+     * @throws JspTagException 
+     */
     @Override
     public int doEndTag() throws JspTagException {
         try {

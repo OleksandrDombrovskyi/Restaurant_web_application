@@ -15,13 +15,25 @@ import model.entity.Meal;
  */
 public class MealTagIterator {
     
+    /** meal list */
     private List<Meal> meals;
     
+    /** meal iterator */
+    private Iterator it;
+    
+    /**
+     * Construcor
+     * @param meals list of meals
+     */
     public MealTagIterator(List<Meal> meals) {
         this.meals = meals;
         it = this.meals.iterator();
     }
     
+    /**
+     * Get size
+     * @return int size
+     */
     public int getSize() {
         if (meals != null) {
             return meals.size();
@@ -29,8 +41,10 @@ public class MealTagIterator {
         return 0;
     }
     
-    private Iterator it;
-    
+    /**
+     * Get next meal by iterator
+     * @return meal object
+     */
     public Object getMeal() {
         if (it.hasNext()) {
             return it.next();
