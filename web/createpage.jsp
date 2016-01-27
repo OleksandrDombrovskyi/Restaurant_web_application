@@ -41,7 +41,7 @@
         <cst:errormessage/>
         <cst:message />
         
-        <%-- include message and errormessage page
+        <%-- include message and errormessage page 
         <jsp:include page="/view/error.jsp" />
         --%>
         

@@ -39,7 +39,7 @@ public class Servlet extends HttpServlet {
         LOGGER.info("Get action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {
-            page = ConfigManager.getProperty("path.homepage"); 
+            page = ConfigManager.getProperty("path.page.homepage"); 
         }
         goToPage(page, request, response);
         LOGGER.info("Get action was performed: " + action.toString());
@@ -55,21 +55,12 @@ public class Servlet extends HttpServlet {
     @Override
     protected synchronized void doPost(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
-//        String actionKey = request.getParameter("postAction");
-//        if (actionKey == null) {
-//            doGet(request, response);
-//            return;
-//        }
         PostAction action = (PostAction) new ActionFactory().getPostAction(request);
         if (action == null) {
             doGet(request, response);
         }
         LOGGER.info("Post action was called: " + action.toString());
         action.execute(request, response);
-//        if (page == null) {
-//            page = ConfigManager.getProperty("path.home"); 
-//        }
-//        goToPage(page, request, response);
         LOGGER.info("Post action was performed: " + action.toString());
     }
     

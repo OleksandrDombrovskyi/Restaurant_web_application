@@ -20,4 +20,11 @@
         <param-value>WEB-INF/log4j.properties</param-value>
     </context-param>
     
+    <jsp-config>
+        <taglib>
+            <taglib-uri>customtags</taglib-uri>
+            <taglib-location>/WEB-INF/tld/customtaglib.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+    
 </web-app>

@@ -63,7 +63,7 @@ public abstract class Action {
         setMessages(message, errorMessage);
         String path = request.getHeader("Referer");
         if (path == null) {
-            path = request.getContextPath() + ConfigManager.getProperty("link.home");
+            path = request.getContextPath() + ConfigManager.getProperty("link.homepage");
         }
         response.sendRedirect(path);
     }
