@@ -6,6 +6,8 @@
 package controller.tagsupport.mainmenutag;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -34,24 +36,27 @@ public class MainMenuTag extends TagSupport {
      */
     @Override
     public int doStartTag() throws JspTagException {
-        String mealName = "order.table.mealname";
-        String description = "order.table.mealdescription";
-        String price = "order.table.mealprice";
+        String lang = (String) pageContext.getSession().getAttribute("language");
+        Locale local = new Locale(lang);
+        ResourceBundle recourceBundle = ResourceBundle.getBundle("controller.properties.text", local);
+        String mealName = recourceBundle.getString("order.table.mealname");
+        String description = recourceBundle.getString("order.table.mealdescription");
+        String price = recourceBundle.getString("order.table.mealprice");
         try {
             JspWriter out = pageContext.getOut();
             out.write("<table>");
             out.write("<tr>");
             
             out.write("<td>");
-            out.write("<fmt:message key=\"" + mealName + "\" />");
+            out.write(mealName);
             out.write("</td>");
             
             out.write("<td>");
-            out.write("<fmt:message key=\"" + description + "\" />");
+            out.write(description);
             out.write("</td>");
             
             out.write("<td>");
-            out.write("<fmt:message key=\"" + price + "\" />");
+            out.write(price);
             out.write("</td>");
             
             out.write("</tr>");
