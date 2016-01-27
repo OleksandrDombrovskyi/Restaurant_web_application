@@ -6,6 +6,7 @@
 package controller.action.getactions;
 
 import controller.ConfigManager;
+import controller.tagsupport.mainmenutag.MealTagIterator;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class MainMenu extends GetAction {
             return ConfigManager.getProperty("path.home");
         }
         request.setAttribute("meals", meals);
+        MealTagIterator mealIterator = new MealTagIterator(meals);
+        request.setAttribute("mealIterator", mealIterator);
         return ConfigManager.getProperty("path.page.mainmenu");
     }
 

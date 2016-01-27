@@ -16,4 +16,14 @@
         <tag-class>controller.tagsupport.ErrorMessageTag</tag-class>
         <body-content>empty</body-content>
     </tag>
+    <tag>
+    <name>mealtable</name>
+    <tag-class>controller.tagsupport.mainmenutag.MainMenuTag</tag-class>
+    <body-content>scriptless</body-content>
+        <attribute>
+            <name>rows</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>
