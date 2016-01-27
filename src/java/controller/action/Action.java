@@ -17,12 +17,16 @@ import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.Order;
 import model.entity.User;
+import org.apache.log4j.Logger;
 
 /**
  * Action abstract class
  * @author Sasha
  */
 public abstract class Action {
+    
+    /** log4j logger */
+    protected static final Logger LOGGER = Logger.getLogger(Action.class);
     
     /** http servlet request */
     protected HttpServletRequest request;

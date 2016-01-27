@@ -41,9 +41,11 @@ public abstract class AbstractOrders extends GetAction {
         try {
             return (List<Order>) orderCreator.getOrdersByUserId(userId);
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "profile");
             return null;
         } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
             return null;
         }
@@ -63,9 +65,11 @@ public abstract class AbstractOrders extends GetAction {
         try {
             return (List<Order>) orderCreator.getOrdersByStatus(orderStatus);
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception");
             return null;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded");
             return null;
         }

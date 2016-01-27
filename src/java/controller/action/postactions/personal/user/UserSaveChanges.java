@@ -45,10 +45,12 @@ public class UserSaveChanges extends SaveChanges {
                 return false;
             }
             return setUserToSession(newUser.getEmail());
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
             return false;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
             return false;
         }

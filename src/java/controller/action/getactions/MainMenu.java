@@ -45,7 +45,6 @@ public class MainMenu extends GetAction {
             return ConfigManager.getProperty("path.home");
         }
         request.setAttribute("meals", meals);
-//        goToPage("mainmenu.text.title", "view/mainmenu.jsp");
         return ConfigManager.getProperty("path.page.mainmenu");
     }
 
@@ -60,9 +59,11 @@ public class MainMenu extends GetAction {
         try {
             return (List<Meal>) mealCreator.getAllEntities();
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "home");
             return null;
         } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "home");
             return null;
         }

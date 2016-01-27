@@ -33,8 +33,6 @@ public class PayOrder extends SetOrderStatus {
         if (user == null) {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
-//            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
@@ -63,7 +61,6 @@ public class PayOrder extends SetOrderStatus {
             return;
         }
         sendRedirect("order.message.orderwaspayed", null);
-//        return null;
     }
 
     /**
@@ -84,9 +81,11 @@ public class PayOrder extends SetOrderStatus {
             } else {
                 return true;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded");
         }
         return false;

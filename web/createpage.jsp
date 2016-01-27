@@ -38,12 +38,10 @@
         <%-- include navigation link panel --%>
         <jsp:include page="/view/navigation.jsp" />
         
+        <%-- include message and errormessage page --%>
+        <jsp:include page="/view/error.jsp" />
         <cst:errormessage/>
         <cst:message />
-        
-        <%-- include message and errormessage page 
-        <jsp:include page="/view/error.jsp" />
-        --%>
         
         <%-- include required page by relative URI from request parameter --%>
         <jsp:include page="${relativeURI}" flush="true" />

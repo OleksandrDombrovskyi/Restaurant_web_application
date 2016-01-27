@@ -5,7 +5,6 @@
  */
 package controller.action.postactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,8 +30,6 @@ public class BasketConfirmation extends PostAction {
         if (!userValidation(user)) {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
-//            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.home");
         }
         int userId = user.getId();
         if (!confirmBasket(userId)) {
@@ -42,11 +39,8 @@ public class BasketConfirmation extends PostAction {
         if (orderIdString == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder", "link.basket");
         } else {
-//            sendRedirect(null, null, 
-//                "getOrder&orderId=" + orderIdString);
             sendRedirectWithParam("link.getorder", "orderId", orderIdString);
         }
-//        return null;
     }
 
     /**
@@ -84,10 +78,12 @@ public class BasketConfirmation extends PostAction {
                 sendRedirect("basket.message.notconfirmed", null, "link.basket");
                 return false;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
             return false;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", 
                     "link.basket");
             return false;

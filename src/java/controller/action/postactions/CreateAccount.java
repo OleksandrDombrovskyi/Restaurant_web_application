@@ -5,7 +5,6 @@
  */
 package controller.action.postactions;
 
-import controller.ConfigManager;
 import controller.action.Validator;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -44,42 +43,35 @@ public class CreateAccount extends PostAction {
             saveFieldValues(name, lastName, email);
             sendRedirect(null, errorMessage, "link.signup");
             return;
-//            setMessages(null, errorMessage);
-//            return ConfigManager.getProperty("path.page.signup");
         }
         try {
             if (userCreator.getUserByEmail(email) != null) {
                 saveFieldValues(name, lastName, email);
                 sendRedirect(null, "signup.errormessage.existinguser", "link.signup");
                 return;
-//                setMessages(null, "signup.errormessage.existinguser");
-//                return ConfigManager.getProperty("path.page.signup");
             }
             String hexPassword = DigestUtils.shaHex(password);
             newUser = new User(name, lastName, email, hexPassword);
             if (!userCreator.insertUser(newUser)) {
-                throw new SQLException();
+                throw new SQLException("User was not inserted into data base");
             }
             dbUser = (User) userCreator.getUserByEmail(email);
             if (dbUser == null) {
-                throw new SQLException();
+                throw new SQLException("User was not gotten from data base");
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             saveFieldValues(name, lastName, email);
             sendRedirect(null, "exception.errormessage.sqlexception", "link.signup");
             return;
-//            setMessages(null, "exception.errormessage.sqlexception");
-//            return ConfigManager.getProperty("path.page.signup");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             saveFieldValues(name, lastName, email);
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.signup");
             return;
-//            setMessages(null, "exception.errormessage.serveroverloaded");
-//            return ConfigManager.getProperty("path.page.signup");
         }
         session.setAttribute("user", dbUser);
         sendRedirect(null, null, "link.profile");
-//        return null;
     }
     
     /**

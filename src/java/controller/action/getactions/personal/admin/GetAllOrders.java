@@ -42,7 +42,6 @@ public class GetAllOrders extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
@@ -59,7 +58,6 @@ public class GetAllOrders extends AdminGetAction {
             Map<Integer, User> userMap = createUserMap(users);
             request.setAttribute("userMap", userMap);
         }
-//        goToPage("administration.orders.text.title", "/view/person/admin/allorders.jsp");
         return ConfigManager.getProperty("path.page.admin.getallorders");
     }
     

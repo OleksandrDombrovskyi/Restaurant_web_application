@@ -18,7 +18,6 @@ public class ChangeLanguage extends PostAction {
 
     /**
      * Set languge block and set the language settings
-     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */

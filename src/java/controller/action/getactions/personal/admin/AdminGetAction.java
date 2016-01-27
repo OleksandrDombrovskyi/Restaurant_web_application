@@ -43,9 +43,11 @@ public abstract class AdminGetAction extends AbstractOrders {
         try {
             return (List<User>) userCreator.getAllEntities();
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "administration");
             return null;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
             return null;
         }
@@ -62,9 +64,11 @@ public abstract class AdminGetAction extends AbstractOrders {
         try {
             return (List<Order>) orderCreator.getAllEntities();
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "administration");
             return null;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
             return null;
         }

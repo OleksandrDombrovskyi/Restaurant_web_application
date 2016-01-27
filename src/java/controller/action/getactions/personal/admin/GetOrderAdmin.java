@@ -40,34 +40,28 @@ public class GetOrderAdmin extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
-//            return;
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-//            sendRedirect(null, "administration.user.orders.errormessage.wrongparameterorderid", "getAllOrders");
             setMessages(null, "administration.user.orders.errormessage.wrongparameterorderid");
             return ConfigManager.getProperty("path.page.admin.getallorders");
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-//            sendRedirect(null, "order.errormessage.nosuchorder", "getAllOrders");
             setMessages(null, "order.errormessage.nosuchorder");
             return ConfigManager.getProperty("path.page.admin.getallorders");
         }
         int userId = order.getUserId();
         User concreteUser = getUserById(userId);
         if (concreteUser == null) {
-//            sendRedirect(null, "administration.users.errormessage.wronguserid", "getAllOrders");
             setMessages(null, "administration.users.errormessage.wronguserid");
             return ConfigManager.getProperty("path.page.admin.getallorders");
         }
         request.setAttribute("concreteUser", concreteUser);
         request.setAttribute("order", order);
-//        goToPage("administration.user.order.text.title", "/view/person/admin/order.jsp");
         return ConfigManager.getProperty("path.page.admin.getorder");
     }
     

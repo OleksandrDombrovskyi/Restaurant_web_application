@@ -33,6 +33,7 @@ public class Order extends AbstractOrders {
     /**
      * Show selected order
      * 
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */

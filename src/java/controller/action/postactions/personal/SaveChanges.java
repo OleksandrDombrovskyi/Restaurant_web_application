@@ -41,9 +41,7 @@ public abstract class SaveChanges extends PersonalPostAction {
         if (!updatePerson(personId, firstName, lastName, email)) {
             return;
         }
-//        sendRedirect("settings.message.changeswassaved", null, "settings");
         sendRedirect("settings.message.changeswassaved", null, "link.settings");
-//        return ConfigManager.getProperty("path.page.settings");
     }
     
     /**

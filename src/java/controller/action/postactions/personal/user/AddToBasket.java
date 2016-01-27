@@ -5,7 +5,6 @@
  */
 package controller.action.postactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -42,8 +41,6 @@ public class AddToBasket extends PostAction {
         if (user == null || user.getId() == 0) {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
-//            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.home");
         }
         int userId = user.getId();
         Order newBasketOrder = new Order(userId, 
@@ -63,10 +60,8 @@ public class AddToBasket extends PostAction {
         } else {
             if (addItemsToBasket(basketOrder, newBasketOrder)) {
                 sendRedirect(null, null, "link.basket");
-//                return ConfigManager.getProperty("path.page.user.basket");
             }
         }
-//        return null;
     }
     
     /**
@@ -80,9 +75,11 @@ public class AddToBasket extends PostAction {
         MealCreator mealCreator = new MealCreator();
         try {
             return (List<Meal>) mealCreator.getAllEntities();
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
         }
         return null;
@@ -139,9 +136,11 @@ public class AddToBasket extends PostAction {
             } else {
                 sendRedirect(null, null, "link.basket");
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
         }
     }
@@ -157,9 +156,11 @@ public class AddToBasket extends PostAction {
         OrderCreator orderCreator = new OrderCreator();
         try {
             return orderCreator.getNotConfirmedOrder(userId);
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
         }
         return null;
@@ -178,9 +179,11 @@ public class AddToBasket extends PostAction {
         OrderCreator orderCreator = new OrderCreator();
         try {
             return orderCreator.addItemsToBasket(basketOrder, newBasketOrder);
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
         }
         return false;

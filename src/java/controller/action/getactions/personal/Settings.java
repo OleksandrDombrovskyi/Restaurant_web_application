@@ -6,7 +6,6 @@
 package controller.action.getactions.personal;
 
 import controller.ConfigManager;
-import controller.action.getactions.personal.Profile;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import java.io.IOException;
@@ -46,16 +45,13 @@ public class Settings extends GetAction {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             setParameters(user);
-//            goToPage("settings.text.title", "/view/person/settings.jsp");
             return ConfigManager.getProperty("path.page.settings");
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
             setParameters(admin);
-//            goToPage("settings.text.title", "/view/person/settings.jsp");
             return ConfigManager.getProperty("path.page.settings");
         }
-//        sendRedirect(null, "login.errormessage.loginplease", "home");
         setMessages(null, "login.errormessage.loginplease");
         return ConfigManager.getProperty("path.home");
     }

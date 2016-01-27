@@ -41,11 +41,9 @@ public class Administration extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
-//        goToPage("administration.text.title", "/view/person/admin/administration.jsp");
         return ConfigManager.getProperty("path.page.admin.administration");
     }
     

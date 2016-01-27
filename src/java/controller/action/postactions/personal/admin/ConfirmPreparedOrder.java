@@ -5,7 +5,6 @@
  */
 package controller.action.postactions.personal.admin;
 
-import controller.ConfigManager;
 import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -29,21 +28,16 @@ public class ConfirmPreparedOrder extends SetOrderStatus {
         if (admin == null) {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
-//            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "administration.user.order.errormessage.wrongorderid");
-//            setMessages(null, "administration.user.order.errormessage.wrongorderid");
-//            return request.getHeader("Referer");
         }
         int orderId = Integer.parseInt(orderIdString);
         if (!setStatus(orderId, Order.OrderStatus.READY)) {
             return;
         }
         sendRedirect(null, null);
-//        return request.getHeader("Referer");
     }
     
 }

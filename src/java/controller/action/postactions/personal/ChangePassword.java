@@ -37,14 +37,10 @@ public abstract class ChangePassword extends PersonalPostAction {
         if (!checkForNotNull(oldPassword, newPassword, confirmPassword)) {
             sendRedirect(null, "settings.errormessage.easypasword", "link.settings");
             return;
-//            setMessages(null, "settings.errormessage.easypasword");
-//            return ConfigManager.getProperty("path.page.settings");
         }
         if (!isValid(newPassword)) {
             sendRedirect(null, "settings.errormessage.easypasword", "link.settings");
             return;
-//            setMessages(null, "settings.errormessage.easypasword");
-//            return ConfigManager.getProperty("path.page.settings");
         }
         String hexOldPassword = DigestUtils.shaHex(oldPassword);
         String hexNewPassword = DigestUtils.shaHex(newPassword);
@@ -54,8 +50,6 @@ public abstract class ChangePassword extends PersonalPostAction {
             return;
         }
         sendRedirect("settings.message.passwordchanged", null, "link.settings");
-//        setMessages("settings.message.passwordchanged", null);
-//        return ConfigManager.getProperty("path.page.settings");
     }
     
     /**

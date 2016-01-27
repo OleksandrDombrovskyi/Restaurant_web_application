@@ -26,7 +26,6 @@ public class Login extends PostAction {
 
     /**
      * Log in
-     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
@@ -38,16 +37,12 @@ public class Login extends PostAction {
         if (isEmpty(email) || isEmpty(password)) {
             sendRedirect(null, "login.errormessage.empty", "link.loginrequest");
             return;
-//            setMessages(null, "login.errormessage.empty");
-//            return ConfigManager.getProperty("path.page.loginrequest");
         }
         String hexPassword = DigestUtils.shaHex(password);
         if (!userAuthorization(email, hexPassword)) {
             if (!adminAuthorization(email, hexPassword)) {
                 if (!kitchenAuthorization(email, hexPassword)) {
                     sendRedirect(null, "login.errormessage.nosuchuser", "link.loginrequest");
-//                    setMessages(null, "login.errormessage.nosuchuser");
-//                    return ConfigManager.getProperty("path.page.loginrequest");
                 }
             }
         }
@@ -77,14 +72,15 @@ public class Login extends PostAction {
             }
             if (user.getPassword().equals(password)) {
                 session.setAttribute("user", user);
-//                sendRedirect(null, null, "home");
                 showLastPage();
             } else {
                 sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;
@@ -114,14 +110,15 @@ public class Login extends PostAction {
             }
             if (admin.getPassword().equals(password)) {
                 session.setAttribute("admin", admin);
-//                sendRedirect(null, null, "home");
                 showLastPage();
             } else {
                 sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;
@@ -156,8 +153,10 @@ public class Login extends PostAction {
                 sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;

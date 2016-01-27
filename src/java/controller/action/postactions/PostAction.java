@@ -71,10 +71,12 @@ public abstract class PostAction extends Action {
             }
             session.setAttribute("user", user);
             return true;
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "settings");
             return false;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
             return false;
         }
@@ -102,10 +104,12 @@ public abstract class PostAction extends Action {
             }
             session.setAttribute("admin", admin);
             return true;
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "settings");
             return false;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
             return false;
         }

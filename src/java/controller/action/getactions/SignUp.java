@@ -35,7 +35,6 @@ public class SignUp extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-//        goToPage("signup.text.title", "/view/signup.jsp");
         return ConfigManager.getProperty("path.page.signup");
     }
     

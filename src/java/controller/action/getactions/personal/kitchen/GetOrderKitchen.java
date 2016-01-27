@@ -40,25 +40,21 @@ public class GetOrderKitchen extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-//            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
             setMessages(null, "kitchen.acceptedorders.errormessage.nosuchorder");
             return request.getHeader("Referer");
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-//            sendRedirect(null, "kitchen.acceptedorders.errormessage.nosuchorder");
             setMessages(null, "kitchen.acceptedorders.errormessage.nosuchorder");
             return request.getHeader("Referer");
         }
         request.setAttribute("order", order);
-//        goToPage("kitchen.order.text.title", "/view/kitchen/order.jsp");
         return ConfigManager.getProperty("path.page.kitchen.getorder");
     }
     

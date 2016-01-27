@@ -40,7 +40,6 @@ public class GetUsers extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
@@ -50,7 +49,6 @@ public class GetUsers extends AdminGetAction {
         } else {
             request.setAttribute("users", users);
         }
-//        goToPage("administration.user.text.title", "/view/person/admin/users.jsp");
         return ConfigManager.getProperty("path.page.admin.getusers");
     }
     

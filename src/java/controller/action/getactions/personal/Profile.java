@@ -42,15 +42,12 @@ public class Profile extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-//            goToPage("profile.text.title", "/view/person/user/profile.jsp");
             return ConfigManager.getProperty("path.page.user.profile");
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
-//            goToPage("profile.text.title", "/view/person/admin/profile.jsp");
             return ConfigManager.getProperty("path.page.admin.profile");
         }
-//        sendRedirect(null, "login.errormessage.loginplease", "home");
         setMessages(null, "login.errormessage.loginplease");
         return ConfigManager.getProperty("path.home");
     }

@@ -42,7 +42,6 @@ public class GetAcceptedOrders extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
@@ -52,7 +51,6 @@ public class GetAcceptedOrders extends AbstractOrders {
         } else {
             request.setAttribute("orders", orders);
         }
-//        goToPage("kitchen.acceptedorders.text.title", "/view/kitchen/acceptedorders.jsp");
         return ConfigManager.getProperty("path.page.kitchen.showacceptedorders");
     }
     

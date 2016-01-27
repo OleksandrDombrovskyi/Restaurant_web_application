@@ -34,6 +34,7 @@ public class Orders extends AbstractOrders {
 
     /**
      * Show all users' orders
+     * @param property key value
      * @throws ServletException
      * @throws IOException 
      */
@@ -41,7 +42,6 @@ public class Orders extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
@@ -52,7 +52,6 @@ public class Orders extends AbstractOrders {
         } else {
             request.setAttribute("orders", orders);
         }
-//        goToPage("orders.text.title", "/view/person/user/orders.jsp");
         return ConfigManager.getProperty("path.page.user.orders");
     }
     

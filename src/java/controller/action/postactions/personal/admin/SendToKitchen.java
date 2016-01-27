@@ -29,8 +29,6 @@ public class SendToKitchen extends SetOrderStatus {
         if (admin == null) {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
-//            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
@@ -42,7 +40,6 @@ public class SendToKitchen extends SetOrderStatus {
             return;
         }
         sendRedirect(null, null);
-//        return null;
     }
 
 }

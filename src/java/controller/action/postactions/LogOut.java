@@ -5,7 +5,6 @@
  */
 package controller.action.postactions;
 
-import controller.action.postactions.PostAction;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
@@ -17,13 +16,11 @@ public class LogOut extends PostAction {
 
     /**
      * Log out user or admin (go to user role)
-     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
     @Override
     public void doExecute() throws ServletException, IOException {
-//        session.invalidate();
         session.removeAttribute("user");
         session.removeAttribute("admin");
         session.removeAttribute("kitchen");

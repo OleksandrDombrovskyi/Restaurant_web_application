@@ -45,7 +45,6 @@ public class Basket extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
@@ -55,7 +54,6 @@ public class Basket extends GetAction {
             request.setAttribute("message", "basket.message.emptybasket");
         }
         request.setAttribute("basketOrder", basketOrder);
-//        goToPage("basket.text.title", "/view/person/user/basket.jsp");
         return ConfigManager.getProperty("path.page.user.basket");
     }
     
@@ -79,10 +77,12 @@ public class Basket extends GetAction {
             } else {
                 return basketOrder;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "profile");
             return null;
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
             return null;
         }

@@ -68,35 +68,4 @@ public abstract class GetAction extends Action {
      */
     public abstract List<ConcreteLink> getLink();
     
-//    /**
-//     * 
-//     * @param title
-//     * @param relativeURI
-//     * @throws ServletException
-//     * @throws IOException 
-//     */
-//    protected void goToPage(String title, String relativeURI) throws ServletException, IOException {
-//        request.setAttribute("title", title); // set title
-//        request.setAttribute("links", getLink()); // set navigation block links
-//        request.setAttribute("relativeURI", relativeURI); // set relative URI of new page
-//        request.getRequestDispatcher("/createpage.jsp").
-//                include(request, response); // call to page that includes all required parts of page
-//    }
-    
-//    /**
-//     * Show error message only
-//     * 
-//     * @param message error message
-//     * @throws IOException
-//     * @throws ServletException 
-//     */
-//    protected void showMessageTest(String message) throws IOException, 
-//            ServletException {
-//        request.setAttribute("title", message);
-//        new LanguageBlock().execute(request, response);
-//        request.setAttribute("errorMessage", message);
-//        request.getRequestDispatcher("/view/error.jsp").
-//                include(request, response);
-//    }
-    
 }

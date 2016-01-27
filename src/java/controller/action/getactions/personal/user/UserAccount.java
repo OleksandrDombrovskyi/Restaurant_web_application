@@ -34,6 +34,7 @@ public class UserAccount extends GetAction {
 
     /**
      * Show user accaunt balance
+     * @return property key value
      * @throws ServletException
      * @throws IOException 
      */
@@ -41,13 +42,11 @@ public class UserAccount extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-//            sendRedirect(null, "login.errormessage.loginplease", "home");
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
         BigDecimal account = user.getAccount();
         request.setAttribute("account", account);
-//        goToPage("account.text.title", "/view/person/user/account.jsp");
         return ConfigManager.getProperty("path.page.user.account");
     }
     

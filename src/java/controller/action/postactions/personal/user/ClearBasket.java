@@ -5,7 +5,6 @@
  */
 package controller.action.postactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,25 +30,18 @@ public class ClearBasket extends PostAction {
         if (user == null) {
             sendRedirect(null, "login.errormessage.loginplease", "link.home");
             return;
-//            setMessages(null, "login.errormessage.loginplease");
-//            return ConfigManager.getProperty("path.home");
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
             sendRedirect(null, "basket.errormessage.nosuchorder", "link.basket");
             return;
-//            setMessages(null, "basket.errormessage.nosuchorder");
-//            return ConfigManager.getProperty("path.page.user.basket");
         }
         int orderId = Integer.parseInt(orderIdString);
         if (isRemoved(orderId)) {
             sendRedirect(null, null, "link.basket");
             return;
-//            return ConfigManager.getProperty("path.page.user.basket");
         } else {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
-//            setMessages(null, "exception.errormessage.serveroverloaded");
-//            return ConfigManager.getProperty("path.page.user.basket");
         }
     }
     
@@ -68,9 +60,11 @@ public class ClearBasket extends PostAction {
             } else {
                 sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
             }
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            LOGGER.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
         }
         return false;
