@@ -126,8 +126,9 @@ public interface DAO {
     
     /** sql query for order price updating according to all its' items */
     String SQL_FOR_PRICE_UPDATING = "UPDATE restaurantdatabase.order "
-            + "SET total_price = (SELECT SUM(price) "
-            + "FROM restaurantdatabase.order_items WHERE order_id = ?)";
+            + "SET total_price = "
+            + "(SELECT SUM(price) FROM restaurantdatabase.order_items WHERE order_id = ?) "
+            + "WHERE order_id = ?";
     
     /** sql for getting orders by status */
     String SQL_FOR_ORDERS_BY_STATUS = "SELECT * FROM restaurantdatabase.order "

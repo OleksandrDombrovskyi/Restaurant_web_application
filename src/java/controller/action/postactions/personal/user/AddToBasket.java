@@ -137,7 +137,7 @@ public class AddToBasket extends PostAction {
             if (orderId == 0) {
                 sendRedirect(null, "order.errormessage.nosuchorder", "link.mainmenu");
             } else {
-                sendRedirect(null, null, "basket");
+                sendRedirect(null, null, "link.basket");
             }
         } catch (SQLException ex) {
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");

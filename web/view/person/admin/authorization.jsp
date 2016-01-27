@@ -25,7 +25,7 @@
             <a href="${pageContext.request.contextPath}/servlet?postAction=logout"><fmt:message key="admin.authorization.link.logout"/></a> 
             <a href="${pageContext.request.contextPath}/servlet?getAction=profile"><fmt:message key="admin.authorization.link.profile" /></a>
             <a href="${pageContext.request.contextPath}/servlet?getAction=administration"><fmt:message key="admin.authorization.link.administration" /></a>
-        --%>
+            --%>
             
             
             <form name="submitForm" method="POST" action="${pageContext.request.contextPath}/servlet?postAction=logout">

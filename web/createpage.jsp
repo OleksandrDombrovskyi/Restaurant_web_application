@@ -6,7 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ taglib prefix="cst" uri="customtags" %>
 <fmt:setLocale value="${language}" /> 
 <fmt:setBundle basename="controller.properties.text" />
 
@@ -37,8 +38,12 @@
         <%-- include navigation link panel --%>
         <jsp:include page="/view/navigation.jsp" />
         
-        <%-- include message and errormessage page --%>
+        <cst:errormessage/>
+        <cst:message />
+        
+        <%-- include message and errormessage page
         <jsp:include page="/view/error.jsp" />
+        --%>
         
         <%-- include required page by relative URI from request parameter --%>
         <jsp:include page="${relativeURI}" flush="true" />

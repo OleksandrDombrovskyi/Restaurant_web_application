@@ -451,6 +451,7 @@ public class OrderCreator extends EntityCreator {
             try (PreparedStatement ps = wrapperConnection.
                     prepareStatement(SQL_FOR_PRICE_UPDATING)) {
                 ps.setInt(1, orderId);
+                ps.setInt(2, orderId);
                 ps.executeUpdate();
             }
         } finally {
