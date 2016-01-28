@@ -5,9 +5,8 @@
  */
 package controller.action.postactions;
 
-import controller.ConfigManager;
-import controller.action.postactions.PostAction;
 import java.io.IOException;
+import java.util.Locale;
 import javax.servlet.ServletException;
 
 /**
@@ -23,10 +22,12 @@ public class ChangeLanguage extends PostAction {
      */
     @Override
     public void doExecute() throws ServletException, IOException {
-        session.setAttribute("language", request.getParameter("language"));
+        Locale locale = new Locale(request.getParameter("language"));
+        session.setAttribute("language", locale);
         String path = request.getHeader("Referer");
-        if (path == null) {
-            path = ConfigManager.getProperty("path.home");
+        if (path == null || path.equals("http://localhost:8080/Project4_v2_5/")) {
+            sendRedirect(null, null, "link.home");
+            return;
         }
         response.sendRedirect(path);
     }

@@ -19,7 +19,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class MainMenuTag extends TagSupport {
     
     /** count of rows */
-    private int rows;
+    private int rows = 30;
     
     /**
      * Set rows
@@ -36,8 +36,8 @@ public class MainMenuTag extends TagSupport {
      */
     @Override
     public int doStartTag() throws JspTagException {
-        String lang = (String) pageContext.getSession().getAttribute("language");
-        Locale local = new Locale(lang);
+//        String lang = (String) pageContext.getSession().getAttribute("language");
+        Locale local = (Locale) pageContext.getSession().getAttribute("language");
         ResourceBundle recourceBundle = ResourceBundle.getBundle("controller.properties.text", local);
         String mealName = recourceBundle.getString("order.table.mealname");
         String description = recourceBundle.getString("order.table.mealdescription");

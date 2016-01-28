@@ -2,6 +2,7 @@
     Document   : index
     Created on : 08.01.2016, 4:14:17
     Author     : Sasha
+<c:set var="language" value="en" scope="session" />
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,6 +22,7 @@
     <body>
         <jsp:forward page="/servlet" >
             <jsp:param name="getAction" value="home" />
+            <jsp:param name="language" value="en" />
         </jsp:forward>
     </body>
 </html>

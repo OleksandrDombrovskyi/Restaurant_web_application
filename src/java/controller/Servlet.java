@@ -76,16 +76,4 @@ public class Servlet extends HttpServlet {
         request.getRequestDispatcher(createPage).forward(request, response);
     }
     
-//    /**
-//     * Save last action to back to the last page
-//     * @param actionKey action name
-//     * @param request http servlet request
-//     */
-//    private void saveActionForRedirect(String actionKey, HttpServletRequest request) {
-//        if (!actionKey.equals("loginRequest") && !actionKey.equals("signUp") 
-//                && !actionKey.equals("changeLanguage")) {
-//            request.getSession().setAttribute("lastAction", actionKey);
-//        }
-//    }
-    
 }

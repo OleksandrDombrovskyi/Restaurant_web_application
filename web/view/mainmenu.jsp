@@ -29,6 +29,7 @@
         <c:if test="${not empty meals}" >
         --%>
             <form action="servlet" method="post" >
+                
                 <%--
                 <table>
                     <tr>
@@ -55,6 +56,7 @@
                 </table>
                 --%>
                 
+                
                 <cst:mealtable rows="${mealIterator.size}">
                     <c:set var="meal" value="${mealIterator.meal}" />
                     <td><c:out value="${meal.name}" /></td>
@@ -70,6 +72,7 @@
                         </td>
                     </c:if>
                 </cst:mealtable>
+                
                 
                 <c:if test="${not empty user}" >
                     <input type="submit" value=<fmt:message 

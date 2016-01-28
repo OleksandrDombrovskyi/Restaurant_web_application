@@ -3,6 +3,7 @@
     Created on : 12.01.2016, 16:13:31
     Author     : Sasha
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<fmt:message key="${title}" />
 --%>
 
 
@@ -19,7 +20,7 @@
 <html lang="${language}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-        <title><fmt:message key="${title}" /></title>
+        <title></title>
     </head>
     <body>
         <form action="servlet" method="post">
