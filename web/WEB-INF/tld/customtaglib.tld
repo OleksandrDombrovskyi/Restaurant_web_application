@@ -19,9 +19,14 @@
     <tag>
     <name>mealtable</name>
     <tag-class>controller.tagsupport.mainmenutag.MainMenuTag</tag-class>
-    <body-content>scriptless</body-content>
+    <body-content>empty</body-content>
         <attribute>
             <name>rows</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>meals</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

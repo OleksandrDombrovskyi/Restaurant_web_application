@@ -54,7 +54,7 @@
                         </tr>
                     </c:forEach> 
                 </table>
-                --%>
+                
                 
                 
                 <cst:mealtable rows="${mealIterator.size}">
@@ -72,7 +72,9 @@
                         </td>
                     </c:if>
                 </cst:mealtable>
+                --%>
                 
+                <cst:mealtable meals="${meals}" />
                 
                 <c:if test="${not empty user}" >
                     <input type="submit" value=<fmt:message 
