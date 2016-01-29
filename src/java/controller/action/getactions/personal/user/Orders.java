@@ -34,7 +34,7 @@ public class Orders extends AbstractOrders {
 
     /**
      * Show all users' orders
-     * @param property key value
+     * @return property key value for page path
      * @throws ServletException
      * @throws IOException 
      */

@@ -12,9 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.dao.OrderCreator;
+import model.dao.Dao;
+import model.dao.DaoEnum;
+import model.dao.DaoFactory;
+import model.dao.EntityCreator;
 import model.dao.ServerOverloadedException;
-import model.dao.UserCreator;
 import model.entity.Order;
 import model.entity.User;
 import org.apache.log4j.Logger;
@@ -26,7 +28,7 @@ import org.apache.log4j.Logger;
 public abstract class Action {
     
     /** log4j logger */
-    protected static final Logger LOGGER = Logger.getLogger(Action.class);
+    protected final Logger logger = Logger.getLogger(Action.class);
     
     /** http servlet request */
     protected HttpServletRequest request;
@@ -36,6 +38,9 @@ public abstract class Action {
     
     /** http session */
     protected HttpSession session;
+    
+    /** dao factory object */
+    protected final DaoFactory daoFactory = new DaoFactory();
     
     /**
      * Send redirect to some get action
@@ -67,7 +72,8 @@ public abstract class Action {
         setMessages(message, errorMessage);
         String path = request.getHeader("Referer");
         if (path == null) {
-            path = request.getContextPath() + ConfigManager.getProperty("link.homepage");
+            path = request.getContextPath() 
+                    + ConfigManager.getProperty("link.homepage");
         }
         response.sendRedirect(path);
     }
@@ -80,8 +86,10 @@ public abstract class Action {
      * @throws ServletException
      * @throws IOException 
      */
-    protected void sendRedirectWithParam(String actionLink, String param, String value) throws ServletException, IOException {
-        String link = ConfigManager.getProperty(actionLink) + "&" + param + "=" + value;
+    protected void sendRedirectWithParam(String actionLink, String param, 
+            String value) throws ServletException, IOException {
+        String link = ConfigManager.
+                getProperty(actionLink) + "&" + param + "=" + value;
         response.sendRedirect(request.getContextPath() + link);
     }
     
@@ -107,13 +115,16 @@ public abstract class Action {
      * @throws ServletException
      * @throws IOException 
      */
-    protected Order getOrderById(int orderId) throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+    protected Order getOrderById(int orderId) throws ServletException, 
+            IOException {
+        Dao orderCreator = daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
-            return (Order) orderCreator.getEntityById(orderId);
+            return (Order) ((EntityCreator) orderCreator).getEntityById(orderId);
         } catch (SQLException e) {
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception");
-        } catch (ServerOverloadedException ex) {
+        } catch (ServerOverloadedException e) {
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded");
         }
         return null;
@@ -127,13 +138,17 @@ public abstract class Action {
      * @throws IOException 
      */
     protected User getUserById(int userId) throws ServletException, IOException {
-        UserCreator userCreator = new UserCreator();
+        Dao userCreator = daoFactory.getCreator(DaoEnum.USER_CREATOR);
         try {
-            return (User) userCreator.getEntityById(userId);
+            return (User) ((EntityCreator) userCreator).getEntityById(userId);
         } catch (SQLException e) {
-            sendRedirect(null, "exception.errormessage.sqlexception", "getAllOrders");
-        } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "getAllOrders");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "getAllOrders");
+        } catch (ServerOverloadedException e) {
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "getAllOrders");
         }
         return null;
     }

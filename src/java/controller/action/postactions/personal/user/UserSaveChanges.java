@@ -9,6 +9,7 @@ import controller.action.postactions.personal.SaveChanges;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.User;
@@ -38,20 +39,24 @@ public class UserSaveChanges extends SaveChanges {
             String email) throws ServletException, IOException {
         User newUser = new User(firstName, lastName, email, "unusedPassword");
         newUser.setId(userId);
-        UserCreator userCreator = new UserCreator();
+        UserCreator userCreator = 
+                (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
         try {
             if (!userCreator.updateUser(newUser)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", "link.settings");
+                sendRedirect(null, "settings.errormessage.changesnotsaved", 
+                        "link.settings");
                 return false;
             }
             return setUserToSession(newUser.getEmail());
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.settings");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.settings");
             return false;
         }
     }

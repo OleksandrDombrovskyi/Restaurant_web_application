@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.AdminCreator;
+import model.dao.Dao;
+import model.dao.DaoEnum;
 import model.dao.KitchenCreator;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
@@ -63,10 +65,10 @@ public class Login extends PostAction {
      */
     private boolean userAuthorization(String email, String password) 
             throws ServletException, IOException {
-        UserCreator creator = new UserCreator();
+        UserCreator userCreator = (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
         User user = null;
         try {
-            user = (User) creator.getUserByEmail(email);
+            user = (User) userCreator.getUserByEmail(email);
             if (user == null) {
                 return false;
             }
@@ -77,10 +79,10 @@ public class Login extends PostAction {
                 sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
         }
         return true;
@@ -101,10 +103,11 @@ public class Login extends PostAction {
      */
     private boolean adminAuthorization(String email, String password) 
             throws ServletException, IOException {
-        AdminCreator creator = new AdminCreator();
+        AdminCreator adminCreator = (AdminCreator) daoFactory.
+                getCreator(DaoEnum.ADMIN_CREATOR);
         Admin admin = null;
         try {
-            admin = (Admin) creator.getAdminByEmail(email);
+            admin = (Admin) adminCreator.getAdminByEmail(email);
             if (admin == null) {
                 return false;
             }
@@ -112,14 +115,17 @@ public class Login extends PostAction {
                 session.setAttribute("admin", admin);
                 showLastPage();
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
+                sendRedirect(null, "login.errormessage.invalidpassword", 
+                        "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.loginrequest");
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.loginrequest");
         }
         return true;
     }
@@ -139,10 +145,10 @@ public class Login extends PostAction {
      */
     private boolean kitchenAuthorization(String email, String password) 
             throws ServletException, IOException {
-        KitchenCreator creator = new KitchenCreator();
+        KitchenCreator kitchenCreator = (KitchenCreator) daoFactory.getCreator(DaoEnum.KITCHEN_CREATOR);
         Kitchen kitchen = null;
         try {
-            kitchen = (Kitchen) creator.getKitchenByEmail(email);
+            kitchen = (Kitchen) kitchenCreator.getKitchenByEmail(email);
             if (kitchen == null) {
                 return false;
             }
@@ -150,14 +156,17 @@ public class Login extends PostAction {
                 session.setAttribute("kitchen", kitchen);
                 sendRedirect(null, null, "link.showacceptedorders");
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
+                sendRedirect(null, "login.errormessage.invalidpassword", 
+                        "link.loginrequest");
             }
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.loginrequest");
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.loginrequest");
         }
         return true;
     }

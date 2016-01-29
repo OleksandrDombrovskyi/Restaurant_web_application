@@ -9,6 +9,7 @@ import controller.action.Validator;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.User;
@@ -33,7 +34,7 @@ public class CreateAccount extends PostAction {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
-        UserCreator userCreator = new UserCreator();
+        UserCreator userCreator = (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
         User newUser = null;
         User dbUser = null;
         
@@ -60,12 +61,12 @@ public class CreateAccount extends PostAction {
                 throw new SQLException("User was not gotten from data base");
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             saveFieldValues(name, lastName, email);
             sendRedirect(null, "exception.errormessage.sqlexception", "link.signup");
             return;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             saveFieldValues(name, lastName, email);
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.signup");
             return;

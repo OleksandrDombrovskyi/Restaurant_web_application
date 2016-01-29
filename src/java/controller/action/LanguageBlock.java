@@ -30,7 +30,8 @@ public class LanguageBlock extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.page.language");
+//        return ConfigManager.getProperty("path.page.language");
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

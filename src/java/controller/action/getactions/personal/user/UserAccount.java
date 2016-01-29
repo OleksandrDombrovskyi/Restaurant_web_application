@@ -45,7 +45,13 @@ public class UserAccount extends GetAction {
             setMessages(null, "login.errormessage.loginplease");
             return ConfigManager.getProperty("path.home");
         }
-        BigDecimal account = user.getAccount();
+        int userId = user.getId();
+        User updatedUser = getUserById(userId);
+        if (updatedUser == null) {
+            setMessages(null, "login.errormessage.loginplease");
+            return ConfigManager.getProperty("path.home");
+        }
+        BigDecimal account = updatedUser.getAccount();
         request.setAttribute("account", account);
         return ConfigManager.getProperty("path.page.user.account");
     }

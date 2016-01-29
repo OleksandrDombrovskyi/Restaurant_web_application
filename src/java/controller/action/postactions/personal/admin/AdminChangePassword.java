@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.AdminCreator;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.entity.Admin;
 import model.entity.Person;
@@ -35,7 +36,8 @@ public class AdminChangePassword extends ChangePassword {
     protected boolean changePassword(Person person, String hexNewPassword) throws 
             ServletException, IOException {
         Admin admin = (Admin) person;
-        AdminCreator adminCreator = new AdminCreator();
+        AdminCreator adminCreator = 
+                (AdminCreator) daoFactory.getCreator(DaoEnum.ADMIN_CREATOR);
         try {
             if (!adminCreator.changePassword(admin, hexNewPassword)) {
                 sendRedirect(null, "settings.errormessage.passwordnotchanged", "link.settings");
@@ -43,11 +45,11 @@ public class AdminChangePassword extends ChangePassword {
             }
             return setAdminToSession(person.getEmail());
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
             return false;
         }

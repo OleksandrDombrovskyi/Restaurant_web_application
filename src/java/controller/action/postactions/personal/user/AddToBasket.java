@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.MealCreator;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
@@ -72,14 +73,15 @@ public class AddToBasket extends PostAction {
      * @throws IOException 
      */
     private List<Meal> getAllMeals() throws ServletException, IOException {
-        MealCreator mealCreator = new MealCreator();
+        MealCreator mealCreator = 
+                (MealCreator) daoFactory.getCreator(DaoEnum.MEAL_CREATOR);
         try {
             return (List<Meal>) mealCreator.getAllEntities();
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
         }
         return null;
@@ -128,20 +130,24 @@ public class AddToBasket extends PostAction {
      */
     private void createNewBasket(Order newBasketOrder) throws ServletException, 
             IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        OrderCreator orderCreator = 
+                (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             int orderId = orderCreator.insertOrder(newBasketOrder);
             if (orderId == 0) {
-                sendRedirect(null, "order.errormessage.nosuchorder", "link.mainmenu");
+                sendRedirect(null, "order.errormessage.nosuchorder", 
+                        "link.mainmenu");
             } else {
                 sendRedirect(null, null, "link.basket");
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.mainmenu");
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.mainmenu");
         }
     }
 
@@ -153,15 +159,18 @@ public class AddToBasket extends PostAction {
      * @throws IOException 
      */
     private Order getBasketOrder(int userId) throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        OrderCreator orderCreator = 
+                (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             return orderCreator.getNotConfirmedOrder(userId);
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.mainmenu");
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.mainmenu");
         }
         return null;
     }
@@ -176,14 +185,15 @@ public class AddToBasket extends PostAction {
      */
     private boolean addItemsToBasket(Order basketOrder, Order newBasketOrder) 
             throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        OrderCreator orderCreator = 
+                (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             return orderCreator.addItemsToBasket(basketOrder, newBasketOrder);
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
         }
         return false;

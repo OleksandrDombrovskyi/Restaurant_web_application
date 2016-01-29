@@ -38,6 +38,13 @@ public class LoginRequest extends GetAction {
         return ConfigManager.getProperty("path.page.loginrequest");
     }
 
+    /**
+     * Get array list of link chain direct to current page (in fact this method 
+     * gets link chain of its' previous page, add its' own link and return 
+     * created array list)
+     * 
+     * @return array list of links
+     */
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();

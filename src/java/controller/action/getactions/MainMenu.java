@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.MealCreator;
+import model.dao.Dao;
+import model.dao.DaoEnum;
+import model.dao.EntityCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Meal;
 
@@ -58,15 +60,15 @@ public class MainMenu extends GetAction {
      * @throws IOException 
      */
     private List<Meal> getAllMeals() throws ServletException, IOException {
-        MealCreator mealCreator = new MealCreator();
+        Dao mealCreator = daoFactory.getCreator(DaoEnum.MEAL_CREATOR);
         try {
-            return (List<Meal>) mealCreator.getAllEntities();
+            return (List<Meal>) ((EntityCreator) mealCreator).getAllEntities();
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "home");
             return null;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "home");
             return null;
         }

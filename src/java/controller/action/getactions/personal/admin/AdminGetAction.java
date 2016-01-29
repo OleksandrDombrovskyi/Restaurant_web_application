@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
+import model.dao.Dao;
+import model.dao.DaoEnum;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
@@ -39,15 +41,15 @@ public abstract class AdminGetAction extends AbstractOrders {
      * @throws IOException 
      */
     protected List<User> getAllUsers() throws ServletException, IOException {
-        UserCreator userCreator = new UserCreator();
+        Dao userCreator = daoFactory.getCreator(DaoEnum.USER_CREATOR);
         try {
-            return (List<User>) userCreator.getAllEntities();
+            return (List<User>) ((UserCreator) userCreator).getAllEntities();
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "administration");
             return null;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
             return null;
         }
@@ -60,15 +62,15 @@ public abstract class AdminGetAction extends AbstractOrders {
      * @throws IOException 
      */
     protected List<Order> getAllOrders() throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        Dao orderCreator = daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
-            return (List<Order>) orderCreator.getAllEntities();
+            return (List<Order>) ((OrderCreator) orderCreator).getAllEntities();
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "administration");
             return null;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
             return null;
         }

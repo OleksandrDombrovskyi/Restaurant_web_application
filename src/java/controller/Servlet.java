@@ -5,6 +5,7 @@
  */
 package controller;
 
+import controller.action.ActionFactory;
 import controller.action.getactions.GetAction;
 import controller.action.postactions.PostAction;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import org.apache.log4j.Logger;
 public class Servlet extends HttpServlet {
     
     /** log4j logger */
-    static final Logger LOGGER = Logger.getLogger(Servlet.class);
+    private final Logger logger = Logger.getLogger(Servlet.class);
     
     /**
      * Do get servlet method
@@ -36,13 +37,13 @@ public class Servlet extends HttpServlet {
     protected synchronized void doGet(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
         GetAction action = (GetAction) new ActionFactory().getGetAction(request);
-        LOGGER.info("Get action was called: " + action.toString());
+        logger.info("Get action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {
             page = ConfigManager.getProperty("path.home"); 
         }
         goToPage(page, request, response);
-        LOGGER.info("Get action was performed: " + action.toString());
+        logger.info("Get action was performed: " + action.toString());
     }
     
     /**
@@ -59,9 +60,9 @@ public class Servlet extends HttpServlet {
         if (action == null) {
             doGet(request, response);
         }
-        LOGGER.info("Post action was called: " + action.toString());
+        logger.info("Post action was called: " + action.toString());
         action.execute(request, response);
-        LOGGER.info("Post action was performed: " + action.toString());
+        logger.info("Post action was performed: " + action.toString());
     }
     
     /**

@@ -5,12 +5,12 @@
  */
 package controller.action.postactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.postactions.personal.SetOrderStatus;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.dao.SingletonPaymentTransaction;
 import model.entity.Order;
@@ -46,7 +46,7 @@ public class PayOrder extends SetOrderStatus {
             return;
         }
         User updatedUser = getUserById(user.getId());
-        if (updatedUser == null) {
+        if ((updatedUser == null) || (updatedUser.getId() != user.getId())) {
             sendRedirect("login.errormessage.loginplease", null);
             return;
         }
@@ -74,7 +74,7 @@ public class PayOrder extends SetOrderStatus {
     private boolean remitPayment(User updatedUser, Order order) 
             throws ServletException, IOException {
         SingletonPaymentTransaction engine = 
-                SingletonPaymentTransaction.getInstance();
+                (SingletonPaymentTransaction) daoFactory.getCreator(DaoEnum.PAYMENT_TRANSACTION);
         try {
             if (!engine.makePayment(updatedUser, order)) {
                 sendRedirect(null, "order.errormessage.transactionwasnotperformed");
@@ -82,10 +82,10 @@ public class PayOrder extends SetOrderStatus {
                 return true;
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception");
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded");
         }
         return false;

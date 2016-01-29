@@ -9,6 +9,7 @@ import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Order.OrderStatus;
@@ -27,9 +28,10 @@ public abstract class SetOrderStatus extends PostAction {
      * @throws ServletException
      * @throws IOException 
      */
-    protected boolean setStatus(int orderId, OrderStatus orderStatus) throws ServletException, 
-            IOException {
-        OrderCreator orderCreator = new OrderCreator();
+    protected boolean setStatus(int orderId, OrderStatus orderStatus) 
+            throws ServletException, IOException {
+        OrderCreator orderCreator = 
+                (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             if (orderCreator.setOrderStatus(orderId, orderStatus) == 0) {
                 sendRedirect("administration.user.order.errormessage.notaccepted", null);

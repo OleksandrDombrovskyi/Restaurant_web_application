@@ -9,6 +9,7 @@ import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.User;
@@ -39,7 +40,6 @@ public class ClearBasket extends PostAction {
         int orderId = Integer.parseInt(orderIdString);
         if (isRemoved(orderId)) {
             sendRedirect(null, null, "link.basket");
-            return;
         } else {
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
         }
@@ -53,7 +53,8 @@ public class ClearBasket extends PostAction {
      * @throws IOException 
      */
     private boolean isRemoved(int orderId) throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        OrderCreator orderCreator = 
+                (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             if (orderCreator.removeOrder(orderId)) {
                 return true;
@@ -61,10 +62,10 @@ public class ClearBasket extends PostAction {
                 sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
         }
         return false;

@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import model.dao.Dao;
+import model.dao.DaoEnum;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Order;
@@ -68,9 +70,9 @@ public class Basket extends GetAction {
     private Order getBasketOrder(int userId) throws ServletException, 
             IOException {
         model.entity.Order basketOrder = null;
-        OrderCreator orderCreator = new OrderCreator();
+        Dao orderCreator = daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
-            basketOrder =  orderCreator.getNotConfirmedOrder(userId);
+            basketOrder =  ((OrderCreator) orderCreator).getNotConfirmedOrder(userId);
             if (basketOrder == null) {
                 request.setAttribute("message", "basket.message.emptybasket");
                 return null;
@@ -78,11 +80,11 @@ public class Basket extends GetAction {
                 return basketOrder;
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "profile");
             return null;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
             return null;
         }

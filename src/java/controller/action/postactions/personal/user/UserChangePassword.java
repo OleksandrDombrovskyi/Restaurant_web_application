@@ -9,6 +9,7 @@ import controller.action.postactions.personal.ChangePassword;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.Person;
@@ -35,20 +36,24 @@ public class UserChangePassword extends ChangePassword {
     protected boolean changePassword(Person person, String hexNewPassword) throws 
             ServletException, IOException {
         User user = (User) person;
-        UserCreator userCreator = new UserCreator();
+        UserCreator userCreator = 
+                (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
         try {
             if (!userCreator.changePassword(user, hexNewPassword)) {
-                sendRedirect(null, "settings.errormessage.passwordnotchanged", "link.settings");
+                sendRedirect(null, "settings.errormessage.passwordnotchanged", 
+                        "link.settings");
                 return false;
             }
             return setUserToSession(person.getEmail());
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.settings");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.settings");
             return false;
         }
     }

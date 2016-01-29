@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.dao.AdminCreator;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.dao.UserCreator;
 import model.entity.Admin;
@@ -63,7 +64,8 @@ public abstract class PostAction extends Action {
             IOException {
         try {
             User user = null;
-            UserCreator userCreator = new UserCreator();
+            UserCreator userCreator = 
+                    (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
             user = (User) userCreator.getUserByEmail(email);
             if (user == null) {
                 sendRedirect(null, "login.errormessage.nosuchuser", "settings");
@@ -72,11 +74,11 @@ public abstract class PostAction extends Action {
             session.setAttribute("user", user);
             return true;
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "settings");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
             return false;
         }
@@ -96,7 +98,8 @@ public abstract class PostAction extends Action {
             IOException {
         try {
             Admin admin = null;
-            AdminCreator adminCreator = new AdminCreator();
+            AdminCreator adminCreator = 
+                    (AdminCreator) daoFactory.getCreator(DaoEnum.ADMIN_CREATOR);
             admin = (Admin) adminCreator.getAdminByEmail(email);
             if (admin == null) {
                 sendRedirect(null, "login.errormessage.nosuchuser", "settings");
@@ -105,11 +108,11 @@ public abstract class PostAction extends Action {
             session.setAttribute("admin", admin);
             return true;
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "settings");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
             return false;
         }

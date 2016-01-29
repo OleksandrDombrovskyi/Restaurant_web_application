@@ -51,29 +51,29 @@ public class Tester {
 //        try {
 //            creator.getAllEntities();
 //        } catch (SQLException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (ServerOverloadedException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        OrderCreator orderCreator = new OrderCreator();
 //        Order order = null;
 //        try {
 //            order = (Order) orderCreator.getEntityById(12);
 //        } catch (ServerOverloadedException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        System.out.println("order items: " + order.getOrderItems());
 //        MealCreator mealCreator = new MealCreator();
 //        try {
 //            System.out.println("Meals: " + (List<Meal>)mealCreator.getAllEntities());
 //        } catch (ServerOverloadedException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         OrderCreator orderCreator = new OrderCreator();
 //        try {
 //            orderCreator.setStatus(20, Order.OrderStatus.CRETATED);
 //        } catch (ServerOverloadedException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        System.out.println(Order.OrderStatus.CRETATED.name());
 //        Order order;
@@ -89,9 +89,9 @@ public class Tester {
 ////            System.out.println("basket confirmation, no basket: " + orderCreator.confirmBasket(2));
 ////            System.out.println("basket confirmation, yes basket: " + orderCreator.confirmBasket(1));
 //        } catch (ServerOverloadedException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (SQLException e) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, e);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, e);
 //        }
 
 //        User user = new User("Vasia", "Vasylenko", "vasvas10@gmail.com", "VasVas10");
@@ -102,9 +102,9 @@ public class Tester {
 //        try {
 //            engine.makePayment(user, order);
 //        } catch (SQLException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (ServerOverloadedException ex) {
-//            Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.getlogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 
 //        BigDecimal userAccount = BigDecimal.ZERO;

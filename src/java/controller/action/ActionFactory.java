@@ -3,14 +3,12 @@
  * To change this template file: return choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.action;
 
+import controller.GetActionEnum;
+import controller.PostActionEnum;
 import controller.action.Action;
 import controller.action.getactions.*;
-import controller.action.getactions.personal.kitchen.*;
-import controller.action.postactions.*;
-import controller.action.postactions.personal.admin.*;
-import controller.action.postactions.personal.user.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**

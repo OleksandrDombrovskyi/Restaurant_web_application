@@ -38,6 +38,7 @@ public class GetUserOrders extends AbstractOrders {
 
     /**
      * Get all orders for concrete user
+     * @return string page path key
      * @throws ServletException
      * @throws IOException 
      */

@@ -17,7 +17,7 @@ import model.entity.DBEntity;
  *
  * @author Sasha
  */
-public abstract class EntityCreator implements DAO {
+public abstract class EntityCreator implements Dao {
     
     /** sql query for all entities */
     private String sqlForAllEntities;

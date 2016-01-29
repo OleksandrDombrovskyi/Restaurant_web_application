@@ -24,6 +24,7 @@
                 <fmt:message key="mainmenu.message.loginplease" />
             </c:if>
         </h3>
+        <h2><fmt:message key="mainmenu.text.title" /></h2>
         <form action="servlet" method="post" >
             <cst:mealtable meals="${meals}" />
             <c:if test="${not empty user}" >

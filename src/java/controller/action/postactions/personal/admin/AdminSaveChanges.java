@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.AdminCreator;
+import model.dao.DaoEnum;
 import model.dao.ServerOverloadedException;
 import model.entity.Admin;
 import model.entity.Admin.AdminType;
@@ -40,20 +41,24 @@ public class AdminSaveChanges extends SaveChanges {
         Admin newAdmin = new Admin(firstName, lastName, email, "unusedPassword", 
                 AdminType.ORDINARY_ADMIN);
         newAdmin.setId(personId);
-        AdminCreator adminCreator = new AdminCreator();
+        AdminCreator adminCreator = 
+                (AdminCreator) daoFactory.getCreator(DaoEnum.ADMIN_CREATOR);
         try {
             if (!adminCreator.updateAdmin(newAdmin)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", "link.settings");
+                sendRedirect(null, "settings.errormessage.changesnotsaved", 
+                        "link.settings");
                 return false;
             }
             return setAdminToSession(newAdmin.getEmail());
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.sqlexception", 
+                    "link.settings");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
+            logger.info(e.getMessage());
+            sendRedirect(null, "exception.errormessage.serveroverloaded", 
+                    "link.settings");
             return false;
         }
     }

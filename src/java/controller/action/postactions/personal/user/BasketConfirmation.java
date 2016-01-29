@@ -9,6 +9,7 @@ import controller.action.postactions.PostAction;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import model.dao.DaoEnum;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.User;
@@ -72,18 +73,19 @@ public class BasketConfirmation extends PostAction {
      */
     private boolean confirmBasket(int userId) throws ServletException, 
             IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        OrderCreator orderCreator = 
+                (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             if (orderCreator.confirmBasket(userId) == 0) {
                 sendRedirect("basket.message.notconfirmed", null, "link.basket");
                 return false;
             }
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
             return false;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", 
                     "link.basket");
             return false;

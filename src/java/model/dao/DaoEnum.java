@@ -9,9 +9,12 @@ package model.dao;
  *
  * @author Sasha
  */
-public enum ENUMEntity {
-    ADMIN,
-    USER,
-    MEAL,
-    ORDER
+public enum DaoEnum {
+    ADMIN_CREATOR,
+    KITCHEN_CREATOR,
+    MEAL_CREATOR,
+    ORDER_CREATOR,
+    USER_CREATOR,
+    PAYMENT_TRANSACTION
+    
 }

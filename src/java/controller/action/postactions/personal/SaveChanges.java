@@ -5,7 +5,6 @@
  */
 package controller.action.postactions.personal;
 
-import controller.ConfigManager;
 import controller.action.Validator;
 import java.io.IOException;
 import javax.servlet.ServletException;

@@ -33,6 +33,7 @@ public class GetOrderKitchen extends AbstractOrders {
 
     /**
      * Get selected order for kitchen
+     * @return page path key
      * @throws ServletException
      * @throws IOException 
      */

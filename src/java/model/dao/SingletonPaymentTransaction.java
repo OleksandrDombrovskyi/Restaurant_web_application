@@ -17,7 +17,7 @@ import model.entity.User;
  *
  * @author Sasha
  */
-public class SingletonPaymentTransaction implements DAO {
+public class SingletonPaymentTransaction implements Dao {
     
     /** singleton payment transaction instance */
     private static SingletonPaymentTransaction instance = null;

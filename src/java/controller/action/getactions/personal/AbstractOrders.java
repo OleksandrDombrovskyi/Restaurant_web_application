@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
+import model.dao.Dao;
+import model.dao.DaoEnum;
 import model.dao.OrderCreator;
 import model.dao.ServerOverloadedException;
 import model.entity.Order;
@@ -37,15 +39,15 @@ public abstract class AbstractOrders extends GetAction {
      */
     protected List<Order> getOrdersByUserId(int userId) 
             throws ServletException, IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        Dao orderCreator = daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
-            return (List<Order>) orderCreator.getOrdersByUserId(userId);
+            return (List<Order>) ((OrderCreator) orderCreator).getOrdersByUserId(userId);
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception", "profile");
             return null;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
             return null;
         }
@@ -61,15 +63,15 @@ public abstract class AbstractOrders extends GetAction {
      */
     protected List<Order> getOrdersByStatus(Order.OrderStatus orderStatus) throws ServletException, 
             IOException {
-        OrderCreator orderCreator = new OrderCreator();
+        Dao orderCreator = daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
-            return (List<Order>) orderCreator.getOrdersByStatus(orderStatus);
+            return (List<Order>) ((OrderCreator) orderCreator).getOrdersByStatus(orderStatus);
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.sqlexception");
             return null;
         } catch (ServerOverloadedException e) {
-            LOGGER.info(e.getMessage());
+            logger.info(e.getMessage());
             sendRedirect(null, "exception.errormessage.serveroverloaded");
             return null;
         }
