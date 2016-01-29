@@ -5,20 +5,20 @@
  */
 package controller.tagsupport.mainmenutag;
 
+import controller.tagsupport.AbstractTagSupport;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 import model.entity.Meal;
 
 /**
  *
  * @author Sasha
  */
-public class MainMenuTag extends TagSupport {
+public class MainMenuTag extends AbstractTagSupport {
     
     /** list of meals */
     private List<Meal> meals;
@@ -38,14 +38,7 @@ public class MainMenuTag extends TagSupport {
      */
     @Override
     public int doStartTag() throws JspTagException {
-        Object object = pageContext.getSession().getAttribute("language");
-        Locale locale = null;
-        if (object instanceof Locale) {
-            locale = (Locale) object;
-        } else if (object instanceof String) {
-            locale = new Locale((String) object);
-        }
-        ResourceBundle recourceBundle = ResourceBundle.getBundle("controller.properties.text", locale);
+        ResourceBundle recourceBundle = getBundle("controller.properties.text");
         String mealName = recourceBundle.getString("order.table.mealname");
         String description = recourceBundle.getString("order.table.mealdescription");
         String price = recourceBundle.getString("order.table.mealprice");
