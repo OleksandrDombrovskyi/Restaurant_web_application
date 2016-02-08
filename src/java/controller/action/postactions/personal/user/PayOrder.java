@@ -31,23 +31,23 @@ public class PayOrder extends SetOrderStatus {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
             return;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "basket.errormessage.nosuchorder");
+            sendRedirect(null, NO_SUCH_ORDER);
             return;
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-            sendRedirect(null, "basket.errormessage.nosuchorder");
+            sendRedirect(null, NO_SUCH_ORDER);
             return;
         }
         User updatedUser = getUserById(user.getId());
         if ((updatedUser == null) || (updatedUser.getId() != user.getId())) {
-            sendRedirect("login.errormessage.loginplease", null);
+            sendRedirect(LOGIN_PLEASE, null);
             return;
         }
         session.setAttribute("user", updatedUser);
@@ -83,10 +83,10 @@ public class PayOrder extends SetOrderStatus {
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception");
+            sendRedirect(null, SQL_EXCEPTION);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION);
         }
         return false;
     }

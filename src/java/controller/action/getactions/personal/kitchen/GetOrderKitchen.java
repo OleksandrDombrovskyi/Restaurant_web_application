@@ -23,6 +23,9 @@ public class GetOrderKitchen extends AbstractOrders {
     
     /** title string key value */
     private final static String TITLE = "kitchen.order.text.title";
+    
+    private final static String KITCHEN_NO_SUCH_ORDER = 
+            "kitchen.acceptedorders.errormessage.nosuchorder";
 
     /**
      * Constructor
@@ -41,22 +44,22 @@ public class GetOrderKitchen extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            setMessages(null, "kitchen.acceptedorders.errormessage.nosuchorder");
+            setMessages(null, KITCHEN_NO_SUCH_ORDER);
             return request.getHeader("Referer");
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-            setMessages(null, "kitchen.acceptedorders.errormessage.nosuchorder");
+            setMessages(null, KITCHEN_NO_SUCH_ORDER);
             return request.getHeader("Referer");
         }
         request.setAttribute("order", order);
-        return ConfigManager.getProperty("path.page.kitchen.getorder");
+        return configManager.getProperty("path.page.kitchen.getorder");
     }
     
     /**
@@ -69,8 +72,8 @@ public class GetOrderKitchen extends AbstractOrders {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        String linkValue = ConfigManager.getProperty("link.getorderkitchen");
-        String linkName = "kitchen.acceptedorders.text.title";
+        String linkValue = configManager.getProperty("link.getorderkitchen");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

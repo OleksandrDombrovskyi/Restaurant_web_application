@@ -57,7 +57,7 @@ public class OrderTag extends AbstractTagSupport {
             for (OrderItem item : order.getOrderItems()) {
                 out.write("<tr>");
                 out.write("<td>" + item.getMeal().getName() + "</td>");
-                out.write("<td>" + item.getMeal().getDescription() + "</td>");
+                out.write("<td>" + (item.getMeal().getDescription() == null ? "" : item.getMeal().getDescription()) + "</td>");
                 out.write("<td>" + item.getMeal().getPrice() + " USD" + "</td>");
                 out.write("<td>" + item.getMealAmount() + "</td>");
                 out.write("<td>" + item.getTotalPrice() + " USD" + "</td>");

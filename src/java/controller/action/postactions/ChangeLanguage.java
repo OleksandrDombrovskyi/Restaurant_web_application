@@ -14,9 +14,13 @@ import javax.servlet.ServletException;
  * @author Sasha
  */
 public class ChangeLanguage extends PostAction {
+    
+    /** context path */
+    private final static String CONTEXT_PATH = 
+            "http://localhost:8080/Project4_v2_5/";
 
     /**
-     * Set languge block and set the language settings
+     * Set the language settings
      * @throws ServletException
      * @throws IOException 
      */
@@ -25,8 +29,8 @@ public class ChangeLanguage extends PostAction {
         Locale locale = new Locale(request.getParameter("language"));
         session.setAttribute("language", locale);
         String path = request.getHeader("Referer");
-        if (path == null || path.equals("http://localhost:8080/Project4_v2_5/")) {
-            sendRedirect(null, null, "link.home");
+        if (path == null || path.equals(CONTEXT_PATH)) {
+            sendRedirect(null, null, HOME_PAGE_LINK);
             return;
         }
         response.sendRedirect(path);

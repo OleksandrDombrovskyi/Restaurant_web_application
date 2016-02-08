@@ -19,20 +19,12 @@
     </head>
     <body>
         <h4>
-            <%--
-            ${kitchen.name} | 
-            <a href="${pageContext.request.contextPath}/servlet?getAction=logout"><fmt:message key="user.authorization.link.logout"/></a>
-            <a href="${pageContext.request.contextPath}/servlet?getAction=show_accepted_orders"><fmt:message key="kitchen.authorization.link.showorders"/></a> 
-            --%>
-            
             <form name="submitForm" method="POST" action="${pageContext.request.contextPath}/servlet?postAction=logout">
                 ${kitchen.name} | 
                    <a href="javascript:document.submitForm.submit()"><fmt:message key="user.authorization.link.logout"/></A>
                    
                     <a href="${pageContext.request.contextPath}/servlet?getAction=show_accepted_orders"><fmt:message key="kitchen.authorization.link.showorders"/></a>
             </form>
-            
-            
         </h4>
     </body>
 </html>

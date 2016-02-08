@@ -25,6 +25,25 @@ import model.entity.User;
  * @author Sasha
  */
 public abstract class AdminGetAction extends AbstractOrders {
+    
+    /** key for no users message */
+    protected final static String NO_USERS = 
+            "administration.users.message.nousers";
+    
+    /** path for page with orders for admin */
+    protected final static String ADMIN_GET_ALL_ORDERS = 
+            "path.page.admin.getallorders";
+    
+    /** path to rhe administration page for admin */
+    protected final static String ADMINISTRATION = 
+            "/servlet?getAction=administration";
+    
+    /** key for wrong user id */
+    protected final static String WRONG_USER_ID = 
+            "administration.users.errormessage.wronguserid";
+    
+    /** key for get users action for admin */
+    protected final static String GET_USERS = "path.page.admin.getusers";
 
     /**
      * Constructor
@@ -46,11 +65,11 @@ public abstract class AdminGetAction extends AbstractOrders {
             return (List<User>) ((UserCreator) userCreator).getAllEntities();
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "administration");
+            sendRedirect(null, SQL_EXCEPTION, ADMINISTRATION);
             return null;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, ADMINISTRATION);
             return null;
         }
     }
@@ -67,11 +86,11 @@ public abstract class AdminGetAction extends AbstractOrders {
             return (List<Order>) ((OrderCreator) orderCreator).getAllEntities();
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "administration");
+            sendRedirect(null, SQL_EXCEPTION, ADMINISTRATION);
             return null;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "administration");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, ADMINISTRATION);
             return null;
         }
     }

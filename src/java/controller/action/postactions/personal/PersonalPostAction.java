@@ -18,6 +18,14 @@ import model.entity.User;
  */
 public abstract class PersonalPostAction extends PostAction {
     
+    /** key for message that password was not chenged */
+    protected final static String PASSWORD_NOT_CHANGED = 
+            "settings.errormessage.passwordnotchanged";
+    
+    /** key for message that changes was not saved */
+    protected final static String CHANGES_NOT_SAVED = 
+            "settings.errormessage.changesnotsaved";
+    
     /**
      * Get person from the session
      * 
@@ -35,7 +43,7 @@ public abstract class PersonalPostAction extends PostAction {
         if (admin != null) {
             return admin;
         }
-        sendRedirect(null, "login.errormessage.loginplease", "home");
+        sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
         return null;
     }
     

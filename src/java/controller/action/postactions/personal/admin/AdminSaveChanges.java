@@ -45,20 +45,20 @@ public class AdminSaveChanges extends SaveChanges {
                 (AdminCreator) daoFactory.getCreator(DaoEnum.ADMIN_CREATOR);
         try {
             if (!adminCreator.updateAdmin(newAdmin)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", 
-                        "link.settings");
+                sendRedirect(null, CHANGES_NOT_SAVED, 
+                        SETTINGS);
                 return false;
             }
             return setAdminToSession(newAdmin.getEmail());
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.settings");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    SETTINGS);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.settings");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    SETTINGS);
             return false;
         }
     }

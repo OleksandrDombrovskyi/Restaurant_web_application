@@ -44,13 +44,13 @@ public class MainMenu extends GetAction {
     public String doExecute() throws ServletException, IOException {
         List<Meal> meals = getAllMeals();
         if (meals == null || meals.size() < 1) {
-            setMessages(null, "mainmenu.errormessage.nomeals");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, NO_MEALS);
+            return configManager.getProperty(HOME_PAGE);
         }
         request.setAttribute("meals", meals);
         MealTagIterator mealIterator = new MealTagIterator(meals);
         request.setAttribute("mealIterator", mealIterator);
-        return ConfigManager.getProperty("path.page.mainmenu");
+        return configManager.getProperty("path.page.mainmenu");
     }
 
     /**
@@ -65,11 +65,11 @@ public class MainMenu extends GetAction {
             return (List<Meal>) ((EntityCreator) mealCreator).getAllEntities();
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "home");
+            sendRedirect(null, SQL_EXCEPTION, HOME_PAGE);
             return null;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "home");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, HOME_PAGE);
             return null;
         }
     }
@@ -85,8 +85,8 @@ public class MainMenu extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.mainmenu");
-        String linkName = "mainmenu.text.title";
+        String linkValue = configManager.getProperty(MAIN_MENU);
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

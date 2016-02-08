@@ -29,19 +29,19 @@ public class ClearBasket extends PostAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
             return;
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "basket.errormessage.nosuchorder", "link.basket");
+            sendRedirect(null, NO_SUCH_ORDER, BASKET);
             return;
         }
         int orderId = Integer.parseInt(orderIdString);
         if (isRemoved(orderId)) {
-            sendRedirect(null, null, "link.basket");
+            sendRedirect(null, null, BASKET);
         } else {
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, BASKET);
         }
     }
     
@@ -59,14 +59,14 @@ public class ClearBasket extends PostAction {
             if (orderCreator.removeOrder(orderId)) {
                 return true;
             } else {
-                sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
+                sendRedirect(null, SQL_EXCEPTION, BASKET);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
+            sendRedirect(null, SQL_EXCEPTION, BASKET);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.basket");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, BASKET);
         }
         return false;
     }

@@ -35,7 +35,7 @@ public class Info extends GetAction {
      */
     @Override
     protected String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.page.info");
+        return configManager.getProperty("path.page.info");
     }
     
     /**
@@ -49,7 +49,7 @@ public class Info extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.info");
+        String linkValue = configManager.getProperty("link.info");
         String linkName = "home.link.info";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

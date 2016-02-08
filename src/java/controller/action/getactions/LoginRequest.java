@@ -5,7 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.ConfigManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class LoginRequest extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.page.loginrequest");
+        return configManager.getProperty("path.page.loginrequest");
     }
 
     /**
@@ -49,7 +48,7 @@ public class LoginRequest extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.loginrequest");
+        String linkValue = configManager.getProperty(LOGIN_REQUEST_LINK);
         String linkName = "login.button.login";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

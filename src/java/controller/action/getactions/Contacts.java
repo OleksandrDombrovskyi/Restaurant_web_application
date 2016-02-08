@@ -5,7 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.ConfigManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class Contacts extends GetAction {
      */
     @Override
     protected String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.page.contacts");
+        return configManager.getProperty("path.page.contacts");
     }
     
     /**
@@ -49,7 +48,7 @@ public class Contacts extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.contacts");
+        String linkValue = configManager.getProperty("link.contacts");
         String linkName = "home.link.contacts";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

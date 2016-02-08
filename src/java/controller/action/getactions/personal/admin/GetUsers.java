@@ -40,16 +40,16 @@ public class GetUsers extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         List<User> users = getAllUsers();
         if (users == null || users.size() < 1) {
-            request.setAttribute("message", "administration.users.message.nousers");
+            request.setAttribute("message", NO_USERS);
         } else {
             request.setAttribute("users", users);
         }
-        return ConfigManager.getProperty("path.page.admin.getusers");
+        return configManager.getProperty(GET_USERS);
     }
     
     /**
@@ -63,8 +63,8 @@ public class GetUsers extends AdminGetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Administration().getLink());
-        String linkValue = ConfigManager.getProperty("link.getusers");
-        String linkName = "administration.users.text.title";
+        String linkValue = configManager.getProperty("link.getusers");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

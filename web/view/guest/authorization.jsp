@@ -29,9 +29,6 @@
                     <input type="hidden" name="from" value="${pageContext.request.requestURI}">
                 </a> | <a href="${pageContext.request.contextPath}/servlet?getAction=sign_up&from=${pageContext.request.requestURI}" >
                     <fmt:message key="guest.authorization.link.signup" />
-                    <%--
-                    <input type="hidden" name="from" value="${pageContext.request.requestURI}">
-                    --%>
                 </a>
             </h4>
         </form>

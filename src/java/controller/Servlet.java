@@ -36,11 +36,12 @@ public class Servlet extends HttpServlet {
     @Override
     protected synchronized void doGet(HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
+        ConfigManager configManager = new ConfigManager();
         GetAction action = (GetAction) new ActionFactory().getGetAction(request);
         logger.info("Get action was called: " + action.toString());
         String page = action.execute(request, response);
         if (page == null) {
-            page = ConfigManager.getProperty("path.home"); 
+            page = configManager.getProperty("path.home"); 
         }
         goToPage(page, request, response);
         logger.info("Get action was performed: " + action.toString());
@@ -72,8 +73,9 @@ public class Servlet extends HttpServlet {
      */
     private void goToPage(String page, HttpServletRequest request, 
             HttpServletResponse response) throws ServletException, IOException {
+        ConfigManager configManager = new ConfigManager();
         request.setAttribute("relativeURI", page);
-        String createPage = ConfigManager.getProperty("path.page.createpage");
+        String createPage = configManager.getProperty("path.page.createpage");
         request.getRequestDispatcher(createPage).forward(request, response);
     }
     

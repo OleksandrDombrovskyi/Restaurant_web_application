@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import controller.action.getactions.HomePage;
@@ -42,14 +41,14 @@ public class Profile extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            return ConfigManager.getProperty("path.page.user.profile");
+            return configManager.getProperty("path.page.user.profile");
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
-            return ConfigManager.getProperty("path.page.admin.profile");
+            return configManager.getProperty("path.page.admin.profile");
         }
-        setMessages(null, "login.errormessage.loginplease");
-        return ConfigManager.getProperty("path.home");
+        setMessages(null, LOGIN_PLEASE);
+        return configManager.getProperty(HOME_PAGE);
     }
 
     /**
@@ -63,8 +62,8 @@ public class Profile extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.profile");
-        String linkName = "profile.text.title";
+        String linkValue = configManager.getProperty(PROFILE);
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

@@ -40,7 +40,7 @@ public class AddToBasket extends PostAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null || user.getId() == 0) {
-            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
             return;
         }
         int userId = user.getId();
@@ -48,11 +48,11 @@ public class AddToBasket extends PostAction {
                 Order.OrderStatus.NOT_CONFIRMED, BigDecimal.valueOf(0), 
                 new Timestamp(new Date().getTime()));
         if (!insertOrderItems(newBasketOrder)) {
-            sendRedirect(null, "mainmenu.errormessage.nomeals", "link.mainmenu");
+            sendRedirect(null, NO_MEALS, MAIN_MENU);
             return;
         }
         if (newBasketOrder.getOrderItems().size() < 1) {
-            sendRedirect("mainmenu.message.noselectedmeals", null, "link.mainmenu");
+            sendRedirect("mainmenu.message.noselectedmeals", null, MAIN_MENU);
             return;
         }
         Order basketOrder = getBasketOrder(userId);
@@ -60,7 +60,7 @@ public class AddToBasket extends PostAction {
             createNewBasket(newBasketOrder);
         } else {
             if (addItemsToBasket(basketOrder, newBasketOrder)) {
-                sendRedirect(null, null, "link.basket");
+                sendRedirect(null, null, BASKET);
             }
         }
     }
@@ -79,10 +79,10 @@ public class AddToBasket extends PostAction {
             return (List<Meal>) mealCreator.getAllEntities();
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
+            sendRedirect(null, SQL_EXCEPTION, MAIN_MENU);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, MAIN_MENU);
         }
         return null;
     }
@@ -135,19 +135,19 @@ public class AddToBasket extends PostAction {
         try {
             int orderId = orderCreator.insertOrder(newBasketOrder);
             if (orderId == 0) {
-                sendRedirect(null, "order.errormessage.nosuchorder", 
-                        "link.mainmenu");
+                sendRedirect(null, NO_SUCH_ORDER, 
+                        MAIN_MENU);
             } else {
-                sendRedirect(null, null, "link.basket");
+                sendRedirect(null, null, BASKET);
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.mainmenu");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    MAIN_MENU);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.mainmenu");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    MAIN_MENU);
         }
     }
 
@@ -165,12 +165,12 @@ public class AddToBasket extends PostAction {
             return orderCreator.getNotConfirmedOrder(userId);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.mainmenu");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    MAIN_MENU);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.mainmenu");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    MAIN_MENU);
         }
         return null;
     }
@@ -191,10 +191,10 @@ public class AddToBasket extends PostAction {
             return orderCreator.addItemsToBasket(basketOrder, newBasketOrder);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.mainmenu");
+            sendRedirect(null, SQL_EXCEPTION, MAIN_MENU);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.mainmenu");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, MAIN_MENU);
         }
         return false;
     }

@@ -35,7 +35,7 @@ public class SignUp extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.page.signup");
+        return configManager.getProperty("path.page.signup");
     }
     
     /**
@@ -49,8 +49,8 @@ public class SignUp extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.signup");
-        String linkName = "signup.text.title";
+        String linkValue = configManager.getProperty(SIGN_UP_LINK);
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

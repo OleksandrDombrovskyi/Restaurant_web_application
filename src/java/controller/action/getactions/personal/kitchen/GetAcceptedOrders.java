@@ -42,8 +42,8 @@ public class GetAcceptedOrders extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         List<Order> orders = getOrdersByStatus(OrderStatus.ACCEPTED);
         if (orders == null || orders.size() < 1) {
@@ -51,7 +51,7 @@ public class GetAcceptedOrders extends AbstractOrders {
         } else {
             request.setAttribute("orders", orders);
         }
-        return ConfigManager.getProperty("path.page.kitchen.showacceptedorders");
+        return configManager.getProperty("path.page.kitchen.showacceptedorders");
     }
     
     /**
@@ -64,7 +64,7 @@ public class GetAcceptedOrders extends AbstractOrders {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
-        String linkValue = ConfigManager.getProperty("link.showacceptedorders");
+        String linkValue = configManager.getProperty("link.showacceptedorders");
         String linkName = "kitchen.authorization.link.showorders";
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);

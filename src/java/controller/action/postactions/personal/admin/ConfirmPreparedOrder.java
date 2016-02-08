@@ -26,7 +26,7 @@ public class ConfirmPreparedOrder extends SetOrderStatus {
     protected void doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
             return;
         }
         String orderIdString = request.getParameter("orderId");

@@ -38,10 +38,10 @@ public abstract class SetOrderStatus extends PostAction {
                 return false;
             }
         } catch (SQLException ex) {
-            sendRedirect(null, "exception.errormessage.sqlexception");
+            sendRedirect(null, SQL_EXCEPTION);
             return false;
         } catch (ServerOverloadedException ex) {
-            sendRedirect(null, "exception.errormessage.serveroverloaded");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION);
             return false;
         }
         return true;

@@ -40,17 +40,17 @@ public class AdminChangePassword extends ChangePassword {
                 (AdminCreator) daoFactory.getCreator(DaoEnum.ADMIN_CREATOR);
         try {
             if (!adminCreator.changePassword(admin, hexNewPassword)) {
-                sendRedirect(null, "settings.errormessage.passwordnotchanged", "link.settings");
+                sendRedirect(null, PASSWORD_NOT_CHANGED, SETTINGS);
                 return false;
             }
             return setAdminToSession(person.getEmail());
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.settings");
+            sendRedirect(null, SQL_EXCEPTION, SETTINGS);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.settings");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, SETTINGS);
             return false;
         }
     }

@@ -14,15 +14,22 @@ import java.util.ResourceBundle;
 public class ConfigManager {
     
     /** resource bundle */
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("controller.pages");
+    private final ResourceBundle resourceBundle;
+    
+    /**
+     * Constructor
+     */
+    public ConfigManager() {
+        resourceBundle = ResourceBundle.getBundle("controller.pages");
+    }
     
     /**
      * Get antire page path
      * @param key key value of property
      * @return string of required page path
      */
-    public static String getProperty(String key) {
-        return RESOURCE_BUNDLE.getString(key);
+    public String getProperty(String key) {
+        return resourceBundle.getString(key);
     }
     
 }

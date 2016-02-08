@@ -5,7 +5,6 @@
  */
 package controller.action.postactions.personal;
 
-import controller.ConfigManager;
 import controller.action.Validator;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -17,6 +16,10 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @author Sasha
  */
 public abstract class ChangePassword extends PersonalPostAction {
+    
+    /** key for message that password is easy */
+    private final static String EASY_PASSWORD = 
+            "settings.errormessage.easypasword";
 
     /**
      * Perform password changing
@@ -28,18 +31,18 @@ public abstract class ChangePassword extends PersonalPostAction {
     protected void doExecute() throws ServletException, IOException {
         Person person = getPersonFromSession();
         if (person == null) {
-            sendRedirect(null, "login.errormessage.loginplease");
+            sendRedirect(null, LOGIN_PLEASE);
             return;
         }
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
         String confirmPassword = request.getParameter("confirmPassword");
         if (!checkForNotNull(oldPassword, newPassword, confirmPassword)) {
-            sendRedirect(null, "settings.errormessage.easypasword", "link.settings");
+            sendRedirect(null, EASY_PASSWORD, SETTINGS);
             return;
         }
         if (!isValid(newPassword)) {
-            sendRedirect(null, "settings.errormessage.easypasword", "link.settings");
+            sendRedirect(null, EASY_PASSWORD, SETTINGS);
             return;
         }
         String hexOldPassword = DigestUtils.shaHex(oldPassword);
@@ -49,7 +52,7 @@ public abstract class ChangePassword extends PersonalPostAction {
                 || !changePassword(person, hexNewPassword)) {
             return;
         }
-        sendRedirect("settings.message.passwordchanged", null, "link.settings");
+        sendRedirect("settings.message.passwordchanged", null, SETTINGS);
     }
     
     /**
@@ -99,11 +102,11 @@ public abstract class ChangePassword extends PersonalPostAction {
             String hexNewPassword, String hexConfirmPassword) throws 
             ServletException, IOException {
         if (!hexOldPassword.equals(person.getPassword())) {
-            sendRedirect(null, "settings.errormessage.wrongpassword", "link.settings");
+            sendRedirect(null, "settings.errormessage.wrongpassword", SETTINGS);
             return false;
         }
         if (!hexNewPassword.equals(hexConfirmPassword)) {
-            sendRedirect(null, "settings.errormessage.paswordnotmatched", "link.settings");
+            sendRedirect(null, "settings.errormessage.paswordnotmatched", SETTINGS);
             return false;
         }
         return true;

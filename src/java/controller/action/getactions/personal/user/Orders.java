@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import controller.action.getactions.personal.Profile;
@@ -42,8 +41,8 @@ public class Orders extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         int userId = user.getId();
         List<Order> orders = getOrdersByUserId(userId);
@@ -52,7 +51,7 @@ public class Orders extends AbstractOrders {
         } else {
             request.setAttribute("orders", orders);
         }
-        return ConfigManager.getProperty("path.page.user.orders");
+        return configManager.getProperty(ORDERS);
     }
     
     /**
@@ -66,8 +65,8 @@ public class Orders extends AbstractOrders {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = ConfigManager.getProperty("link.orders");
-        String linkName = "orders.text.title";
+        String linkValue = configManager.getProperty("link.orders");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

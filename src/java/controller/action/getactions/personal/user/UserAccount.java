@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
@@ -42,18 +41,18 @@ public class UserAccount extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         int userId = user.getId();
         User updatedUser = getUserById(userId);
         if (updatedUser == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         BigDecimal account = updatedUser.getAccount();
         request.setAttribute("account", account);
-        return ConfigManager.getProperty("path.page.user.account");
+        return configManager.getProperty("path.page.user.account");
     }
     
     /**
@@ -67,8 +66,8 @@ public class UserAccount extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = ConfigManager.getProperty("link.account");
-        String linkName = "account.text.title";
+        String linkValue = configManager.getProperty("link.account");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

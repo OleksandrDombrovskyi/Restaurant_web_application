@@ -5,7 +5,6 @@
  */
 package controller.action.getactions;
 
-import controller.ConfigManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class HomePage extends GetAction {
      */
     @Override
     public String doExecute() throws ServletException, IOException {
-        return ConfigManager.getProperty("path.home");
+        return configManager.getProperty(HOME_PAGE);
     }
 
     /**
@@ -48,8 +47,8 @@ public class HomePage extends GetAction {
     @Override
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList();
-        String linkValue = ConfigManager.getProperty("link.home");
-        String linkName = "home.text.title";
+        String linkValue = configManager.getProperty(HOME_PAGE_LINK);
+        String linkName = TITLE;
         links.add(new ConcreteLink(linkValue, linkName));
         return links;
     }

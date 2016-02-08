@@ -29,7 +29,7 @@ public class BasketConfirmation extends PostAction {
     protected void doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (!userValidation(user)) {
-            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
             return;
         }
         int userId = user.getId();
@@ -38,7 +38,7 @@ public class BasketConfirmation extends PostAction {
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            sendRedirect(null, "basket.errormessage.nosuchorder", "link.basket");
+            sendRedirect(null, NO_SUCH_ORDER, BASKET);
         } else {
             sendRedirectWithParam("link.getorder", "orderId", orderIdString);
         }
@@ -77,17 +77,17 @@ public class BasketConfirmation extends PostAction {
                 (OrderCreator) daoFactory.getCreator(DaoEnum.ORDER_CREATOR);
         try {
             if (orderCreator.confirmBasket(userId) == 0) {
-                sendRedirect("basket.message.notconfirmed", null, "link.basket");
+                sendRedirect("basket.message.notconfirmed", null, BASKET);
                 return false;
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.basket");
+            sendRedirect(null, SQL_EXCEPTION, BASKET);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.basket");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    BASKET);
             return false;
         }
         return true;

@@ -17,16 +17,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%-- 
-        <c:if test="${not empty errorMessage}" >
-            <fmt:message key="${errorMessage}" />
-            <c:remove var="errorMessage" scope="session" />
-        </c:if>
-        <c:if test="${not empty message}" >
-            <fmt:message key="${message}" />
-            <c:remove var="message" scope="session" />
-        </c:if>
-        --%>
         <h3>
             <a href="${pageContext.request.contextPath}/servlet?getAction=get_users" >
                 <fmt:message key="administration.link.getusers" />

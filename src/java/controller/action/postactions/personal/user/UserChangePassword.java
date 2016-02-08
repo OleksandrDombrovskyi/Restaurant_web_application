@@ -40,20 +40,20 @@ public class UserChangePassword extends ChangePassword {
                 (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
         try {
             if (!userCreator.changePassword(user, hexNewPassword)) {
-                sendRedirect(null, "settings.errormessage.passwordnotchanged", 
-                        "link.settings");
+                sendRedirect(null, PASSWORD_NOT_CHANGED, 
+                        SETTINGS);
                 return false;
             }
             return setUserToSession(person.getEmail());
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.settings");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    SETTINGS);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.settings");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    SETTINGS);
             return false;
         }
     }

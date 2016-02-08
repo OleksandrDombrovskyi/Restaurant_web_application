@@ -23,7 +23,11 @@ import model.entity.User;
 public class GetAllOrders extends AdminGetAction {
     
     /** title string key value */
-    private final static String TITLE = "orders.text.title";
+    private final static String TITLE = "administration.orders.text.title";
+    
+    /** key for no orders message */
+    private final static String NO_ORDERS = 
+            "administration.orders.message.noorders";
 
     /**
      * Constructor
@@ -42,23 +46,23 @@ public class GetAllOrders extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         List<Order> orders = getAllOrders();
         if (orders == null || orders.size() < 1) {
-            request.setAttribute("message", "administration.orders.message.noorders");
+            request.setAttribute("message", NO_ORDERS);
         } else {
             request.setAttribute("orders", orders);
         }
         List<User> users = getAllUsers();
         if (users == null || users.size() < 1) {
-            request.setAttribute("message", "administration.users.message.nousers");
+            request.setAttribute("message", NO_USERS);
         } else {
             Map<Integer, User> userMap = createUserMap(users);
             request.setAttribute("userMap", userMap);
         }
-        return ConfigManager.getProperty("path.page.admin.getallorders");
+        return configManager.getProperty(ADMIN_GET_ALL_ORDERS);
     }
     
     /**
@@ -72,8 +76,8 @@ public class GetAllOrders extends AdminGetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Administration().getLink());
-        String linkValue = ConfigManager.getProperty("link.getallorders");
-        String linkName = "administration.orders.text.title";
+        String linkValue = configManager.getProperty("link.getallorders");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

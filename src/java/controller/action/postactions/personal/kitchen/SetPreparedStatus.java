@@ -27,7 +27,7 @@ public class SetPreparedStatus extends SetOrderStatus {
     protected void doExecute() throws ServletException, IOException {
         Kitchen kitchen = (Kitchen) session.getAttribute("kitchen");
         if (kitchen == null) {
-            sendRedirect(null, "login.errormessage.loginplease", "link.home");
+            sendRedirect(null, LOGIN_PLEASE, HOME_PAGE_LINK);
             return;
         }
         String orderIdString = request.getParameter("orderId");

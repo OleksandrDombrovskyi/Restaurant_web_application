@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import java.io.IOException;
@@ -21,6 +20,9 @@ import model.entity.User;
  * @author Sasha
  */
 public class Settings extends GetAction {
+    
+    /** key for basket page path */
+    private final static String BASKET_PATH = "path.page.settings";
     
     /** title string key value */
     private final static String TITLE = "settings.text.title";
@@ -45,15 +47,15 @@ public class Settings extends GetAction {
         User user = (User) session.getAttribute("user");
         if (user != null) {
             setParameters(user);
-            return ConfigManager.getProperty("path.page.settings");
+            return configManager.getProperty(BASKET_PATH);
         }
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin != null) {
             setParameters(admin);
-            return ConfigManager.getProperty("path.page.settings");
+            return configManager.getProperty(BASKET_PATH);
         }
-        setMessages(null, "login.errormessage.loginplease");
-        return ConfigManager.getProperty("path.home");
+        setMessages(null, LOGIN_PLEASE);
+        return configManager.getProperty(HOME_PAGE);
     }
     
     /**
@@ -83,8 +85,8 @@ public class Settings extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = ConfigManager.getProperty("link.settings");
-        String linkName = "settings.text.title";
+        String linkValue = configManager.getProperty(SETTINGS);
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

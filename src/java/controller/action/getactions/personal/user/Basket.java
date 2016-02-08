@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.getactions.personal.Profile;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
@@ -29,6 +28,9 @@ public class Basket extends GetAction {
     
     /** title string key value */
     private final static String TITLE = "basket.text.title";
+    
+    /** key for empty basket message */
+    private final static String EMPTY_BUSKET = "basket.message.emptybasket";
 
     /**
      * Constructor
@@ -47,16 +49,16 @@ public class Basket extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         int userId = user.getId();
         model.entity.Order basketOrder = getBasketOrder(userId);
         if (basketOrder == null || basketOrder.getOrderItems().size() < 1) {
-            request.setAttribute("message", "basket.message.emptybasket");
+            request.setAttribute("message", EMPTY_BUSKET);
         }
         request.setAttribute("basketOrder", basketOrder);
-        return ConfigManager.getProperty("path.page.user.basket");
+        return configManager.getProperty("path.page.user.basket");
     }
     
     /**
@@ -74,18 +76,18 @@ public class Basket extends GetAction {
         try {
             basketOrder =  ((OrderCreator) orderCreator).getNotConfirmedOrder(userId);
             if (basketOrder == null) {
-                request.setAttribute("message", "basket.message.emptybasket");
+                request.setAttribute("message", EMPTY_BUSKET);
                 return null;
             } else {
                 return basketOrder;
             }
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "profile");
+            sendRedirect(null, SQL_EXCEPTION, PROFILE);
             return null;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, PROFILE);
             return null;
         }
     }
@@ -101,8 +103,8 @@ public class Basket extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Profile().getLink());
-        String linkValue = ConfigManager.getProperty("link.basket");
-        String linkName = "basket.text.title";
+        String linkValue = configManager.getProperty(BASKET);
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

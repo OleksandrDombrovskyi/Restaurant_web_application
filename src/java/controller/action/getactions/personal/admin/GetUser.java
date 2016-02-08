@@ -39,13 +39,13 @@ public class GetUser extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         String userIdString = request.getParameter("userId");
         if (userIdString == null) {
-            setMessages(null, "administration.users.errormessage.wronguserid");
-            return ConfigManager.getProperty("path.page.admin.getallorders");
+            setMessages(null, WRONG_USER_ID);
+            return configManager.getProperty(ADMIN_GET_ALL_ORDERS);
         }
         int userId = Integer.parseInt(userIdString);
         User concreteUser = getUserById(userId);
@@ -53,7 +53,7 @@ public class GetUser extends AdminGetAction {
             return null;
         }
         request.setAttribute("concreteUser", concreteUser);
-        return ConfigManager.getProperty("path.page.admin.getuser");
+        return configManager.getProperty("path.page.admin.getuser");
     }
     
     /**

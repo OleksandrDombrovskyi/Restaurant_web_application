@@ -25,7 +25,7 @@ public abstract class SaveChanges extends PersonalPostAction {
     protected void doExecute() throws ServletException, IOException {
         Person person = getPersonFromSession();
         if (person == null) {
-            sendRedirect(null, "login.errormessage.loginplease");
+            sendRedirect(null, LOGIN_PLEASE);
             return;
         }
         String firstName = request.getParameter("firstName");
@@ -40,7 +40,7 @@ public abstract class SaveChanges extends PersonalPostAction {
         if (!updatePerson(personId, firstName, lastName, email)) {
             return;
         }
-        sendRedirect("settings.message.changeswassaved", null, "link.settings");
+        sendRedirect("settings.message.changeswassaved", null, SETTINGS);
     }
     
     /**
@@ -54,20 +54,20 @@ public abstract class SaveChanges extends PersonalPostAction {
     private boolean checkFields(String firstName, String lastName, 
             String email) throws ServletException, IOException {
         if (firstName == null || firstName.equals("")) {
-            sendRedirect(null, "settings.errormessage.emptyname", "link.settings");
+            sendRedirect(null, "settings.errormessage.emptyname", SETTINGS);
             return false;
         }
         if (lastName == null || lastName.equals("")) {
-            sendRedirect(null, "settings.errormessage.emptylastname", "link.settings");
+            sendRedirect(null, "settings.errormessage.emptylastname", SETTINGS);
             return false;
         }
         if (email == null || email.equals("")) {
-            sendRedirect(null, "settings.errormessage.emptyemail", "link.settings");
+            sendRedirect(null, "settings.errormessage.emptyemail", SETTINGS);
             return false;
         }
         Validator validator = new Validator();
         if (!validator.checkEmail(email)) {
-            sendRedirect(null, "settings.errormessage.uncorrectemail", "link.settings");
+            sendRedirect(null, "settings.errormessage.uncorrectemail", SETTINGS);
             return false;
         }
         return true;

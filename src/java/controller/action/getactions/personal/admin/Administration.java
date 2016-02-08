@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal.admin;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.GetAction;
 import controller.action.getactions.HomePage;
@@ -41,10 +40,10 @@ public class Administration extends GetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
-        return ConfigManager.getProperty("path.page.admin.administration");
+        return configManager.getProperty("path.page.admin.administration");
     }
     
     /**
@@ -58,8 +57,8 @@ public class Administration extends GetAction {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new HomePage().getLink());
-        String linkValue = ConfigManager.getProperty("link.administration");
-        String linkName = "administration.text.title";
+        String linkValue = configManager.getProperty("link.administration");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

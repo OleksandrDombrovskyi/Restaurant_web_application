@@ -5,12 +5,10 @@
  */
 package controller.action.postactions;
 
-import controller.ConfigManager;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import model.dao.AdminCreator;
-import model.dao.Dao;
 import model.dao.DaoEnum;
 import model.dao.KitchenCreator;
 import model.dao.ServerOverloadedException;
@@ -25,6 +23,9 @@ import org.apache.commons.codec.digest.DigestUtils;
  * @author Sasha
  */
 public class Login extends PostAction {
+    
+    /** key for message about invalid password */
+    private final static String INVALID_PASSWORD = "login.errormessage.invalidpassword";
 
     /**
      * Log in
@@ -37,14 +38,14 @@ public class Login extends PostAction {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         if (isEmpty(email) || isEmpty(password)) {
-            sendRedirect(null, "login.errormessage.empty", "link.loginrequest");
+            sendRedirect(null, "login.errormessage.empty", LOGIN_REQUEST_LINK);
             return;
         }
         String hexPassword = DigestUtils.shaHex(password);
         if (!userAuthorization(email, hexPassword)) {
             if (!adminAuthorization(email, hexPassword)) {
                 if (!kitchenAuthorization(email, hexPassword)) {
-                    sendRedirect(null, "login.errormessage.nosuchuser", "link.loginrequest");
+                    sendRedirect(null, NO_SUCH_USER, LOGIN_REQUEST_LINK);
                 }
             }
         }
@@ -76,14 +77,14 @@ public class Login extends PostAction {
                 session.setAttribute("user", user);
                 showLastPage();
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", "link.loginrequest");
+                sendRedirect(null, INVALID_PASSWORD, LOGIN_REQUEST_LINK);
             }
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.loginrequest");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, LOGIN_REQUEST_LINK);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.loginrequest");
+            sendRedirect(null, SQL_EXCEPTION, LOGIN_REQUEST_LINK);
         }
         return true;
     }
@@ -115,17 +116,17 @@ public class Login extends PostAction {
                 session.setAttribute("admin", admin);
                 showLastPage();
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", 
-                        "link.loginrequest");
+                sendRedirect(null, INVALID_PASSWORD, 
+                        LOGIN_REQUEST_LINK);
             }
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.loginrequest");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    LOGIN_REQUEST_LINK);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.loginrequest");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    LOGIN_REQUEST_LINK);
         }
         return true;
     }
@@ -156,17 +157,17 @@ public class Login extends PostAction {
                 session.setAttribute("kitchen", kitchen);
                 sendRedirect(null, null, "link.showacceptedorders");
             } else {
-                sendRedirect(null, "login.errormessage.invalidpassword", 
-                        "link.loginrequest");
+                sendRedirect(null, INVALID_PASSWORD, 
+                        LOGIN_REQUEST_LINK);
             }
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.loginrequest");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    LOGIN_REQUEST_LINK);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.loginrequest");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    LOGIN_REQUEST_LINK);
         }
         return true;
     }
@@ -180,7 +181,7 @@ public class Login extends PostAction {
     private void showLastPage() throws ServletException, IOException {
         String lastAction = (String) session.getAttribute("lastAction");
         if (lastAction == null) {
-            lastAction = ConfigManager.getProperty("link.home");
+            lastAction = configManager.getProperty(HOME_PAGE_LINK);
             response.sendRedirect(request.getContextPath() + lastAction);
         } else {
             response.sendRedirect(lastAction);

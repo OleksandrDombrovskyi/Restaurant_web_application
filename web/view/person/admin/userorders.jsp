@@ -20,20 +20,6 @@
         <h3>
             <fmt:message key="administration.user.orders.text.title" />
         </h3>
-        <h3>
-            <%-- 
-        <c:if test="${not empty errorMessage}" >
-            <fmt:message key="${errorMessage}" />
-            <c:remove var="errorMessage" scope="session" />
-        </c:if>
-        <c:if test="${not empty message}" >
-            <fmt:message key="${message}" />
-            <c:remove var="message" scope="session" />
-        </c:if>
-            --%>
-        </h3>
-        
-        
         <h4>
             <fmt:message key="administration.orders.table.username" />: 
             <a href="${pageContext.request.contextPath}/servlet?getAction=get_user&userId=${concreteUser.id}" >
@@ -52,8 +38,6 @@
                 ${concreteUser.email}
             </a>
         </h4>
-        
-        
         <form action="servlet" method="get" >
             <c:if test="${empty errorMessage}" >
                 <c:if test="${not empty concreteUser.orders}">
@@ -63,11 +47,6 @@
                             <td><h3><fmt:message key="administration.orders.table.orderdate" /></h3></td>
                             <td><h3><fmt:message key="administration.orders.table.orderprice" /></h3></td>
                             <td><h3><fmt:message key="administration.orders.table.orderstatus" /></h3></td>
-                            <%--
-                            <td><h3><fmt:message key="administration.orders.table.username" /></h3></td>
-                            <td><h3><fmt:message key="administration.orders.table.userlastname" /></h3></td>
-                            <td><h3><fmt:message key="administration.orders.table.useremail" /></h3></td>
-                            --%>
                         </tr>
                         <c:forEach items="${concreteUser.orders}" var="order" >
                             <tr>
@@ -110,23 +89,6 @@
                                         </h3>
                                     </a>
                                 </td>
-                                <%--
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${concreteUser.id}" >
-                                        ${concreteUser.firstName}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${concreteUser.id}" >
-                                        ${concreteUser.lastName}
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="${pageContext.request.contextPath}/servlet?getAction=getUserOrders&userId=${concreteUser.id}" >
-                                        ${concreteUser.email}
-                                    </a>
-                                </td>
-                                --%>
                             </tr>
                         </c:forEach>
                     </table>

@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal.user;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
 import controller.action.getactions.personal.AbstractOrders;
 import java.io.IOException;
@@ -43,27 +42,27 @@ public class Order extends AbstractOrders {
         Admin admin = (Admin) session.getAttribute("admin");
         if (user == null) {
             if (admin == null) {
-                setMessages(null, "login.errormessage.loginplease");
-                return ConfigManager.getProperty("path.home");
+                setMessages(null, LOGIN_PLEASE);
+                return configManager.getProperty(HOME_PAGE);
             }
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            return ConfigManager.getProperty("path.home");
+            return configManager.getProperty(HOME_PAGE);
         }
         int orderId = Integer.parseInt(orderIdString);
         model.entity.Order order = getOrderById(orderId);
         if (order == null) {
-            setMessages(null, "order.errormessage.nosuchorder");
-            return ConfigManager.getProperty("path.page.user.orders");
+            setMessages(null, NO_SUCH_ORDER);
+            return configManager.getProperty(ORDERS);
         }
         if (admin != null || checkUserValidation(user, order)) {
             request.setAttribute("order", order);
             request.setAttribute("items", order.getOrderItems());
-            return ConfigManager.getProperty("path.page.user.getorder");
+            return configManager.getProperty("path.page.user.getorder");
         } else {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
     }
 

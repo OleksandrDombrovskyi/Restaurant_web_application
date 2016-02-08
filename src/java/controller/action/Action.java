@@ -27,6 +27,54 @@ import org.apache.log4j.Logger;
  */
 public abstract class Action {
     
+    /** key for gest to login */
+    protected final static String LOGIN_PLEASE = 
+            "login.errormessage.loginplease";
+    
+    /** key for sql exception message */
+    protected final static String SQL_EXCEPTION = 
+            "exception.errormessage.sqlexception";
+    
+    /** key for server overloaded exception message */
+    protected final static String SERVER_OVERLOADED_EXCEPTION = 
+            "exception.errormessage.serveroverloaded";
+    /** key for no such order message */
+    protected final static String NO_SUCH_ORDER = 
+            "order.errormessage.nosuchorder";
+    
+    /** key for ligin request link */
+    protected final static String LOGIN_REQUEST_LINK = "link.loginrequest";
+    
+    /** key for singing up link */
+    protected final static String SIGN_UP_LINK = "link.signup";
+    
+    /** key for message that no meald in data base */
+    protected final static String NO_MEALS = "mainmenu.errormessage.nomeals";
+    
+    /** key for path to the home page */
+    protected final static String HOME_PAGE = "path.home";
+    
+    /** key for link to the home page for redirecting */
+    protected final static String HOME_PAGE_LINK = "link.home";
+    
+    /** key for path to the persons' profile */
+    protected final static String PROFILE = "link.profile";
+    
+    /** key for persons' settings request link */
+    protected final static String SETTINGS = "link.settings";
+    
+    /* key for main menu request link */
+    protected final static String MAIN_MENU = "link.mainmenu";
+    
+    /** key for basket request link */
+    protected final static String BASKET = "link.basket";
+    
+    /** key for orders request */
+    private final static String ORDERS = "link.orders";
+    
+    /** config maneger object */
+    protected final ConfigManager configManager = new ConfigManager();
+    
     /** log4j logger */
     protected final Logger logger = Logger.getLogger(Action.class);
     
@@ -50,13 +98,13 @@ public abstract class Action {
      * @throws ServletException 
      * @throws IOException 
      */
-    protected void sendRedirect(String message, String errorMessage, String linkKey) 
-            throws ServletException, IOException {
+    protected void sendRedirect(String message, String errorMessage, 
+            String linkKey) throws ServletException, IOException {
         setMessages(message, errorMessage);
         if (linkKey == null || linkKey.isEmpty()) {
-            linkKey = "link.home";
-        } 
-        String link = ConfigManager.getProperty(linkKey);
+            linkKey = HOME_PAGE;
+        }
+        String link = configManager.getProperty(linkKey);
         response.sendRedirect(request.getContextPath() + link);
     }
     
@@ -73,7 +121,7 @@ public abstract class Action {
         String path = request.getHeader("Referer");
         if (path == null) {
             path = request.getContextPath() 
-                    + ConfigManager.getProperty("link.homepage");
+                    + configManager.getProperty("link.homepage");
         }
         response.sendRedirect(path);
     }
@@ -88,7 +136,7 @@ public abstract class Action {
      */
     protected void sendRedirectWithParam(String actionLink, String param, 
             String value) throws ServletException, IOException {
-        String link = ConfigManager.
+        String link = configManager.
                 getProperty(actionLink) + "&" + param + "=" + value;
         response.sendRedirect(request.getContextPath() + link);
     }
@@ -122,10 +170,10 @@ public abstract class Action {
             return (Order) ((EntityCreator) orderCreator).getEntityById(orderId);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception");
+            sendRedirect(null, SQL_EXCEPTION);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION);
         }
         return null;
     }
@@ -143,12 +191,12 @@ public abstract class Action {
             return (User) ((EntityCreator) userCreator).getEntityById(userId);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "getAllOrders");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    ORDERS);
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "getAllOrders");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    ORDERS);
         }
         return null;
     }

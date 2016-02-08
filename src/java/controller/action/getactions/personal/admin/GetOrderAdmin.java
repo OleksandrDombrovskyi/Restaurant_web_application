@@ -5,7 +5,6 @@
  */
 package controller.action.getactions.personal.admin;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +21,10 @@ public class GetOrderAdmin extends AdminGetAction {
     
     /** title string key value */
     private final static String TITLE = "order.text.title";
+    
+    /** key for wrong order message */
+    protected final static String WRONG_ORDER_ID = 
+            "administration.user.orders.errormessage.wrongparameterorderid";
 
     /**
      * Constructor
@@ -40,29 +43,29 @@ public class GetOrderAdmin extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         String orderIdString = request.getParameter("orderId");
         if (orderIdString == null) {
-            setMessages(null, "administration.user.orders.errormessage.wrongparameterorderid");
-            return ConfigManager.getProperty("path.page.admin.getallorders");
+            setMessages(null, WRONG_ORDER_ID);
+            return configManager.getProperty(ADMIN_GET_ALL_ORDERS);
         }
         int orderId = Integer.parseInt(orderIdString);
         Order order = getOrderById(orderId);
         if (order == null) {
-            setMessages(null, "order.errormessage.nosuchorder");
-            return ConfigManager.getProperty("path.page.admin.getallorders");
+            setMessages(null, NO_SUCH_ORDER);
+            return configManager.getProperty(ADMIN_GET_ALL_ORDERS);
         }
         int userId = order.getUserId();
         User concreteUser = getUserById(userId);
         if (concreteUser == null) {
-            setMessages(null, "administration.users.errormessage.wronguserid");
-            return ConfigManager.getProperty("path.page.admin.getallorders");
+            setMessages(null, WRONG_USER_ID);
+            return configManager.getProperty(ADMIN_GET_ALL_ORDERS);
         }
         request.setAttribute("concreteUser", concreteUser);
         request.setAttribute("order", order);
-        return ConfigManager.getProperty("path.page.admin.getorder");
+        return configManager.getProperty("path.page.admin.getorder");
     }
     
     /**

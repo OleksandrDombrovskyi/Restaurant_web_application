@@ -24,6 +24,9 @@ import model.entity.User;
  */
 public abstract class PostAction extends Action {
     
+    /** key for message that no such user registered in the data base */
+    protected final static String NO_SUCH_USER = "login.errormessage.nosuchuser";
+    
     /**
      * Initialization required variables and run doExecute method
      * 
@@ -68,18 +71,18 @@ public abstract class PostAction extends Action {
                     (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
             user = (User) userCreator.getUserByEmail(email);
             if (user == null) {
-                sendRedirect(null, "login.errormessage.nosuchuser", "settings");
+                sendRedirect(null, NO_SUCH_USER, SETTINGS);
                 return false;
             }
             session.setAttribute("user", user);
             return true;
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            sendRedirect(null, SQL_EXCEPTION, SETTINGS);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, SETTINGS);
             return false;
         }
     }
@@ -102,18 +105,18 @@ public abstract class PostAction extends Action {
                     (AdminCreator) daoFactory.getCreator(DaoEnum.ADMIN_CREATOR);
             admin = (Admin) adminCreator.getAdminByEmail(email);
             if (admin == null) {
-                sendRedirect(null, "login.errormessage.nosuchuser", "settings");
+                sendRedirect(null, NO_SUCH_USER, SETTINGS);
                 return false;
             }
             session.setAttribute("admin", admin);
             return true;
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "settings");
+            sendRedirect(null, SQL_EXCEPTION, SETTINGS);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "settings");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, SETTINGS);
             return false;
         }
     }

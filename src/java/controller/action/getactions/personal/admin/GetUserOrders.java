@@ -5,17 +5,11 @@
  */
 package controller.action.getactions.personal.admin;
 
-import controller.ConfigManager;
 import controller.action.getactions.ConcreteLink;
-import controller.action.getactions.personal.AbstractOrders;
-import controller.action.getactions.personal.Profile;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import model.dao.ServerOverloadedException;
-import model.dao.UserCreator;
 import model.entity.Admin;
 import model.entity.Order;
 import model.entity.User;
@@ -24,7 +18,7 @@ import model.entity.User;
  * Get users' orders
  * @author Sasha
  */
-public class GetUserOrders extends AbstractOrders {
+public class GetUserOrders extends AdminGetAction {
     
     /** title string key value */
     private final static String TITLE = "administration.user.orders.text.title";
@@ -46,19 +40,19 @@ public class GetUserOrders extends AbstractOrders {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         String userIdString = request.getParameter("userId");
         if (userIdString == null) {
-            setMessages(null, "administration.user.errormessage.wrongparameteruserid");
-            return ConfigManager.getProperty("path.page.admin.getusers");
+            setMessages(null, WRONG_USER_ID);
+            return configManager.getProperty(GET_USERS);
         }
         int userId = Integer.parseInt(userIdString);
         User concreteUser = getUserById(userId);
         if (concreteUser == null) {
-            setMessages(null, "administration.user.errormessage.wrongparameteruserid");
-            return ConfigManager.getProperty("path.page.admin.getusers");
+            setMessages(null, WRONG_USER_ID);
+            return configManager.getProperty(GET_USERS);
         }
         List<Order> orders = getOrdersByUserId(userId);
         if (orders == null || orders.size() < 1) {
@@ -67,7 +61,7 @@ public class GetUserOrders extends AbstractOrders {
             concreteUser.setOrders(orders);
             request.setAttribute("concreteUser", concreteUser);
         }
-        return ConfigManager.getProperty("path.page.admin.getuserorders");
+        return configManager.getProperty("path.page.admin.getuserorders");
     }
     
     /**
@@ -81,8 +75,8 @@ public class GetUserOrders extends AbstractOrders {
     public List<ConcreteLink> getLink() {
         List<ConcreteLink> links = new ArrayList<>();
         links.addAll(new Administration().getLink());
-        String linkValue = ConfigManager.getProperty("link.getallorders");
-        String linkName = "administration.orders.text.title";
+        String linkValue = configManager.getProperty("link.getallorders");
+        String linkName = TITLE;
         ConcreteLink concreteLink = new ConcreteLink(linkValue, linkName);
         links.add(concreteLink);
         return links;

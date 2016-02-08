@@ -55,8 +55,8 @@ public class GetOrderByStatus extends AdminGetAction {
     protected String doExecute() throws ServletException, IOException {
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            setMessages(null, "login.errormessage.loginplease");
-            return ConfigManager.getProperty("path.home");
+            setMessages(null, LOGIN_PLEASE);
+            return configManager.getProperty(HOME_PAGE);
         }
         String orderStatusString = request.getParameter("orderStatus"); 
         if (orderStatusString == null) {
@@ -71,13 +71,13 @@ public class GetOrderByStatus extends AdminGetAction {
         request.setAttribute("orders", orders);
         List<User> users = getAllUsers();
         if (users == null || users.size() < 1) {
-            request.setAttribute("message", "administration.users.message.nousers");
+            request.setAttribute("message", NO_USERS);
         } else {
             Map<Integer, User> userMap = createUserMap(users);
             request.setAttribute("userMap", userMap);
         }
         request.setAttribute("status", orderStatusString);
-        return ConfigManager.getProperty("path.page.admin.getallorders");
+        return configManager.getProperty(ADMIN_GET_ALL_ORDERS);
     }
     
 }

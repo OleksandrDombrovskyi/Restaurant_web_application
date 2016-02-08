@@ -42,13 +42,13 @@ public class CreateAccount extends PostAction {
                 confirmPassword);
         if (errorMessage != null) {
             saveFieldValues(name, lastName, email);
-            sendRedirect(null, errorMessage, "link.signup");
+            sendRedirect(null, errorMessage, SIGN_UP_LINK);
             return;
         }
         try {
             if (userCreator.getUserByEmail(email) != null) {
                 saveFieldValues(name, lastName, email);
-                sendRedirect(null, "signup.errormessage.existinguser", "link.signup");
+                sendRedirect(null, "signup.errormessage.existinguser", SIGN_UP_LINK);
                 return;
             }
             String hexPassword = DigestUtils.shaHex(password);
@@ -63,16 +63,16 @@ public class CreateAccount extends PostAction {
         } catch (SQLException e) {
             logger.info(e.getMessage());
             saveFieldValues(name, lastName, email);
-            sendRedirect(null, "exception.errormessage.sqlexception", "link.signup");
+            sendRedirect(null, SQL_EXCEPTION, SIGN_UP_LINK);
             return;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
             saveFieldValues(name, lastName, email);
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "link.signup");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, SIGN_UP_LINK);
             return;
         }
         session.setAttribute("user", dbUser);
-        sendRedirect(null, null, "link.profile");
+        sendRedirect(null, null, PROFILE);
     }
     
     /**

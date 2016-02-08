@@ -21,6 +21,9 @@ import model.entity.Order;
  * @author Sasha
  */
 public abstract class AbstractOrders extends GetAction {
+    
+    /** key to orders page */
+    protected final static String ORDERS = "path.page.user.orders";
 
     /**
      * Constructor
@@ -44,11 +47,11 @@ public abstract class AbstractOrders extends GetAction {
             return (List<Order>) ((OrderCreator) orderCreator).getOrdersByUserId(userId);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", "profile");
+            sendRedirect(null, SQL_EXCEPTION, PROFILE);
             return null;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", "profile");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, PROFILE);
             return null;
         }
     }
@@ -68,11 +71,11 @@ public abstract class AbstractOrders extends GetAction {
             return (List<Order>) ((OrderCreator) orderCreator).getOrdersByStatus(orderStatus);
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception");
+            sendRedirect(null, SQL_EXCEPTION);
             return null;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION);
             return null;
         }
     }

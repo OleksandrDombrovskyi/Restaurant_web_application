@@ -43,20 +43,20 @@ public class UserSaveChanges extends SaveChanges {
                 (UserCreator) daoFactory.getCreator(DaoEnum.USER_CREATOR);
         try {
             if (!userCreator.updateUser(newUser)) {
-                sendRedirect(null, "settings.errormessage.changesnotsaved", 
-                        "link.settings");
+                sendRedirect(null, CHANGES_NOT_SAVED, 
+                        SETTINGS);
                 return false;
             }
             return setUserToSession(newUser.getEmail());
         } catch (SQLException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.sqlexception", 
-                    "link.settings");
+            sendRedirect(null, SQL_EXCEPTION, 
+                    SETTINGS);
             return false;
         } catch (ServerOverloadedException e) {
             logger.info(e.getMessage());
-            sendRedirect(null, "exception.errormessage.serveroverloaded", 
-                    "link.settings");
+            sendRedirect(null, SERVER_OVERLOADED_EXCEPTION, 
+                    SETTINGS);
             return false;
         }
     }

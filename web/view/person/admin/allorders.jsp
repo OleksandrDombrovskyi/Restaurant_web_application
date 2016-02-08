@@ -57,16 +57,6 @@
             </c:choose>
         </h3>
         <h3>
-            <%--
-        <c:if test="${not empty errorMessage}" >
-            <fmt:message key="${errorMessage}" />
-            <c:remove var="errorMessage" scope="session" />
-        </c:if>
-        <c:if test="${not empty message}" >
-            <fmt:message key="${message}" />
-            <c:remove var="message" scope="session" />
-        </c:if>
-            --%>
         </h3>
         <form action="servlet" method="get" >
             <c:if test="${empty errorMessage}" >
